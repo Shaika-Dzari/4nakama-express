@@ -1,23 +1,24 @@
 var express = require('express');
 var router = express.Router();
-var category = require('./category');
+var message = require('./message');
 
-// GET categories
+// GET messages (blog post)
 router.get('/', function(req, res) {
 
-    category.find(function (err, categories) {
+    message.find({published: 1}, '-authorId', function (err, mgs) {
+
         if (err) {
             res.json(err);
         }
 
-        res.json(categories);
+        res.json(messages);
     });
 
 });
 
 router.post('/', function(req, res) {
     var cat = req.body;
-    console.log(cat);
+
 });
 
 
