@@ -25,7 +25,8 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
-    "react-simplemde": "0.0.2"
+    "react-simplemde": "0.0.2",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-loader": "^6.2.5",
