@@ -4,5 +4,6 @@ var router = require('express').Router();
 router.use('/tags', require('./tag/routes.js'));
 router.use('/categories', require('./category/routes.js'));
 router.use('/messages', require('./message/routes.js'));
+router.use('/sec', require('./account/routes.js'))
 
 module.exports = router;

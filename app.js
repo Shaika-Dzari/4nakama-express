@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 // ----------------------------------------------------------------------------
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
-var path = require('path');  
+var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
@@ -51,7 +51,8 @@ router.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
-// All routes  
+
+// All routes
 app.use('/api', require('./app/server/routes.js'));
 
 // ----------------------------------------------------------------------------
