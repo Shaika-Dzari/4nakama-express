@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var Tag = require('../tag/tag');
-var Category = require('../category/category');
+//var Tag = require('../tag/tag');
+//var Category = require('../category/category');
 var Schema = mongoose.Schema;
 
 var MessageSchema = new Schema({
@@ -11,8 +11,8 @@ var MessageSchema = new Schema({
     updatedAt: { type: Date},
     authorId: {type: Number, required: true},
     authorName: {type: String, required: true},
-    tags: [Tag],
-    categories: [Category],
+    tags: [String],
+    categories: [String],
     prettyUrl: String
 });
 

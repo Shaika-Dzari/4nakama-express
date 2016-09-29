@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 // Layouts
@@ -9,26 +8,28 @@ import ProtectedLayout from './layout/protectedlayout.jsx';
 // Pages
 import { NotFound } from './page/notfound.jsx';
 import { BlogPage } from './page/blog/blogpage.jsx';
-import { Dashboard } from './page/dashboard/dashboard.jsx'
+import { DashboardPage } from './page/dashboard/dashboardpage.jsx'
+import LoginPage from './page/login/loginpage.jsx';
 
 const AppRoute = () => {
 
-    render(
+    return (
         <Router history={ browserHistory }>
             <Route path="/" component={ PublicLayout }>
                 <IndexRoute component={ BlogPage } />
+                <Route path="login" component={ LoginPage } />
 
                 <Route path="/admin" component={ ProtectedLayout }>
-                    <IndexRoute component={ Dashboard } />
+                    <IndexRoute component={ DashboardPage } />
 
                 </Route>
                 <Route path="*" component={ NotFound } />
             </Route>
-        </Router>,
-        document.getElementById('app')
+        </Router>
     );
 }
 
+export default AppRoute;
 
 /*
 import BlogPage from '../../ui/pages/blog/blog.jsx';

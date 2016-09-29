@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AppRoute from './routes.jsx';
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <AppRoute />,
   document.getElementById('app')
 );

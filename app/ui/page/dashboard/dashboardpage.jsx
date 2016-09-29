@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export const Dashboard = () => {
+export const DashboardPage = () => {
     return (
         <div>Dashboard</div>
     );

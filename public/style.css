@@ -1,0 +1,21 @@
+nav.site-menu ul.simple-list li {
+  display: inline;
+  margin-right: 20px; }
+  nav.site-menu ul.simple-list li a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #444; }
+  nav.site-menu ul.simple-list li a:visited {
+    color: #444; }
+  nav.site-menu ul.simple-list li a.active {
+    color: red; }
+.alert {
+  border: 1px solid darkred;
+  padding: 10px;
+  margin: 10px; }
+  .alert p {
+    font-weight: bold; }
+div.login {
+  margin: 0 auto;
+  width: 400px;
+  padding: 10px; }

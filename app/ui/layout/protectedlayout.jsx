@@ -1,6 +1,5 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import PageHeader from '../components/pageheader/pageheader.jsx';
+import PageHeader from '../component/pageheader/pageheader.jsx';
 import { withRouter } from 'react-router';
 
 class ProtectedLayout extends React.Component {
@@ -54,4 +53,4 @@ class ProtectedLayout extends React.Component {
     }
 }
 
-export default withRouter(AdminApp);
+export default withRouter(ProtectedLayout);
