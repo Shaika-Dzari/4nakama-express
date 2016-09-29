@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { IndexLink, Link } from 'react-router';
+import LoginMenu from '../loginmenu/loginmenu.jsx';
+
 import './pageheader.scss';
 
 export default class PageHeader extends Component {
@@ -13,13 +15,11 @@ export default class PageHeader extends Component {
 
                 <div className="col-6">
                     <nav className="site-menu">
-                        <ul className="simple-list">
-                            <li><IndexLink to="/" activeClassName="active">Index</IndexLink></li>
-                            <li><Link to="/project" activeClassName="active">Projets</Link></li>
-                            <li><Link to="/about" activeClassName="active">À Propos</Link></li>
-                            <li><Link to="/login" activeClassName="active">Connexion</Link></li>
-                            <li><Link to="/admin" activeClassName="active">Administration</Link></li>
-                        </ul>
+                        <IndexLink to="/" activeClassName="active">Blog</IndexLink>
+                        <Link to="/ecriture" activeClassName="active">Écriture</Link>
+                        <Link to="/projet" activeClassName="active">Projets</Link>
+                        <Link to="/about" activeClassName="active">À Propos</Link>
+                        <LoginMenu />
                     </nav>
                 </div>
             </div>
