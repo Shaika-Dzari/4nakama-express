@@ -6,31 +6,26 @@ class ProtectedLayout extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
+        this.disconnect = this.disconnect.bind(this);
     }
 
-    getMeteorData() {
+    getUser() {
         // Reactively know if the user is authenticated
         return {
-            isAuthenticated: Meteor.userId() !== null
+            user: sessionStorage.getItem("4nuser")
         };
     }
 
-    signOut(e) {
-        e.preventDefault();
-
-        // Log out the user and navigate back to the home page on success
-        Meteor.logout(this.signOutCallback);
+    disconnect(event) {
+        event.preventDefault();
+        this.props.router.push('/');
     }
 
-    signOutCallback(error) {
-        if (error === undefined) {
-            this.props.router.push('/')
-        }
-    }
 
     componentWillMount() {
         // Check that the user is logged in before the component mounts
-        if (!this.getMeteorData().isAuthenticated) {
+        if (!this.getUser().user) {
             this.props.router.push('/login');
         }
     }
@@ -38,7 +33,7 @@ class ProtectedLayout extends React.Component {
     // When the data changes, this method is called
     componentDidUpdate(prevProps, prevState) {
         // Now check that they are still logged in. Redirect to sign in page if they aren't.
-        if (!getMeteorData().isAuthenticated) {
+        if (!this.getUser().user) {
             this.props.router.push('/login');
         }
     }

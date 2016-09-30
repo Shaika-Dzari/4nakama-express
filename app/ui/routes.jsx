@@ -7,7 +7,7 @@ import ProtectedLayout from './layout/protectedlayout.jsx';
 
 // Pages
 import { NotFound } from './page/notfound.jsx';
-import { BlogPage } from './page/blog/blogpage.jsx';
+import BlogPage from './page/blog/blogpage.jsx';
 import { DashboardPage } from './page/dashboard/dashboardpage.jsx'
 import LoginPage from './page/login/loginpage.jsx';
 

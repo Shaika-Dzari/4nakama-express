@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
+import BlogAuth from '../../utils/BlogAuth.js';
 
 import './loginpage.scss';
 
@@ -27,14 +28,9 @@ class LoginPage extends Component {
         var u = this.state.username;
         var p = this.state.passwd;
 
-        Meteor.loginWithPassword(u, p, function(err) {
-            if (err) {
-                console.log("ERROR", err.reason);
-                self.setState({loginErrMsg: err.reason});
-            } else {
-                self.props.loginCallback();
-            }
-        });
+        //console.log(BlogAuth);
+
+        BlogAuth.connection(u, p);
     }
 
     handleUserNameChange(event) {
@@ -55,17 +51,18 @@ class LoginPage extends Component {
         var msg = this.state.loginErrMsg;
         var alertBox = msg ? <AlertBox message={msg} /> : '';
 
+                            //<button className="btn btnblue" onClick={this.login}>Connexion</button>
         return (
             <div className="login">
                 <div className="box darkbox">
                     <div className="body">
                         {alertBox}
-                        <form className="frm">
+                        <form className="frm" method="post" action="/api/sec/login">
                             <label htmlFor="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" onChange={this.handleUserNameChange} />
+                            <input type="text" id="username" name="username" onChange={this.handleUserNameChange} />
                             <label htmlFor="passwd">Nom d'utilisateur</label>
-                            <input type="password" id="passwd" onChange={this.handlePasswordChange} />
-                            <button className="btn btnblue" onClick={this.login}>Connexion</button>
+                            <input type="password" id="passwd" name="password" onChange={this.handlePasswordChange} />
+                            <input type="submit" value="submit"></input>
                         </form>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ export default class PageHeader extends Component {
                         <Link to="/projet" activeClassName="active">Projets</Link>
                         <Link to="/about" activeClassName="active">À Propos</Link>
                         <LoginMenu />
+                        <Link to="/admin" activeClassName="active">Administration</Link>
                     </nav>
                 </div>
             </div>

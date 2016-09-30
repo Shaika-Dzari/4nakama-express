@@ -8195,6 +8195,8 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
+	__webpack_require__(547);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(_routes2.default, null), document.getElementById('app'));
@@ -29397,17 +29399,19 @@
 
 	var _publiclayout = __webpack_require__(533);
 
-	var _protectedlayout = __webpack_require__(536);
+	var _protectedlayout = __webpack_require__(537);
 
 	var _protectedlayout2 = _interopRequireDefault(_protectedlayout);
 
-	var _notfound = __webpack_require__(537);
+	var _notfound = __webpack_require__(538);
 
-	var _blogpage = __webpack_require__(538);
+	var _blogpage = __webpack_require__(539);
 
-	var _dashboardpage = __webpack_require__(539);
+	var _blogpage2 = _interopRequireDefault(_blogpage);
 
-	var _loginpage = __webpack_require__(540);
+	var _dashboardpage = __webpack_require__(541);
+
+	var _loginpage = __webpack_require__(542);
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
@@ -29425,7 +29429,7 @@
 	        _react2.default.createElement(
 	            _reactRouter.Route,
 	            { path: '/', component: _publiclayout.PublicLayout },
-	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _blogpage.BlogPage }),
+	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _blogpage2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _loginpage2.default }),
 	            _react2.default.createElement(
 	                _reactRouter.Route,
@@ -35172,7 +35176,11 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(535);
+	var _loginmenu = __webpack_require__(535);
+
+	var _loginmenu2 = _interopRequireDefault(_loginmenu);
+
+	__webpack_require__(536);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35213,53 +35221,30 @@
 	                        'nav',
 	                        { className: 'site-menu' },
 	                        _react2.default.createElement(
-	                            'ul',
-	                            { className: 'simple-list' },
-	                            _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    _reactRouter.IndexLink,
-	                                    { to: '/', activeClassName: 'active' },
-	                                    'Index'
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    _reactRouter.Link,
-	                                    { to: '/project', activeClassName: 'active' },
-	                                    'Projets'
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    _reactRouter.Link,
-	                                    { to: '/about', activeClassName: 'active' },
-	                                    'À Propos'
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    _reactRouter.Link,
-	                                    { to: '/login', activeClassName: 'active' },
-	                                    'Connexion'
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'li',
-	                                null,
-	                                _react2.default.createElement(
-	                                    _reactRouter.Link,
-	                                    { to: '/admin', activeClassName: 'active' },
-	                                    'Administration'
-	                                )
-	                            )
+	                            _reactRouter.IndexLink,
+	                            { to: '/', activeClassName: 'active' },
+	                            'Blog'
+	                        ),
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/ecriture', activeClassName: 'active' },
+	                            'Écriture'
+	                        ),
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/projet', activeClassName: 'active' },
+	                            'Projets'
+	                        ),
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/about', activeClassName: 'active' },
+	                            'À Propos'
+	                        ),
+	                        _react2.default.createElement(_loginmenu2.default, null),
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/admin', activeClassName: 'active' },
+	                            'Administration'
 	                        )
 	                    )
 	                )
@@ -35274,12 +35259,84 @@
 
 /***/ },
 /* 535 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(470);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoginMenu = function (_React$Component) {
+	    _inherits(LoginMenu, _React$Component);
+
+	    function LoginMenu() {
+	        _classCallCheck(this, LoginMenu);
+
+	        return _possibleConstructorReturn(this, (LoginMenu.__proto__ || Object.getPrototypeOf(LoginMenu)).apply(this, arguments));
+	    }
+
+	    _createClass(LoginMenu, [{
+	        key: 'isAuthenticated',
+	        value: function isAuthenticated() {
+	            return false;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var link = null;
+
+	            if (this.isAuthenticated()) {
+	                link = _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/logout', activeClassName: 'active' },
+	                    'Déconnexion'
+	                );
+	            } else {
+	                link = _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/login', activeClassName: 'active' },
+	                    'Connexion'
+	                );
+	            }
+
+	            return _react2.default.createElement(
+	                'span',
+	                null,
+	                link
+	            );
+	        }
+	    }]);
+
+	    return LoginMenu;
+	}(_react2.default.Component);
+
+	exports.default = LoginMenu;
+
+/***/ },
+/* 536 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 536 */
+/* 537 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35314,37 +35371,32 @@
 	    function ProtectedLayout(props) {
 	        _classCallCheck(this, ProtectedLayout);
 
-	        return _possibleConstructorReturn(this, (ProtectedLayout.__proto__ || Object.getPrototypeOf(ProtectedLayout)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (ProtectedLayout.__proto__ || Object.getPrototypeOf(ProtectedLayout)).call(this, props));
+
+	        _this.state = {};
+	        _this.disconnect = _this.disconnect.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(ProtectedLayout, [{
-	        key: 'getMeteorData',
-	        value: function getMeteorData() {
+	        key: 'getUser',
+	        value: function getUser() {
 	            // Reactively know if the user is authenticated
 	            return {
-	                isAuthenticated: Meteor.userId() !== null
+	                user: sessionStorage.getItem("4nuser")
 	            };
 	        }
 	    }, {
-	        key: 'signOut',
-	        value: function signOut(e) {
-	            e.preventDefault();
-
-	            // Log out the user and navigate back to the home page on success
-	            Meteor.logout(this.signOutCallback);
-	        }
-	    }, {
-	        key: 'signOutCallback',
-	        value: function signOutCallback(error) {
-	            if (error === undefined) {
-	                this.props.router.push('/');
-	            }
+	        key: 'disconnect',
+	        value: function disconnect(event) {
+	            event.preventDefault();
+	            this.props.router.push('/');
 	        }
 	    }, {
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            // Check that the user is logged in before the component mounts
-	            if (!this.getMeteorData().isAuthenticated) {
+	            if (!this.getUser().user) {
 	                this.props.router.push('/login');
 	            }
 	        }
@@ -35355,7 +35407,7 @@
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate(prevProps, prevState) {
 	            // Now check that they are still logged in. Redirect to sign in page if they aren't.
-	            if (!getMeteorData().isAuthenticated) {
+	            if (!this.getUser().user) {
 	                this.props.router.push('/login');
 	            }
 	        }
@@ -35377,7 +35429,7 @@
 	exports.default = (0, _reactRouter.withRouter)(ProtectedLayout);
 
 /***/ },
-/* 537 */
+/* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35406,7 +35458,7 @@
 	};
 
 /***/ },
-/* 538 */
+/* 539 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35414,24 +35466,95 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.BlogPage = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(299);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(470);
+
+	__webpack_require__(540);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var BlogPage = exports.BlogPage = function BlogPage() {
-	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        'BlogPage'
-	    );
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var BlogPage = function (_React$Component) {
+	    _inherits(BlogPage, _React$Component);
+
+	    function BlogPage(props) {
+	        _classCallCheck(this, BlogPage);
+
+	        var _this = _possibleConstructorReturn(this, (BlogPage.__proto__ || Object.getPrototypeOf(BlogPage)).call(this, props));
+
+	        _this.state = {};
+	        return _this;
+	    }
+
+	    _createClass(BlogPage, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+
+	            var self = this;
+	            window.fetch('/api/tags').then(function (r) {
+	                return r.json();
+	            }).then(function (data) {
+	                self.setState({ tags: data });
+	            }).catch(function (e) {
+	                return console.log("Booo" + e);
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var t = null;
+
+	            if (this.state.tags) {
+	                var t = this.state.tags.map(function (v, idx) {
+	                    return _react2.default.createElement(
+	                        'a',
+	                        { className: 'tag', href: '#', key: v._id },
+	                        v.name
+	                    );
+	                });
+	            }
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'h1',
+	                    null,
+	                    'Blog Page'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    t
+	                )
+	            );
+	        }
+	    }]);
+
+	    return BlogPage;
+	}(_react2.default.Component);
+
+	exports.default = BlogPage;
 
 /***/ },
-/* 539 */
+/* 540 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 541 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35456,7 +35579,7 @@
 	};
 
 /***/ },
-/* 540 */
+/* 542 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35473,11 +35596,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _alertbox = __webpack_require__(541);
+	var _alertbox = __webpack_require__(543);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	__webpack_require__(543);
+	var _BlogAuth = __webpack_require__(545);
+
+	var _BlogAuth2 = _interopRequireDefault(_BlogAuth);
+
+	__webpack_require__(546);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35516,14 +35643,9 @@
 	            var u = this.state.username;
 	            var p = this.state.passwd;
 
-	            Meteor.loginWithPassword(u, p, function (err) {
-	                if (err) {
-	                    console.log("ERROR", err.reason);
-	                    self.setState({ loginErrMsg: err.reason });
-	                } else {
-	                    self.props.loginCallback();
-	                }
-	            });
+	            //console.log(BlogAuth);
+
+	            _BlogAuth2.default.connection(u, p);
 	        }
 	    }, {
 	        key: 'handleUserNameChange',
@@ -35546,6 +35668,7 @@
 	            var msg = this.state.loginErrMsg;
 	            var alertBox = msg ? _react2.default.createElement(_alertbox2.default, { message: msg }) : '';
 
+	            //<button className="btn btnblue" onClick={this.login}>Connexion</button>
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'login' },
@@ -35558,24 +35681,20 @@
 	                        alertBox,
 	                        _react2.default.createElement(
 	                            'form',
-	                            { className: 'frm' },
+	                            { className: 'frm', method: 'post', action: '/api/sec/login' },
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'username' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'text', id: 'username', onChange: this.handleUserNameChange }),
+	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.handleUserNameChange }),
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'passwd' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', onChange: this.handlePasswordChange }),
-	                            _react2.default.createElement(
-	                                'button',
-	                                { className: 'btn btnblue', onClick: this.login },
-	                                'Connexion'
-	                            )
+	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.handlePasswordChange }),
+	                            _react2.default.createElement('input', { type: 'submit', value: 'submit' })
 	                        )
 	                    )
 	                )
@@ -35589,7 +35708,7 @@
 	exports.default = (0, _reactRouter.withRouter)(LoginPage);
 
 /***/ },
-/* 541 */
+/* 543 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35602,7 +35721,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(542);
+	__webpack_require__(544);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35622,16 +35741,511 @@
 	exports.default = AlertBox;
 
 /***/ },
-/* 542 */
+/* 544 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 543 */
+/* 545 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var BlogAuth = function () {
+	    function BlogAuth() {
+	        _classCallCheck(this, BlogAuth);
+	    }
+
+	    _createClass(BlogAuth, null, [{
+	        key: "connection",
+	        value: function connection(username, passwd) {
+
+	            var self = this;
+	            var u = null;
+
+	            var data = new FormData();
+	            data.append("username", username);
+	            data.append("password", passwd);
+
+	            window.fetch("/login", {
+	                method: "POST",
+	                body: data
+	            }).then(function (r) {
+	                console.log(r);
+	                return r.json();
+	            }).then(function (data) {
+	                u = data;
+	                console.log(u);
+	            }).catch(function (e) {
+	                return console.log("Booo" + e);
+	            });
+	        }
+	    }, {
+	        key: "disconnect",
+	        value: function disconnect() {}
+	    }, {
+	        key: "challenge",
+	        value: function challenge() {}
+	    }]);
+
+	    return BlogAuth;
+	}();
+
+	exports.default = BlogAuth;
+
+/***/ },
+/* 546 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 547 */
+/***/ function(module, exports) {
+
+	(function(self) {
+	  'use strict';
+
+	  if (self.fetch) {
+	    return
+	  }
+
+	  var support = {
+	    searchParams: 'URLSearchParams' in self,
+	    iterable: 'Symbol' in self && 'iterator' in Symbol,
+	    blob: 'FileReader' in self && 'Blob' in self && (function() {
+	      try {
+	        new Blob()
+	        return true
+	      } catch(e) {
+	        return false
+	      }
+	    })(),
+	    formData: 'FormData' in self,
+	    arrayBuffer: 'ArrayBuffer' in self
+	  }
+
+	  function normalizeName(name) {
+	    if (typeof name !== 'string') {
+	      name = String(name)
+	    }
+	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+	      throw new TypeError('Invalid character in header field name')
+	    }
+	    return name.toLowerCase()
+	  }
+
+	  function normalizeValue(value) {
+	    if (typeof value !== 'string') {
+	      value = String(value)
+	    }
+	    return value
+	  }
+
+	  // Build a destructive iterator for the value list
+	  function iteratorFor(items) {
+	    var iterator = {
+	      next: function() {
+	        var value = items.shift()
+	        return {done: value === undefined, value: value}
+	      }
+	    }
+
+	    if (support.iterable) {
+	      iterator[Symbol.iterator] = function() {
+	        return iterator
+	      }
+	    }
+
+	    return iterator
+	  }
+
+	  function Headers(headers) {
+	    this.map = {}
+
+	    if (headers instanceof Headers) {
+	      headers.forEach(function(value, name) {
+	        this.append(name, value)
+	      }, this)
+
+	    } else if (headers) {
+	      Object.getOwnPropertyNames(headers).forEach(function(name) {
+	        this.append(name, headers[name])
+	      }, this)
+	    }
+	  }
+
+	  Headers.prototype.append = function(name, value) {
+	    name = normalizeName(name)
+	    value = normalizeValue(value)
+	    var list = this.map[name]
+	    if (!list) {
+	      list = []
+	      this.map[name] = list
+	    }
+	    list.push(value)
+	  }
+
+	  Headers.prototype['delete'] = function(name) {
+	    delete this.map[normalizeName(name)]
+	  }
+
+	  Headers.prototype.get = function(name) {
+	    var values = this.map[normalizeName(name)]
+	    return values ? values[0] : null
+	  }
+
+	  Headers.prototype.getAll = function(name) {
+	    return this.map[normalizeName(name)] || []
+	  }
+
+	  Headers.prototype.has = function(name) {
+	    return this.map.hasOwnProperty(normalizeName(name))
+	  }
+
+	  Headers.prototype.set = function(name, value) {
+	    this.map[normalizeName(name)] = [normalizeValue(value)]
+	  }
+
+	  Headers.prototype.forEach = function(callback, thisArg) {
+	    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+	      this.map[name].forEach(function(value) {
+	        callback.call(thisArg, value, name, this)
+	      }, this)
+	    }, this)
+	  }
+
+	  Headers.prototype.keys = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push(name) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.values = function() {
+	    var items = []
+	    this.forEach(function(value) { items.push(value) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.entries = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push([name, value]) })
+	    return iteratorFor(items)
+	  }
+
+	  if (support.iterable) {
+	    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+	  }
+
+	  function consumed(body) {
+	    if (body.bodyUsed) {
+	      return Promise.reject(new TypeError('Already read'))
+	    }
+	    body.bodyUsed = true
+	  }
+
+	  function fileReaderReady(reader) {
+	    return new Promise(function(resolve, reject) {
+	      reader.onload = function() {
+	        resolve(reader.result)
+	      }
+	      reader.onerror = function() {
+	        reject(reader.error)
+	      }
+	    })
+	  }
+
+	  function readBlobAsArrayBuffer(blob) {
+	    var reader = new FileReader()
+	    reader.readAsArrayBuffer(blob)
+	    return fileReaderReady(reader)
+	  }
+
+	  function readBlobAsText(blob) {
+	    var reader = new FileReader()
+	    reader.readAsText(blob)
+	    return fileReaderReady(reader)
+	  }
+
+	  function Body() {
+	    this.bodyUsed = false
+
+	    this._initBody = function(body) {
+	      this._bodyInit = body
+	      if (typeof body === 'string') {
+	        this._bodyText = body
+	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+	        this._bodyBlob = body
+	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+	        this._bodyFormData = body
+	      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	        this._bodyText = body.toString()
+	      } else if (!body) {
+	        this._bodyText = ''
+	      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+	        // Only support ArrayBuffers for POST method.
+	        // Receiving ArrayBuffers happens via Blobs, instead.
+	      } else {
+	        throw new Error('unsupported BodyInit type')
+	      }
+
+	      if (!this.headers.get('content-type')) {
+	        if (typeof body === 'string') {
+	          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+	        } else if (this._bodyBlob && this._bodyBlob.type) {
+	          this.headers.set('content-type', this._bodyBlob.type)
+	        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+	        }
+	      }
+	    }
+
+	    if (support.blob) {
+	      this.blob = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+
+	        if (this._bodyBlob) {
+	          return Promise.resolve(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as blob')
+	        } else {
+	          return Promise.resolve(new Blob([this._bodyText]))
+	        }
+	      }
+
+	      this.arrayBuffer = function() {
+	        return this.blob().then(readBlobAsArrayBuffer)
+	      }
+
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+
+	        if (this._bodyBlob) {
+	          return readBlobAsText(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as text')
+	        } else {
+	          return Promise.resolve(this._bodyText)
+	        }
+	      }
+	    } else {
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        return rejected ? rejected : Promise.resolve(this._bodyText)
+	      }
+	    }
+
+	    if (support.formData) {
+	      this.formData = function() {
+	        return this.text().then(decode)
+	      }
+	    }
+
+	    this.json = function() {
+	      return this.text().then(JSON.parse)
+	    }
+
+	    return this
+	  }
+
+	  // HTTP methods whose capitalization should be normalized
+	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+	  function normalizeMethod(method) {
+	    var upcased = method.toUpperCase()
+	    return (methods.indexOf(upcased) > -1) ? upcased : method
+	  }
+
+	  function Request(input, options) {
+	    options = options || {}
+	    var body = options.body
+	    if (Request.prototype.isPrototypeOf(input)) {
+	      if (input.bodyUsed) {
+	        throw new TypeError('Already read')
+	      }
+	      this.url = input.url
+	      this.credentials = input.credentials
+	      if (!options.headers) {
+	        this.headers = new Headers(input.headers)
+	      }
+	      this.method = input.method
+	      this.mode = input.mode
+	      if (!body) {
+	        body = input._bodyInit
+	        input.bodyUsed = true
+	      }
+	    } else {
+	      this.url = input
+	    }
+
+	    this.credentials = options.credentials || this.credentials || 'omit'
+	    if (options.headers || !this.headers) {
+	      this.headers = new Headers(options.headers)
+	    }
+	    this.method = normalizeMethod(options.method || this.method || 'GET')
+	    this.mode = options.mode || this.mode || null
+	    this.referrer = null
+
+	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+	      throw new TypeError('Body not allowed for GET or HEAD requests')
+	    }
+	    this._initBody(body)
+	  }
+
+	  Request.prototype.clone = function() {
+	    return new Request(this)
+	  }
+
+	  function decode(body) {
+	    var form = new FormData()
+	    body.trim().split('&').forEach(function(bytes) {
+	      if (bytes) {
+	        var split = bytes.split('=')
+	        var name = split.shift().replace(/\+/g, ' ')
+	        var value = split.join('=').replace(/\+/g, ' ')
+	        form.append(decodeURIComponent(name), decodeURIComponent(value))
+	      }
+	    })
+	    return form
+	  }
+
+	  function headers(xhr) {
+	    var head = new Headers()
+	    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
+	    pairs.forEach(function(header) {
+	      var split = header.trim().split(':')
+	      var key = split.shift().trim()
+	      var value = split.join(':').trim()
+	      head.append(key, value)
+	    })
+	    return head
+	  }
+
+	  Body.call(Request.prototype)
+
+	  function Response(bodyInit, options) {
+	    if (!options) {
+	      options = {}
+	    }
+
+	    this.type = 'default'
+	    this.status = options.status
+	    this.ok = this.status >= 200 && this.status < 300
+	    this.statusText = options.statusText
+	    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+	    this.url = options.url || ''
+	    this._initBody(bodyInit)
+	  }
+
+	  Body.call(Response.prototype)
+
+	  Response.prototype.clone = function() {
+	    return new Response(this._bodyInit, {
+	      status: this.status,
+	      statusText: this.statusText,
+	      headers: new Headers(this.headers),
+	      url: this.url
+	    })
+	  }
+
+	  Response.error = function() {
+	    var response = new Response(null, {status: 0, statusText: ''})
+	    response.type = 'error'
+	    return response
+	  }
+
+	  var redirectStatuses = [301, 302, 303, 307, 308]
+
+	  Response.redirect = function(url, status) {
+	    if (redirectStatuses.indexOf(status) === -1) {
+	      throw new RangeError('Invalid status code')
+	    }
+
+	    return new Response(null, {status: status, headers: {location: url}})
+	  }
+
+	  self.Headers = Headers
+	  self.Request = Request
+	  self.Response = Response
+
+	  self.fetch = function(input, init) {
+	    return new Promise(function(resolve, reject) {
+	      var request
+	      if (Request.prototype.isPrototypeOf(input) && !init) {
+	        request = input
+	      } else {
+	        request = new Request(input, init)
+	      }
+
+	      var xhr = new XMLHttpRequest()
+
+	      function responseURL() {
+	        if ('responseURL' in xhr) {
+	          return xhr.responseURL
+	        }
+
+	        // Avoid security warnings on getResponseHeader when not allowed by CORS
+	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+	          return xhr.getResponseHeader('X-Request-URL')
+	        }
+
+	        return
+	      }
+
+	      xhr.onload = function() {
+	        var options = {
+	          status: xhr.status,
+	          statusText: xhr.statusText,
+	          headers: headers(xhr),
+	          url: responseURL()
+	        }
+	        var body = 'response' in xhr ? xhr.response : xhr.responseText
+	        resolve(new Response(body, options))
+	      }
+
+	      xhr.onerror = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.ontimeout = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.open(request.method, request.url, true)
+
+	      if (request.credentials === 'include') {
+	        xhr.withCredentials = true
+	      }
+
+	      if ('responseType' in xhr && support.blob) {
+	        xhr.responseType = 'blob'
+	      }
+
+	      request.headers.forEach(function(value, name) {
+	        xhr.setRequestHeader(name, value)
+	      })
+
+	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+	    })
+	  }
+	  self.fetch.polyfill = true
+	})(typeof self !== 'undefined' ? self : this);
+
 
 /***/ }
 /******/ ]);

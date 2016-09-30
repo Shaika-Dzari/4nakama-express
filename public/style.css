@@ -1,14 +1,22 @@
-nav.site-menu ul.simple-list li {
-  display: inline;
-  margin-right: 20px; }
-  nav.site-menu ul.simple-list li a {
-    font-weight: bold;
-    text-decoration: none;
-    color: #444; }
-  nav.site-menu ul.simple-list li a:visited {
-    color: #444; }
-  nav.site-menu ul.simple-list li a.active {
-    color: red; }
+nav.site-menu a {
+  margin-right: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #444; }
+
+nav.site-menu a:visited {
+  color: #444; }
+
+nav.site-menu a.active {
+  color: red; }
+a.tag {
+  border: 1px solid #444;
+  background-color: #666;
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+  padding: 3px 5px;
+  margin: 2px 2px; }
 .alert {
   border: 1px solid darkred;
   padding: 10px;

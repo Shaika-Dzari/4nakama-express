@@ -11,13 +11,15 @@ export default class LoginMenu extends React.Component {
         var link = null;
 
         if (this.isAuthenticated()) {
-            link = <div><Link to="/dashboard" activeClassName="active">Dashboard</Link> <Link to="/logout" activeClassName="active">Déconnexion</Link> </div>
+            link = <Link to="/logout" activeClassName="active">Déconnexion</Link>;
         } else {
             link = <Link to="/login" activeClassName="active">Connexion</Link>;
         }
 
         return (
-            {link}
+            <span>
+                {link}
+            </span>
         );
     }
 }

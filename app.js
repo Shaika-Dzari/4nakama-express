@@ -45,15 +45,20 @@ passport.deserializeUser(Account.deserializeUser());
 // ----------------------------------------------------------------------------
 var router = express.Router();
 
-router.use(function(req, res, next) {
+app.use(function(req, res, next) {
     // do logging
     console.log('Requested: ' + req.url);
     next(); // make sure we go to the next routes and don't stop here
 });
 
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 // All routes
 app.use('/api', require('./app/server/routes.js'));
+
 
 // ----------------------------------------------------------------------------
 // Start server
