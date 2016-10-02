@@ -1,29 +1,58 @@
 import React, { Component, PropTypes } from 'react';
-import { IndexLink, Link } from 'react-router';
-import LoginMenu from '../loginmenu/loginmenu.jsx';
+import { IndexLink, Link, withRouter } from 'react-router';
+import AuthenticationService from '../../utils/AuthenticationService.js';
 
 import './pageheader.scss';
 
-export default class PageHeader extends Component {
+class PageHeader extends Component {
+
+    constructor(props) {
+        super(props);
+        this.disconnect = this.disconnect.bind(this);
+    }
+
+    isAuthenticated() {
+        return AuthenticationService.isAuthenticated();
+    }
+
+    disconnect(event) {
+        var self = this;
+        event.preventDefault();
+        AuthenticationService.disconnect(function() {
+            self.props.router.push('/');
+        });
+        
+    }
 
     render() {
+
+        var links = [];
+        links.push(<IndexLink to="/" activeClassName="active" key="link_1">Blog</IndexLink>);
+        links.push(<Link to="/ecriture" activeClassName="active" key="link_2">Écriture</Link>);
+        links.push(<Link to="/projet" activeClassName="active" key="link_3">Projets</Link>);
+        links.push(<Link to="/about" activeClassName="active" key="link_4">À Propos</Link>);
+        
+        if (this.isAuthenticated()) {
+            links.push(<Link to="/admin" activeClassName="active" key="link_5">Administration</Link>);
+            links.push(<a href="#" onClick={this.disconnect} key="link_6">Déconnexion</a>);
+        } else {
+            links.push(<Link to="/login" activeClassName="active" key="link_7">Connexion</Link>);
+        }
+
         return (
-            <div className="row">
+            <div className="row site-header">
                 <div className="col-6">
-                    <h1>4nakama</h1>
+                    <h1 className="site-title">4nakama</h1>
                 </div>
 
                 <div className="col-6">
                     <nav className="site-menu">
-                        <IndexLink to="/" activeClassName="active">Blog</IndexLink>
-                        <Link to="/ecriture" activeClassName="active">Écriture</Link>
-                        <Link to="/projet" activeClassName="active">Projets</Link>
-                        <Link to="/about" activeClassName="active">À Propos</Link>
-                        <LoginMenu />
-                        <Link to="/admin" activeClassName="active">Administration</Link>
+                        {links}
                     </nav>
                 </div>
             </div>
         );
     }
 }
+
+export default withRouter(PageHeader);

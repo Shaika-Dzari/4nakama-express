@@ -3,13 +3,19 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var Schema = mongoose.Schema;
 
 var AccountSchema = new Schema({
-    username: {type: String, required: true},
-    password: {type: String, required: true},
+    username: String,
+    password: String,
     email: {type: String, required: true},
     createdAt: { type: Date, default: Date.now },
-    role: {type: String, default: 'author'}
+    role: {type: String, default: 'author'},
+    enabled: {type: Number, default: 1}
 });
 
-AccountSchema.plugin(passportLocalMongoose);
+var loginOptions = {
+    limitAttempts: true,
+    maxAttempts: 5
+}
+
+AccountSchema.plugin(passportLocalMongoose, loginOptions);
 
 module.exports = mongoose.model('Account', AccountSchema);

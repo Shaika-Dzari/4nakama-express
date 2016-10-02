@@ -7,6 +7,9 @@ var mongodbConfig = require('./app/server/config/mongodb.js');
 mongoose.connect(mongodbConfig.url); // connect to the database
 mongoose.Promise = global.Promise;
 
+// Create initial account
+mongodbConfig.init();
+
 // ----------------------------------------------------------------------------
 // Express config
 // ----------------------------------------------------------------------------

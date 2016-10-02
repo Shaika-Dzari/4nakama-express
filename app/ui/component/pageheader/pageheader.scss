@@ -1,18 +1,30 @@
-nav.site-menu {
+.site-header {
 
-    a {
+    background-color: #253a47;
+    border-bottom: 1px solid #0f1b23;
+
+    h1.site-title {
+        color: #fff;
+        margin: 5px 5px 5px 20px;
+    }
+
+    nav.site-menu {
+        text-align: right;
         margin-right: 20px;
-        font-weight: bold;
-                text-decoration: none;
-                color: #444;
-    }
+        a {
+            display: inline-block;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            margin: 16px 10px 0 10px;
+        }
 
-    a:visited {
-        color: #444;
-    }
+        a:visited {
+            color: #d4d4d4;
+        }
 
-    a.active {
-        color: red;
+        a.active {
+            color: #7fafcd;
+        }
     }
-
 }

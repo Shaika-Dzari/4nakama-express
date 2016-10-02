@@ -1,44 +1,45 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var message = require('./message');
+var Message = require('./message');
 
 
 // GET messages (blog post)
 router.get('/public/', function(req, res, next) {
-    message.find({published: 1}, '-authorId', function (err, mgs) {
+
+    Message.find({published: 1}, '-authorId', function (err, mgs) {
         if (err) next(err);
-        res.json(messages);
+        res.json(mgs);
     });
 });
 
 router.get('/public/:messageid', function(req, res, next) {
     var id = req.params.messageid;
 
-    message.findOne({published: 1, _id: id}, '-authorId', function (err, mgs) {
+    Message.findOne({published: 1, _id: id}, '-authorId', function (err, mgs) {
         if (err) next(err);
-        res.json(messages);
+        res.json(mgs);
     });
 });
 
 router.get('/protected/', passport.authenticate('local'), function(req, res, next) {
-    message.find({}, '-authorId', function (err, mgs) {
+    Message.find({}, '-authorId', function (err, mgs) {
         if (err) next(err);
-        res.json(messages);
+        res.json(mgs);
     });
 });
 
 router.get('/protected/:messageid', passport.authenticate('local'), function(req, res, next) {
     var id = req.params.messageid;
 
-    message.findOne({_id: id}, '-authorId', function (err, mgs) {
+    Message.findOne({_id: id}, '-authorId', function (err, mgs) {
         if (err) next(err);
-        res.json(messages);
+        res.json(mgs);
     });
 });
 
 /**
- * Create new message.
+ * Create new Message.
  */
 router.post('/protected/', passport.authenticate('local'), function(req, res, next) {
 
@@ -48,7 +49,7 @@ router.post('/protected/', passport.authenticate('local'), function(req, res, ne
 
 
 /**
- * Update new message.
+ * Update new Message.
  */
 router.put('/protected/:messageid', passport.authenticate('local'), function(req, res, next) {
     var id = req.params.messageid;

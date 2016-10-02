@@ -7,9 +7,10 @@ router.post('/login', passport.authenticate('local'), function(req, res, next) {
     res.json(req.user);
 });
 
-router.post('/logout', passport.authenticate('local'), function(req, res, next) {
+router.get('/logout', function(req, res) {
     req.logout();
-    res.status(204);
+    res.json('ok');
 });
+
 
 module.exports = router;

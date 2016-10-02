@@ -1,6 +1,7 @@
 import React from 'react';
 import PageHeader from '../component/pageheader/pageheader.jsx';
 import { withRouter } from 'react-router';
+import AuthenticationService from '../utils/AuthenticationService.js';
 
 class ProtectedLayout extends React.Component {
 

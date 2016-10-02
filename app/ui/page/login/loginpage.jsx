@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
-import BlogAuth from '../../utils/BlogAuth.js';
+import AuthenticationService from '../../utils/AuthenticationService.js';
 
 import './loginpage.scss';
 
@@ -14,12 +14,8 @@ class LoginPage extends Component {
         this.login = this.login.bind(this);
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    }
 
-    onSuccessLogin() {
-        this.props.router.goBack();
     }
-
 
     login(event) {
         event.preventDefault();
@@ -28,9 +24,9 @@ class LoginPage extends Component {
         var u = this.state.username;
         var p = this.state.passwd;
 
-        //console.log(BlogAuth);
-
-        BlogAuth.connection(u, p);
+        AuthenticationService.connection(u, p, function(user) {
+            self.props.router.push('/');
+        });
     }
 
     handleUserNameChange(event) {
@@ -45,24 +41,23 @@ class LoginPage extends Component {
         });
     }
 
-
     render () {
 
         var msg = this.state.loginErrMsg;
         var alertBox = msg ? <AlertBox message={msg} /> : '';
 
-                            //<button className="btn btnblue" onClick={this.login}>Connexion</button>
+                            //
         return (
             <div className="login">
                 <div className="box darkbox">
                     <div className="body">
                         {alertBox}
-                        <form className="frm" method="post" action="/api/sec/login">
+                        <form className="frm">
                             <label htmlFor="username">Nom d'utilisateur</label>
                             <input type="text" id="username" name="username" onChange={this.handleUserNameChange} />
                             <label htmlFor="passwd">Nom d'utilisateur</label>
                             <input type="password" id="passwd" name="password" onChange={this.handlePasswordChange} />
-                            <input type="submit" value="submit"></input>
+                            <button className="btn btnblue" onClick={this.login}>Connexion</button>
                         </form>
                     </div>
                 </div>
