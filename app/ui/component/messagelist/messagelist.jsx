@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, withRouter} from 'react-router';
 import Message from '../message/message.jsx';
 import AlertBox from '../alertbox/alertbox.jsx';
+import Pager from '../pager/pager.jsx';
 
 class MessageList extends React.Component {
 
@@ -33,8 +34,14 @@ class MessageList extends React.Component {
 
         }
 
+        // Change that!
+        var fromDate = new Date();
+
         return (
-            <div>{msgs}</div>
+            <div>
+                <div>{msgs}</div>
+                <Pager fromdate={fromDate} />
+            </div>
         )
     }
 }
