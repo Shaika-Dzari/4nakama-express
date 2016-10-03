@@ -1,9 +1,26 @@
+html {
+    min-height: 100%;
+}
+
 body {
-    background-color: #fff;
-    color: #000;
+    /*background: url("/blackorchid.png") #aaa;
+    background-repeat: repeat;*/
+    background-color: #fdfdfd;
+    /*background-color: #67b6d0;*/
+    color: #222;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /*
+    background: #274046;
+background: -webkit-linear-gradient(to bottom, #274046, #E6DADA); 
+background: linear-gradient(to bottom, #274046, #E6DADA);
+*/
+}
+
+a {
+    text-decoration: none;
+    color: #111;
 }
 
 .app {

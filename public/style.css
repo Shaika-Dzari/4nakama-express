@@ -1,8 +1,8 @@
 .site-header {
-  background-color: #253a47;
-  border-bottom: 1px solid #0f1b23; }
+  /*background-color: rgba(0,0,0, 0.8);*/
+  border-bottom: 1px solid #66a8d2; }
   .site-header h1.site-title {
-    color: #fff;
+    color: #222;
     margin: 5px 5px 5px 20px; }
   .site-header nav.site-menu {
     text-align: right;
@@ -11,12 +11,14 @@
       display: inline-block;
       font-weight: bold;
       text-decoration: none;
-      color: #fff;
+      color: #222;
       margin: 16px 10px 0 10px; }
     .site-header nav.site-menu a:visited {
-      color: #d4d4d4; }
+      color: #333; }
     .site-header nav.site-menu a.active {
-      color: #7fafcd; }
+      color: #2c6285; }
+    .site-header nav.site-menu a:hover {
+      border-bottom: 3px solid #66a8d2; }
 a.tag {
   border: 1px solid #444;
   background-color: #666;
@@ -31,18 +33,38 @@ a.tag {
   margin: 10px; }
   .alert p {
     font-weight: bold; }
+div.pager {
+  text-align: center; }
+  div.pager button {
+    display: inline-block;
+    margin: 5px 20px; }
 div.list-ctn {
   padding: 20px; }
 div.login {
   margin: 0 auto;
   width: 400px;
   padding: 10px; }
+html {
+  min-height: 100%; }
+
 body {
-  background-color: #fff;
-  color: #000;
+  /*background: url("/blackorchid.png") #aaa;
+    background-repeat: repeat;*/
+  background-color: #fdfdfd;
+  /*background-color: #67b6d0;*/
+  color: #222;
   margin: 0;
   padding: 0;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  /*
+    background: #274046;
+background: -webkit-linear-gradient(to bottom, #274046, #E6DADA); 
+background: linear-gradient(to bottom, #274046, #E6DADA);
+*/ }
+
+a {
+  text-decoration: none;
+  color: #111; }
 
 .app {
   width: 100%;

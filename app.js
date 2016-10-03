@@ -60,8 +60,9 @@ app.use(function(err, req, res, next) {
 });
 
 // Pipe to index
-app.use('/!(api).*', function(res, req) {
-    res.sendfile('index.html', { root: publicFolder });
+app.use(/\/(?!api).*/, function(req, res, next) {
+    console.log('sending index.html');
+    res.sendFile('index.html', { root: publicFolder });
 });
 
 

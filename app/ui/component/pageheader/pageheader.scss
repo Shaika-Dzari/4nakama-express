@@ -1,10 +1,10 @@
 .site-header {
 
-    background-color: #253a47;
-    border-bottom: 1px solid #0f1b23;
-
+    /*background-color: rgba(0,0,0, 0.8);*/
+    border-bottom: 1px solid #66a8d2;
+   
     h1.site-title {
-        color: #fff;
+        color: #222;
         margin: 5px 5px 5px 20px;
     }
 
@@ -15,16 +15,19 @@
             display: inline-block;
             font-weight: bold;
             text-decoration: none;
-            color: #fff;
+            color: #222;
             margin: 16px 10px 0 10px;
         }
 
         a:visited {
-            color: #d4d4d4;
+            color: #333;
         }
 
         a.active {
-            color: #7fafcd;
+            color: #2c6285;
+        }
+        a:hover {
+            border-bottom: 3px solid #66a8d2;
         }
     }
 }

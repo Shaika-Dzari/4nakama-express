@@ -9,8 +9,8 @@ const Pager = (props) => {
 
     // <Link to="/ecriture" activeClassName="active" key="link_2">Écriture</Link>
 
-    var precLink = 'from=' + encodeURIComponent(props.fromdate) + '&size=' + PAGE_SIZE;
-    var nextLink = 'from=' + encodeURIComponent(props.fromdate) + '&size=' + PAGE_SIZE;
+    var precLink = 'to=' + encodeURIComponent(props.startdate) + '&size=' + PAGE_SIZE;
+    var nextLink = 'from=' + encodeURIComponent(props.enddate) + '&size=' + PAGE_SIZE;
 
     return (
         <div className="pager">
