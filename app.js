@@ -21,6 +21,8 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var publicFolder = path.join(__dirname, 'public');
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,7 +35,7 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicFolder));
 
 
 // passport config
@@ -46,8 +48,6 @@ passport.deserializeUser(Account.deserializeUser());
 // ----------------------------------------------------------------------------
 // Express Routes
 // ----------------------------------------------------------------------------
-var router = express.Router();
-
 app.use(function(req, res, next) {
     // do logging
     console.log('Requested: ' + req.url);
@@ -59,7 +59,13 @@ app.use(function(err, req, res, next) {
   res.status(500).send('Something broke!');
 });
 
-// All routes
+// Pipe to index
+app.use('/!(api).*', function(res, req) {
+    res.sendfile('index.html', { root: publicFolder });
+});
+
+
+// All API routes
 app.use('/api', require('./app/server/routes.js'));
 
 
