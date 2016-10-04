@@ -35616,21 +35616,29 @@
 	                        'div',
 	                        { className: 'list-ctn' },
 	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Catégories'
-	                        ),
-	                        _react2.default.createElement(_categorylist2.default, this.state.categories)
+	                            'div',
+	                            { className: 'info-element' },
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Catégories'
+	                            ),
+	                            _react2.default.createElement(_categorylist2.default, this.state.categories)
+	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'list-ctn' },
 	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Tags'
-	                        ),
-	                        _react2.default.createElement(_taglist2.default, this.state.tags)
+	                            'div',
+	                            { className: 'info-element' },
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Tags'
+	                            ),
+	                            _react2.default.createElement(_taglist2.default, this.state.tags)
+	                        )
 	                    )
 	                )
 	            );
@@ -35861,6 +35869,8 @@
 
 	var _reactRouter = __webpack_require__(470);
 
+	__webpack_require__(555);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Message = function Message(props) {
@@ -35869,12 +35879,12 @@
 
 	    return _react2.default.createElement(
 	        'article',
-	        { className: 'blogpost' },
+	        { className: 'blog-message' },
 	        _react2.default.createElement(
 	            'header',
 	            null,
 	            _react2.default.createElement(
-	                'h1',
+	                'h3',
 	                null,
 	                props.title
 	            ),
@@ -35886,7 +35896,7 @@
 	        ),
 	        _react2.default.createElement(
 	            'div',
-	            null,
+	            { className: 'blog-message-body' },
 	            props.text
 	        ),
 	        _react2.default.createElement(
@@ -36692,6 +36702,12 @@
 
 /***/ },
 /* 554 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 555 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

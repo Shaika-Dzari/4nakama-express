@@ -1,18 +1,20 @@
 import React, {PropType} from 'react';
 import {Link} from 'react-router';
 
+import './message.scss';
+
 const Message = (props) => {
 
     var subTitle = 'Par ' + props.authorName + ', le ' + props.createdAt;
 
     return (
-        <article className="blogpost">
+        <article className="blog-message">
             <header>
-                <h1>{props.title}</h1>
+                <h3>{props.title}</h3>
                 <p>{subTitle}</p>
             </header>
             
-            <div>
+            <div className="blog-message-body">
                 {props.text}
             </div>
 

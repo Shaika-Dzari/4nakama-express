@@ -63,12 +63,16 @@ export default class BlogPage extends React.Component {
                 </div>
                 <div className="col-2">
                     <div className="list-ctn">
-                        <h3>Catégories</h3>
-                        <CategoryList {...this.state.categories} />
+                        <div className="info-element">
+                            <h3>Catégories</h3>
+                            <CategoryList {...this.state.categories} />
+                        </div>
                     </div>
                     <div className="list-ctn">
-                        <h3>Tags</h3>
-                        <TagList {...this.state.tags} />
+                        <div className="info-element">
+                            <h3>Tags</h3>
+                            <TagList {...this.state.tags} />
+                        </div>
                     </div>
                 </div>
             </div>

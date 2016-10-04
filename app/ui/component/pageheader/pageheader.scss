@@ -1,10 +1,11 @@
+@import '../../variables.scss';
+
 .site-header {
 
-    /*background-color: rgba(0,0,0, 0.8);*/
-    border-bottom: 1px solid #66a8d2;
+    border-bottom: 1px solid $color-primary-2;
    
     h1.site-title {
-        color: #222;
+        color: $color-light-font;
         margin: 5px 5px 5px 20px;
     }
 
@@ -15,19 +16,18 @@
             display: inline-block;
             font-weight: bold;
             text-decoration: none;
-            color: #222;
             margin: 16px 10px 0 10px;
         }
 
         a:visited {
-            color: #333;
+            color: $color-light-font-2;
         }
 
         a.active {
-            color: #2c6285;
+            color: $color-white;
         }
         a:hover {
-            border-bottom: 3px solid #66a8d2;
+            border-bottom: 3px solid $color-light-font-2;
         }
     }
 }
