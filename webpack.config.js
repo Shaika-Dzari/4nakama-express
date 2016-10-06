@@ -1,4 +1,6 @@
 var path = require('path');
+var siteConfig = require('./app/server/config/config.js');
+
 
 var PATHS = {
     app: path.join(__dirname, 'app/ui'),
@@ -6,6 +8,7 @@ var PATHS = {
 };
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -42,6 +45,11 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin("style.css", {
             allChunks: true
+        }),
+        new HtmlWebpackPlugin({
+            template: './index.template.ejs',
+            title: siteConfig.site.title,
+            author: siteConfig.site.author
         })
     ]
 };

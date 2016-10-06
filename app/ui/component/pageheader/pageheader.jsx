@@ -21,7 +21,7 @@ class PageHeader extends Component {
         AuthenticationService.disconnect(function() {
             self.props.router.push('/');
         });
-        
+
     }
 
     render() {
@@ -31,9 +31,9 @@ class PageHeader extends Component {
         links.push(<Link to="/ecriture" activeClassName="active" key="link_2">Écriture</Link>);
         links.push(<Link to="/projet" activeClassName="active" key="link_3">Projets</Link>);
         links.push(<Link to="/about" activeClassName="active" key="link_4">À Propos</Link>);
-        
+
         if (this.isAuthenticated()) {
-            links.push(<Link to="/admin" activeClassName="active" key="link_5">Administration</Link>);
+            links.push(<Link to="/dashboard" activeClassName="active" key="link_5">Administration</Link>);
             links.push(<a href="#" onClick={this.disconnect} key="link_6">Déconnexion</a>);
         } else {
             links.push(<Link to="/login" activeClassName="active" key="link_7">Connexion</Link>);

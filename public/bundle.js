@@ -8195,9 +8195,9 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	__webpack_require__(553);
+	__webpack_require__(556);
 
-	__webpack_require__(554);
+	__webpack_require__(557);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29411,18 +29411,20 @@
 
 	var _blogpage2 = _interopRequireDefault(_blogpage);
 
-	var _dashboardpage = __webpack_require__(550);
+	var _dashboardpage = __webpack_require__(551);
 
-	var _loginpage = __webpack_require__(551);
+	var _dashboardpage2 = _interopRequireDefault(_dashboardpage);
+
+	var _loginpage = __webpack_require__(552);
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
+	var _messagelist = __webpack_require__(554);
+
+	var _messagelist2 = _interopRequireDefault(_messagelist);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// Pages
-
-
-	// Layouts
 	var AppRoute = function AppRoute() {
 
 	    return _react2.default.createElement(
@@ -29435,47 +29437,20 @@
 	            _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _loginpage2.default }),
 	            _react2.default.createElement(
 	                _reactRouter.Route,
-	                { path: '/admin', component: _protectedlayout2.default },
-	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _dashboardpage.DashboardPage })
+	                { path: '/dashboard', component: _protectedlayout2.default },
+	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _dashboardpage2.default }),
+	                _react2.default.createElement(_reactRouter.Route, { path: 'messages', component: _messagelist2.default })
 	            ),
 	            _react2.default.createElement(_reactRouter.Route, { path: '*', component: _notfound.NotFound })
 	        )
 	    );
 	};
 
+	// Pages
+
+
+	// Layouts
 	exports.default = AppRoute;
-
-	/*
-	import BlogPage from '../../ui/pages/blog/blog.jsx';
-	import BlogPostPage from '../../ui/pages/blogpost/blogpost.jsx';
-	import LoginPage from '../../ui/pages/login/login.jsx';
-	import AdminPage from '../../ui/pages/admin/admin.jsx';
-	import AdminBlogPage from '../../ui/pages/admin/blog/blog.jsx';
-	import AdminFilePage from '../../ui/pages/admin/file/file.jsx';
-	import BlogEditor from '../../ui/components/blogEditor/blogEditor.jsx';
-
-
-	Meteor.startup(() => {
-	    render(
-	        <Router history={ browserHistory }>
-
-	            <Route path="/" component={ App }>
-	                <IndexRoute component={ BlogPage } />
-	                <Route path="login" component={ LoginPage } />
-	                <Route path="blog/:id" component={ BlogPostPage } />
-	                <Route path="/admin" component={ AdminApp }>
-	                    <IndexRoute component={ AdminPage } />
-	                    <Route path="blog" component={ AdminBlogPage } />
-	                    <Route path="file" component={ AdminFilePage } />
-	                    <Route path="blog/:id" component={ BlogEditor } />
-	                </Route>
-	                <Route path="*" component={ NotFound } />
-	            </Route>
-	        </Router>,
-	        document.getElementById('app')
-	    );
-	});
-	*/
 
 /***/ },
 /* 470 */
@@ -35247,7 +35222,7 @@
 	            if (this.isAuthenticated()) {
 	                links.push(_react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: '/admin', activeClassName: 'active', key: 'link_5' },
+	                    { to: '/dashboard', activeClassName: 'active', key: 'link_5' },
 	                    'Administration'
 	                ));
 	                links.push(_react2.default.createElement(
@@ -35526,7 +35501,7 @@
 
 	var _messagelist2 = _interopRequireDefault(_messagelist);
 
-	__webpack_require__(549);
+	__webpack_require__(550);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35768,11 +35743,11 @@
 
 	var _message2 = _interopRequireDefault(_message);
 
-	var _alertbox = __webpack_require__(545);
+	var _alertbox = __webpack_require__(546);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _pager = __webpack_require__(547);
+	var _pager = __webpack_require__(548);
 
 	var _pager2 = _interopRequireDefault(_pager);
 
@@ -35869,13 +35844,33 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(555);
+	var _taglist = __webpack_require__(540);
+
+	var _taglist2 = _interopRequireDefault(_taglist);
+
+	__webpack_require__(545);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Message = function Message(props) {
 
 	    var subTitle = 'Par ' + props.authorName + ', le ' + props.createdAt;
+	    var tags = null;
+	    var cats = null;
+
+	    if (props.tags) {
+	        tags = _react2.default.createElement(_taglist2.default, { data: props.tags });
+	    }
+
+	    if (props.categories) {
+	        cat = props.categories.map(function (v, i) {
+	            return _react2.default.createElement(
+	                'span',
+	                { key: v._id },
+	                v.name
+	            );
+	        });
+	    }
 
 	    return _react2.default.createElement(
 	        'article',
@@ -35908,22 +35903,37 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'col-6' },
-	                    'Catégories'
+	                    cats
 	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'col-6' },
-	                    'Tags'
+	                    tags
 	                )
 	            )
 	        )
 	    );
 	};
 
+	Message.propTypes = {
+	    title: _react2.default.PropTypes.string.isRequired,
+	    text: _react2.default.PropTypes.string.isRequired,
+	    authorName: _react2.default.PropTypes.string.isRequired,
+	    createdAt: _react2.default.PropTypes.instanceOf(Date).isRequired,
+	    categories: _react2.default.PropTypes.array,
+	    tags: _react2.default.PropTypes.array
+	};
+
 	exports.default = Message;
 
 /***/ },
 /* 545 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35936,7 +35946,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(546);
+	__webpack_require__(547);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35956,13 +35966,13 @@
 	exports.default = AlertBox;
 
 /***/ },
-/* 546 */
+/* 547 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 547 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35977,7 +35987,7 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(548);
+	__webpack_require__(549);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36009,12 +36019,6 @@
 	exports.default = Pager;
 
 /***/ },
-/* 548 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 549 */
 /***/ function(module, exports) {
 
@@ -36022,109 +36026,9 @@
 
 /***/ },
 /* 550 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(299);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var DashboardPage = function (_React$Component) {
-	    _inherits(DashboardPage, _React$Component);
-
-	    function DashboardPage(props) {
-	        _classCallCheck(this, DashboardPage);
-
-	        return _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props));
-	    }
-
-	    _createClass(DashboardPage, [{
-	        key: "render",
-	        value: function render() {
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "dashboard" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "dashboard-menu" },
-	                    _react2.default.createElement(
-	                        "ul",
-	                        { className: "menu-list" },
-	                        _react2.default.createElement(
-	                            "li",
-	                            { className: "menu-item" },
-	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "#" },
-	                                "Messages"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "li",
-	                            { className: "menu-item" },
-	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "#" },
-	                                "Commentaires"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "li",
-	                            { className: "menu-item" },
-	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "#" },
-	                                "Histoires"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "li",
-	                            { className: "menu-item" },
-	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "#" },
-	                                "Catégories"
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "li",
-	                            { className: "menu-item" },
-	                            _react2.default.createElement(
-	                                "a",
-	                                { href: "#" },
-	                                "Tags"
-	                            )
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "dashboard-content" },
-	                    "..."
-	                )
-	            );
-	        }
-	    }]);
-
-	    return DashboardPage;
-	}(_react2.default.Component);
-
-	exports.default = DashboardPage;
+	// removed by extract-text-webpack-plugin
 
 /***/ },
 /* 551 */
@@ -36144,7 +36048,116 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _alertbox = __webpack_require__(545);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var DashboardPage = function (_React$Component) {
+	    _inherits(DashboardPage, _React$Component);
+
+	    function DashboardPage(props) {
+	        _classCallCheck(this, DashboardPage);
+
+	        return _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props));
+	    }
+
+	    _createClass(DashboardPage, [{
+	        key: 'render',
+	        value: function render() {
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'dashboard' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'dashboard-menu' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        { className: 'menu-list' },
+	                        _react2.default.createElement(
+	                            'li',
+	                            { className: 'menu-item' },
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/dashboard/messages' },
+	                                'Messages'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            { className: 'menu-item' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#' },
+	                                'Commentaires'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            { className: 'menu-item' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#' },
+	                                'Histoires'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            { className: 'menu-item' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#' },
+	                                'Catégories'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            { className: 'menu-item' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: '#' },
+	                                'Tags'
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'dashboard-content' },
+	                    this.props.children
+	                )
+	            );
+	        }
+	    }]);
+
+	    return DashboardPage;
+	}(_react2.default.Component);
+
+	exports.default = DashboardPage;
+
+/***/ },
+/* 552 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(470);
+
+	var _alertbox = __webpack_require__(546);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
@@ -36152,7 +36165,7 @@
 
 	var _AuthenticationService2 = _interopRequireDefault(_AuthenticationService);
 
-	__webpack_require__(552);
+	__webpack_require__(553);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36256,13 +36269,197 @@
 	exports.default = (0, _reactRouter.withRouter)(LoginPage);
 
 /***/ },
-/* 552 */
+/* 553 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 553 */
+/* 554 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(470);
+
+	var _table = __webpack_require__(555);
+
+	var _table2 = _interopRequireDefault(_table);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MESSAGE_TABLE_DEF = {
+	    id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
+	};
+
+	var MessageList = function (_React$Component) {
+	    _inherits(MessageList, _React$Component);
+
+	    function MessageList(props) {
+	        _classCallCheck(this, MessageList);
+
+	        var _this = _possibleConstructorReturn(this, (MessageList.__proto__ || Object.getPrototypeOf(MessageList)).call(this, props));
+
+	        _this.state = {
+	            messages: {
+	                data: [],
+	                error: null
+	            }
+	        };
+	        return _this;
+	    }
+
+	    _createClass(MessageList, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var self = this;
+	            // params ? check if children is null
+	            // Messages
+	            window.fetch('/api/messages/protected').then(function (r) {
+	                return r.json();
+	            }).then(function (msgs) {
+	                return self.setState({ messages: { data: msgs } });
+	            }).catch(function (e) {
+	                return self.setState({ messages: { error: e } });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'box bluebox' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'heading' },
+	                    'Messages'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'body' },
+	                    _react2.default.createElement(_table2.default, { cdef: MESSAGE_TABLE_DEF, items: this.state.messages.data })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return MessageList;
+	}(_react2.default.Component);
+
+	exports.default = MessageList;
+
+/***/ },
+/* 555 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(470);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Table = function Table(props) {
+
+	    var rows = null;
+	    var cdef = props.cdef;
+
+	    if (Array.isArray(props.items)) {
+	        rows = props.items.map(function (v, i) {
+	            return _react2.default.createElement(
+	                'tr',
+	                { key: v[cdef.id] },
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    v[cdef.id]
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    v[cdef.name]
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    v[cdef.rowdate]
+	                )
+	            );
+	        });
+	    }
+
+	    return _react2.default.createElement(
+	        'table',
+	        { className: 'table' },
+	        _react2.default.createElement(
+	            'thead',
+	            null,
+	            _react2.default.createElement(
+	                'tr',
+	                null,
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    'ID'
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    'Name'
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    'Date'
+	                )
+	            )
+	        ),
+	        _react2.default.createElement(
+	            'tbody',
+	            null,
+	            rows
+	        )
+	    );
+	};
+
+	Table.propTypes = {
+	    cdef: _react2.default.PropTypes.shape({
+	        id: _react2.default.PropTypes.string,
+	        name: _react2.default.PropTypes.string,
+	        rowdate: _react2.default.PropTypes.string,
+	        link: _react2.default.PropTypes.string
+	    }).isRequired,
+	    items: _react2.default.PropTypes.array
+	};
+
+	exports.default = Table;
+
+/***/ },
+/* 556 */
 /***/ function(module, exports) {
 
 	(function(self) {
@@ -36701,13 +36898,7 @@
 
 
 /***/ },
-/* 554 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 555 */
+/* 557 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

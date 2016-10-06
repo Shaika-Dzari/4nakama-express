@@ -39,7 +39,7 @@ Table.propTypes = {
     cdef: React.PropTypes.shape({
         id: React.PropTypes.string,
         name: React.PropTypes.string,
-        rowdate: React.PropTypes.instanceOf(Date),
+        rowdate: React.PropTypes.string,
         link: React.PropTypes.string
     }).isRequired,
     items: React.PropTypes.array

@@ -2,13 +2,13 @@
 // MongoDB config
 // ----------------------------------------------------------------------------
 var mongoose   = require('mongoose');
-var mongodbConfig = require('./app/server/config/mongodb.js');
+var config = require('./app/server/config/config.js');
 
-mongoose.connect(mongodbConfig.url); // connect to the database
+mongoose.connect(config.mongodb.url); // connect to the database
 mongoose.Promise = global.Promise;
 
 // Create initial account
-mongodbConfig.init();
+config.mongodb.init();
 
 // ----------------------------------------------------------------------------
 // Express config
@@ -61,7 +61,6 @@ app.use(function(err, req, res, next) {
 
 // Pipe to index
 app.use(/\/(?!api).*/, function(req, res, next) {
-    console.log('sending index.html');
     res.sendFile('index.html', { root: publicFolder });
 });
 
@@ -75,4 +74,4 @@ app.use('/api', require('./app/server/routes.js'));
 // ----------------------------------------------------------------------------
 var port = process.env.PORT || 1337;        // set our port
 app.listen(port);
-console.log('4nakama-express started on port ' + port);
+console.log('Express started on port ' + port);

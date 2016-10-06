@@ -8,8 +8,9 @@ import ProtectedLayout from './layout/protectedlayout.jsx';
 // Pages
 import { NotFound } from './page/notfound.jsx';
 import BlogPage from './page/blog/blogpage.jsx';
-import { DashboardPage } from './page/dashboard/dashboardpage.jsx'
+import DashboardPage from './page/dashboard/dashboardpage.jsx'
 import LoginPage from './page/login/loginpage.jsx';
+import MessageList from './page/messagelist/messagelist.jsx';
 
 const AppRoute = () => {
 
@@ -19,9 +20,9 @@ const AppRoute = () => {
                 <IndexRoute component={ BlogPage } />
                 <Route path="login" component={ LoginPage } />
 
-                <Route path="/admin" component={ ProtectedLayout }>
+                <Route path="/dashboard" component={ ProtectedLayout }>
                     <IndexRoute component={ DashboardPage } />
-
+                    <Route path="messages" component={ MessageList } />
                 </Route>
                 <Route path="*" component={ NotFound } />
             </Route>

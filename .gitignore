@@ -2,3 +2,4 @@ node_modules/
 run.sh
 *.log
 app/server/config/mongodb.js
+app/server/config/config.js

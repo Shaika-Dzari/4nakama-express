@@ -1,8 +1,5 @@
 import React from 'react';
-
-const MESSAGE_TABLE_DEF = {
-    id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
-};
+import {Link} from 'react-router';
 
 export default class DashboardPage extends React.Component {
 
@@ -10,16 +7,6 @@ export default class DashboardPage extends React.Component {
         super(props);
     }
 
-    componentWillMount() {
-        var self = this;
-        // params ? check if children is null
-        // Messages
-        window.fetch('/api/messages/protected')
-                .then(r => r.json())
-                .then(msgs => self.setState({messages: {data: msgs}}))
-                .catch(e => self.setState({messages: {error: e}}));
-
-    }
 
     render() {
 
@@ -28,7 +15,7 @@ export default class DashboardPage extends React.Component {
                 <div className="dashboard-menu">
                     <ul className="menu-list">
                         <li className="menu-item">
-                            <a href="#">Messages</a>
+                            <Link to="/dashboard/messages">Messages</Link>
                         </li>
                         <li className="menu-item">
                             <a href="#">Commentaires</a>
