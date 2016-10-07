@@ -15,7 +15,7 @@ const Message = (props) => {
     }
 
     if (props.categories) {
-        cat = props.categories.map((v, i) => {
+        cats = props.categories.map((v, i) => {
             return <span key={v._id}>{v.name}</span> ;
         });
     }
@@ -28,7 +28,7 @@ const Message = (props) => {
             </header>
 
             <div className="blog-message-body">
-                {props.text}
+                <div dangerouslySetInnerHTML={{__html: props.text}}></div>
             </div>
 
             <footer>
@@ -49,7 +49,7 @@ Message.propTypes = {
     title: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired,
     authorName: React.PropTypes.string.isRequired,
-    createdAt: React.PropTypes.instanceOf(Date).isRequired,
+    createdAt: React.PropTypes.string.isRequired,
     categories: React.PropTypes.array,
     tags: React.PropTypes.array
 };

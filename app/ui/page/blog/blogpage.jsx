@@ -31,24 +31,24 @@ export default class BlogPage extends React.Component {
 
         var self = this;
         // Messages
-        window.fetch('/api/messages/public')
+        window.fetch('/api/messages', {credentials: 'include'})
                 .then(r => r.json())
                 .then(msgs => self.setState({messages: {data: msgs}}))
                 .catch(e => self.setState({messages: {error: e}}));
-        
+
         // Tags
-        window.fetch('/api/tags')
+        window.fetch('/api/tags', {credentials: 'include'})
                 .then(r => r.json())
                 .then(tgs => self.setState({tags: {data: tgs}}))
                 .catch(e => self.setState({tags: {error: e}}));
-        
+
         // Categories
-        window.fetch('/api/categories')
+        window.fetch('/api/categories', {credentials: 'include'})
                 .then(r => r.json())
                 .then(cats => self.setState({categories: {data: cats}}))
                 .catch(e => self.setState({categories: {error: e}}));
-        
-        
+
+
     }
 
 

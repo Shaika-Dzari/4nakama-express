@@ -12,7 +12,8 @@ export default class AuthenticationService {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: data
+                body: data,
+                credentials: 'include'
             })
             .then(r => {
                 return r.json();
@@ -27,8 +28,8 @@ export default class AuthenticationService {
     static disconnect(success) {
 
         sessionStorage.removeItem('4nuser');
-        
-        window.fetch("/api/sec/logout")
+
+        window.fetch("/api/sec/logout", {credentials: 'include'})
             .then(function(){
                 success();
             })

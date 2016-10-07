@@ -9,10 +9,10 @@ var MessageSchema = new Schema({
     published: { type: Number, default: 0, required: true},
     createdAt: { type: Date, default: Date.now, required: true},
     updatedAt: { type: Date},
-    authorId: {type: Number, required: true},
+    authorId: {type: String, required: true},
     authorName: {type: String, required: true},
-    tags: [String],
-    categories: [String],
+    tags: [{_id: String, name: String}],
+    categories: [{_id: String, name: String}],
     prettyUrl: String
 });
 

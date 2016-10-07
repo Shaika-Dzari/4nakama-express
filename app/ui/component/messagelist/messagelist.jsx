@@ -17,21 +17,9 @@ class MessageList extends React.Component {
         if (this.props.error) {
             msgs = <AlertBox message={this.props.error} />
         } else if (this.props.data && this.props.data.length) {
-
             msgs = this.props.data.map((v, idx) => {
-                return <Message {...v} />
+                return <Message key={v._id} {...v} />
             });
-
-        } else {
-            var oneWelcome = {
-                title: '42',
-                authorName: 'System',
-                createdAt: new Date(),
-                text: <div><p>Bienvenue, Bienvenue, Bienvenue!</p><p>Aucun message n'éxiste présentement.</p></div>
-            }
-
-            msgs = <Message {...oneWelcome} />;
-
         }
 
         // Change that!

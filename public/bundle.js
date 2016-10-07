@@ -35299,7 +35299,8 @@
 	                headers: {
 	                    "Content-Type": "application/x-www-form-urlencoded"
 	                },
-	                body: data
+	                body: data,
+	                credentials: 'include'
 	            }).then(function (r) {
 	                return r.json();
 	            }).then(function (data) {
@@ -35315,7 +35316,7 @@
 
 	            sessionStorage.removeItem('4nuser');
 
-	            window.fetch("/api/sec/logout").then(function () {
+	            window.fetch("/api/sec/logout", { credentials: 'include' }).then(function () {
 	                success();
 	            }).catch(function (e) {
 	                success();
@@ -35542,7 +35543,7 @@
 
 	            var self = this;
 	            // Messages
-	            window.fetch('/api/messages/public').then(function (r) {
+	            window.fetch('/api/messages', { credentials: 'include' }).then(function (r) {
 	                return r.json();
 	            }).then(function (msgs) {
 	                return self.setState({ messages: { data: msgs } });
@@ -35551,7 +35552,7 @@
 	            });
 
 	            // Tags
-	            window.fetch('/api/tags').then(function (r) {
+	            window.fetch('/api/tags', { credentials: 'include' }).then(function (r) {
 	                return r.json();
 	            }).then(function (tgs) {
 	                return self.setState({ tags: { data: tgs } });
@@ -35560,7 +35561,7 @@
 	            });
 
 	            // Categories
-	            window.fetch('/api/categories').then(function (r) {
+	            window.fetch('/api/categories', { credentials: 'include' }).then(function (r) {
 	                return r.json();
 	            }).then(function (cats) {
 	                return self.setState({ categories: { data: cats } });
@@ -35731,6 +35732,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(299);
@@ -35779,32 +35782,9 @@
 	            if (this.props.error) {
 	                msgs = _react2.default.createElement(_alertbox2.default, { message: this.props.error });
 	            } else if (this.props.data && this.props.data.length) {
-
 	                msgs = this.props.data.map(function (v, idx) {
-	                    return _react2.default.createElement(_message2.default, v);
+	                    return _react2.default.createElement(_message2.default, _extends({ key: v._id }, v));
 	                });
-	            } else {
-	                var oneWelcome = {
-	                    title: '42',
-	                    authorName: 'System',
-	                    createdAt: new Date(),
-	                    text: _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Bienvenue, Bienvenue, Bienvenue!'
-	                        ),
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            'Aucun message n\'éxiste présentement.'
-	                        )
-	                    )
-	                };
-
-	                msgs = _react2.default.createElement(_message2.default, oneWelcome);
 	            }
 
 	            // Change that!
@@ -35863,7 +35843,7 @@
 	    }
 
 	    if (props.categories) {
-	        cat = props.categories.map(function (v, i) {
+	        cats = props.categories.map(function (v, i) {
 	            return _react2.default.createElement(
 	                'span',
 	                { key: v._id },
@@ -35892,7 +35872,7 @@
 	        _react2.default.createElement(
 	            'div',
 	            { className: 'blog-message-body' },
-	            props.text
+	            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: props.text } })
 	        ),
 	        _react2.default.createElement(
 	            'footer',
@@ -35919,7 +35899,7 @@
 	    title: _react2.default.PropTypes.string.isRequired,
 	    text: _react2.default.PropTypes.string.isRequired,
 	    authorName: _react2.default.PropTypes.string.isRequired,
-	    createdAt: _react2.default.PropTypes.instanceOf(Date).isRequired,
+	    createdAt: _react2.default.PropTypes.string.isRequired,
 	    categories: _react2.default.PropTypes.array,
 	    tags: _react2.default.PropTypes.array
 	};
@@ -36331,7 +36311,7 @@
 	            var self = this;
 	            // params ? check if children is null
 	            // Messages
-	            window.fetch('/api/messages/protected').then(function (r) {
+	            window.fetch('/api/messages', { credentials: 'include' }).then(function (r) {
 	                return r.json();
 	            }).then(function (msgs) {
 	                return self.setState({ messages: { data: msgs } });
@@ -36342,8 +36322,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-
-	            _react2.default.createElement(
+	            return _react2.default.createElement(
 	                'div',
 	                { className: 'box bluebox' },
 	                _react2.default.createElement(

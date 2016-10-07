@@ -22,21 +22,22 @@ export default class MessageList extends React.Component {
         var self = this;
         // params ? check if children is null
         // Messages
-        window.fetch('/api/messages/protected')
+        window.fetch('/api/messages', {credentials: 'include'})
                 .then(r => r.json())
                 .then(msgs => self.setState({messages: {data: msgs}}))
                 .catch(e => self.setState({messages: {error: e}}));
     }
 
     render() {
-
-        <div className="box bluebox">
-            <div className="heading">
-                Messages
+        return (
+            <div className="box bluebox">
+                <div className="heading">
+                    Messages
+                </div>
+                <div className="body">
+                    <Table cdef={MESSAGE_TABLE_DEF} items={this.state.messages.data} />
+                </div>
             </div>
-            <div className="body">
-                <Table cdef={MESSAGE_TABLE_DEF} items={this.state.messages.data} />
-            </div>
-        </div>
+        );
     }
 }
