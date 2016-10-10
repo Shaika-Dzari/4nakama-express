@@ -9,9 +9,10 @@ function isLoggedIn(req) {
 function enforceLoggedIn(req, res, next) {
     if (isLoggedIn(req)) {
         next();
+    } else {
+        res.status(401).end();
     }
 
-    res.status(401).end();
 };
 
 

@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Message = require('./message');
 var authUtils = require('../authutils');
+var urlUtils = require('../urlutils');
 
 var DEFAULT_PAGE_SIZE = 5;
 var DEFAULT_MAX_PAGE_SIZE = 20;
@@ -26,8 +27,6 @@ router.get('/', function(req, res, next) {
         params.createdAt = {$gt: fromDate};
     }
 
-    console.log('/messages', params);
-
     Message.find(params)
             .sort({createdAt: dir})
             .limit(size)
@@ -46,9 +45,9 @@ router.get('/:messageid', function(req, res, next) {
         params.published = 1;
     }
 
-    Message.findOne(params, '-authorId', function (err, mgs) {
+    Message.findOne(params, '-authorId', function (err, msg) {
         if (err) next(err);
-        res.json(mgs);
+        res.json(msg);
     });
 });
 
@@ -57,8 +56,24 @@ router.get('/:messageid', function(req, res, next) {
  */
 router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
 
-    var msg = req.body;
-    req.status(201);
+    var user = req.user;
+    var msgreq = req.body;
+
+    var m = new Message({
+        title: msgreq.title,
+        text: msgreq.text,
+        authorId: user._id,
+        authorName: user.username,
+        published: msgreq.published || 0,
+        prettyUrl: urlUtils.sanitizeUrl(msgreq.prettyUrl)
+    });
+
+    m.save(function(serr, savedMsg) {
+        if (serr) next(serr);
+
+        res.json(savedMsg);
+    });
+
 });
 
 
@@ -67,9 +82,22 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
  */
 router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
     var id = req.params.messageid;
-    var msg = req.body;
+    var requestMessage = req.body;
 
-    req.status(200);
+    Message.findOne({_id: id}, function (err, msg) {
+        if (err) next(err);
+
+        msg.text = requestMessage.text;
+        msg.title = requestMessage.title;
+        msg.prettyUrl = urlUtils.sanitizeUrl(requestMessage.prettyUrl);
+        msg.published = requestMessage.published || 0;
+
+        msg.save(function(serr, savedMsg) {
+            if (serr) next(serr);
+
+            res.json(savedMsg);
+        });
+    });
 });
 
 module.exports = router;

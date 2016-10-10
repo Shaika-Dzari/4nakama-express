@@ -9,10 +9,19 @@ const Table = (props) => {
 
     if (Array.isArray(props.items)) {
         rows = props.items.map((v, i) => {
+
+            let name = null;
+
+            if (cdef.link) {
+                name = <Link to={v[cdef.link]}>{v[cdef.name]}</Link>;
+            } else {
+                name = v[cdef.name];
+            }
+
             return (
                 <tr key={v[cdef.id]}>
                     <td>{v[cdef.id]}</td>
-                    <td>{v[cdef.name]}</td>
+                    <td>{name}</td>
                     <td>{v[cdef.rowdate]}</td>
                 </tr>
             );
@@ -23,9 +32,9 @@ const Table = (props) => {
         <table className="table">
             <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>Name</td>
-                    <td>Date</td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>

@@ -1,18 +1,12 @@
 import React, {PropType} from 'react';
 import {Link} from 'react-router';
-import TagList from '../taglist/taglist.jsx';
 
 import './message.scss';
 
 const Message = (props) => {
 
-    var subTitle = 'Par ' + props.authorName + ', le ' + props.createdAt;
-    var tags = null;
-    var cats = null;
 
-    if (props.tags) {
-        tags = <TagList data={props.tags} />;
-    }
+    var cats = null;
 
     if (props.categories) {
         cats = props.categories.map((v, i) => {
@@ -23,24 +17,23 @@ const Message = (props) => {
     return (
         <article className="blog-message">
             <header>
-                <h3>{props.title}</h3>
-                <p>{subTitle}</p>
+                <h1>{props.title}</h1>
+
+                <div className="row">
+                    <div className="col-6">
+                        <p>{props.authorName} - {props.createdAt}</p>
+                    </div>
+                    <div className="col-6 right">
+                        {cats}
+                    </div>
+                </div>
+
             </header>
 
             <div className="blog-message-body">
-                <div dangerouslySetInnerHTML={{__html: props.text}}></div>
+                <div dangerouslySetInnerHTML={{__html: props.texthtml}}></div>
             </div>
 
-            <footer>
-                <div className="row">
-                    <div className="col-6">
-                        {cats}
-                    </div>
-                    <div className="col-6">
-                        {tags}
-                    </div>
-                </div>
-            </footer>
         </article>
     );
 }
@@ -50,8 +43,7 @@ Message.propTypes = {
     text: React.PropTypes.string.isRequired,
     authorName: React.PropTypes.string.isRequired,
     createdAt: React.PropTypes.string.isRequired,
-    categories: React.PropTypes.array,
-    tags: React.PropTypes.array
+    categories: React.PropTypes.array
 };
 
 export default Message;

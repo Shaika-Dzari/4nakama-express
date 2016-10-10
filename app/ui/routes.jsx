@@ -11,6 +11,7 @@ import BlogPage from './page/blog/blogpage.jsx';
 import DashboardPage from './page/dashboard/dashboardpage.jsx'
 import LoginPage from './page/login/loginpage.jsx';
 import MessageList from './page/messagelist/messagelist.jsx';
+import MessageEditor from './page/messageeditor/messageeditor.jsx';
 
 const AppRoute = () => {
 
@@ -22,7 +23,10 @@ const AppRoute = () => {
 
                 <Route path="/dashboard" component={ ProtectedLayout }>
                     <IndexRoute component={ DashboardPage } />
-                    <Route path="messages" component={ MessageList } />
+                    <Route path="" component={ DashboardPage }>
+                        <Route path="messages" component={ MessageList } />
+                        <Route path="messages/:messageId" component={ MessageEditor } />
+                    </Route>
                 </Route>
                 <Route path="*" component={ NotFound } />
             </Route>

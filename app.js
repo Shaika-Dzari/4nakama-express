@@ -56,11 +56,11 @@ app.use(function(req, res, next) {
 
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send('Something broke!').end();
 });
 
 // Pipe to index
-app.use(/\/(?!api).*/, function(req, res, next) {
+app.use(/\/(?!(api|\.css|\.js)).*/, function(req, res, next) {
     res.sendFile('index.html', { root: publicFolder });
 });
 

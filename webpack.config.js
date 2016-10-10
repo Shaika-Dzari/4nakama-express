@@ -19,7 +19,8 @@ module.exports = {
     },
     output: {
         path: PATHS.build,
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         loaders: [
@@ -39,7 +40,8 @@ module.exports = {
                     'style', // backup loader when not building .css file
                     'css!sass' // loaders to preprocess CSS
                 )
-            }
+            },
+            { test: /\.css$/, loader: "style-loader!css-loader" }
         ]
     },
     plugins: [
@@ -50,6 +52,7 @@ module.exports = {
             template: './index.template.ejs',
             title: siteConfig.site.title,
             author: siteConfig.site.author
+
         })
     ]
 };

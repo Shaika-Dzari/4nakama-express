@@ -1,0 +1,14 @@
+@import '../../variables.scss';
+
+.message-editor-ctn {
+    background-color: #fff;
+
+    .message-settings {
+
+        .message-settings-selection {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid $color-border-1;
+        }
+    }
+}

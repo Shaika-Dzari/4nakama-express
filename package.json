@@ -26,7 +26,8 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
-    "react-simplemde": "0.0.2",
+    "react-simplemde-editor": "^3.6.4",
+    "remarkable": "^1.7.1",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

@@ -1,22 +1,21 @@
+@import '../../variables.scss';
+
 div.dashboard {
 
     div.dashboard-menu {
-        background-color: #253a47;
-        border-right: 1px solid #0f1b23;
-        padding: 20px;
-        color: #fff;
+        padding-top: 20px;
+        color: $color-font-1;
 
         ul.menu-list {
             list-style: none;
             margin: 0;
+            padding: 0;
 
             li.menu-item {
-                border-bottom: 1px solid #666;
                 a {
                     display: block;
-                    padding: 10px 20px;
+                    padding: 10px 5px;
                     text-decoration: none;
-                    color: #fff;
                 }
             }
         }

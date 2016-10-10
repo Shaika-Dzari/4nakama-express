@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
-import TagList from '../../component/taglist/taglist.jsx';
 import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
+import Remarkable from 'remarkable';
 
 import './blogpage.scss';
 
@@ -29,11 +29,23 @@ export default class BlogPage extends React.Component {
 
     componentWillMount() {
 
-        var self = this;
+        let md = new Remarkable();
+        let self = this;
+
         // Messages
         window.fetch('/api/messages', {credentials: 'include'})
                 .then(r => r.json())
-                .then(msgs => self.setState({messages: {data: msgs}}))
+                .then(msgs => {
+
+                    // Parse Markdown
+                    if (msgs && msgs.length > 0) {
+                        for (let msg of msgs) {
+                            msg.texthtml = md.render(msg.text);
+                        }
+                    }
+
+                    self.setState({messages: {data: msgs}});
+                })
                 .catch(e => self.setState({messages: {error: e}}));
 
         // Tags
@@ -66,12 +78,6 @@ export default class BlogPage extends React.Component {
                         <div className="info-element">
                             <h3>Catégories</h3>
                             <CategoryList {...this.state.categories} />
-                        </div>
-                    </div>
-                    <div className="list-ctn">
-                        <div className="info-element">
-                            <h3>Tags</h3>
-                            <TagList {...this.state.tags} />
                         </div>
                     </div>
                 </div>
