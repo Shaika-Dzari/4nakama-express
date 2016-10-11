@@ -17,7 +17,6 @@ export default class MessageEditor extends React.Component {
         this.onPrettyUrlChange = this.onPrettyUrlChange.bind(this);
         this.onPublishedClick = this.onPublishedClick.bind(this);
         this.onCategorySelect = this.onCategorySelect.bind(this);
-        this.onTagSelect = this.onTagSelect.bind(this);
 
         this.state = {
             message: null,
@@ -26,7 +25,7 @@ export default class MessageEditor extends React.Component {
             prettyUrlValue: '',
             publishedValue: false,
             categories: [],
-            tags: []
+            selectedCategories: []
         };
 
         // this.props.params.userId
@@ -43,19 +42,19 @@ export default class MessageEditor extends React.Component {
                 window.fetch('/api/messages/' + messageId, {credentials: 'include'})
                         .then(r => r.json())
                         .then(msg => {
-                            self.setState({message: msg, editorValue: msg.text, titleValue: msg.title, prettyUrlValue: msg.prettyUrl, publishedValue: msg.published == 1 ? true : false });
+                            self.setState({
+                                            message: msg,
+                                            editorValue: msg.text,
+                                            titleValue: msg.title,
+                                            prettyUrlValue: msg.prettyUrl || '',
+                                            publishedValue: msg.published == 1 ? true : false,
+                                            selectedCategories: msg.categories
+                                         });
                         })
                         .catch(e => self.setState({messages: {error: e}}));
 
             }
         }
-
-        // Tags
-        window.fetch('/api/tags', {credentials: 'include'})
-                .then(r => r.json())
-                .then(tgs => self.setState({tags: tgs}))
-                .catch(e => self.setState({tags: {error: e}}));
-
 
     }
 
@@ -85,11 +84,9 @@ export default class MessageEditor extends React.Component {
     }
 
     onCategorySelect(event) {
-        console.log(event);
-    }
-
-    onTagSelect(event) {
-        console.log(event);
+        let c = [].joint(this.state.selectedCategories);
+        c.push(event.target.value);
+        this.setState({selectedCategories: c});
     }
 
     onSave(event) {

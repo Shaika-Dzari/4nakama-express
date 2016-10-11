@@ -46874,7 +46874,6 @@
 	        _this.onPrettyUrlChange = _this.onPrettyUrlChange.bind(_this);
 	        _this.onPublishedClick = _this.onPublishedClick.bind(_this);
 	        _this.onCategorySelect = _this.onCategorySelect.bind(_this);
-	        _this.onTagSelect = _this.onTagSelect.bind(_this);
 
 	        _this.state = {
 	            message: null,
@@ -46883,7 +46882,7 @@
 	            prettyUrlValue: '',
 	            publishedValue: false,
 	            categories: [],
-	            tags: []
+	            selectedCategories: []
 	        };
 
 	        // this.props.params.userId
@@ -46903,21 +46902,19 @@
 	                    window.fetch('/api/messages/' + messageId, { credentials: 'include' }).then(function (r) {
 	                        return r.json();
 	                    }).then(function (msg) {
-	                        self.setState({ message: msg, editorValue: msg.text, titleValue: msg.title, prettyUrlValue: msg.prettyUrl, publishedValue: msg.published == 1 ? true : false });
+	                        self.setState({
+	                            message: msg,
+	                            editorValue: msg.text,
+	                            titleValue: msg.title,
+	                            prettyUrlValue: msg.prettyUrl || '',
+	                            publishedValue: msg.published == 1 ? true : false,
+	                            selectedCategories: msg.categories
+	                        });
 	                    }).catch(function (e) {
 	                        return self.setState({ messages: { error: e } });
 	                    });
 	                }
 	            }
-
-	            // Tags
-	            window.fetch('/api/tags', { credentials: 'include' }).then(function (r) {
-	                return r.json();
-	            }).then(function (tgs) {
-	                return self.setState({ tags: tgs });
-	            }).catch(function (e) {
-	                return self.setState({ tags: { error: e } });
-	            });
 	        }
 	    }, {
 	        key: 'onEditorChange',
@@ -46952,12 +46949,9 @@
 	    }, {
 	        key: 'onCategorySelect',
 	        value: function onCategorySelect(event) {
-	            console.log(event);
-	        }
-	    }, {
-	        key: 'onTagSelect',
-	        value: function onTagSelect(event) {
-	            console.log(event);
+	            var c = [].joint(this.state.selectedCategories);
+	            c.push(event.target.value);
+	            this.setState({ selectedCategories: c });
 	        }
 	    }, {
 	        key: 'onSave',
@@ -67477,12 +67471,43 @@
 	    }, {
 	        key: 'fetchCategory',
 	        value: function fetchCategory() {
+	            var _this2 = this;
+
 	            var self = this;
 
 	            window.fetch(CATEGORY_URL, { credentials: 'include' }).then(function (r) {
 	                return r.json();
 	            }).then(function (cats) {
-	                return self.setState({ categories: cats });
+	                var _iteratorNormalCompletion = true;
+	                var _didIteratorError = false;
+	                var _iteratorError = undefined;
+
+	                try {
+	                    for (var _iterator = cats[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                        c = _step.value;
+
+	                        if (_this2.props.selectedItems && _this2.props.selectedItems.indexOf(c) != -1) {
+	                            c.checked = 'checked';
+	                        } else {
+	                            c.checked = '';
+	                        }
+	                    }
+	                } catch (err) {
+	                    _didIteratorError = true;
+	                    _iteratorError = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion && _iterator.return) {
+	                            _iterator.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError) {
+	                            throw _iteratorError;
+	                        }
+	                    }
+	                }
+
+	                self.setState({ categories: cats });
 	            }).catch(function (e) {
 	                return self.setState({ error: e });
 	            });
@@ -67490,7 +67515,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this,
+	            var _this3 = this,
 	                _React$createElement,
 	                _React$createElement2;
 
@@ -67502,7 +67527,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        null,
-	                        _react2.default.createElement('input', { type: 'checkbox', onClick: _this2.props.onComponentSelect }),
+	                        _react2.default.createElement('input', { type: 'checkbox', onClick: _this3.props.onComponentSelect, defaultChecked: v.checked }),
 	                        ' ',
 	                        v.name
 	                    )
@@ -67561,6 +67586,7 @@
 	}(_react2.default.Component);
 
 	CategoryEditor.propTypes = {
+	    selectedItems: _react2.default.PropTypes.array,
 	    onComponentSelect: _react2.default.PropTypes.func
 	};
 

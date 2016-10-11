@@ -56,7 +56,16 @@ class CategoryEditor extends React.Component {
 
         window.fetch(CATEGORY_URL, {credentials: 'include'})
                 .then(r => r.json())
-                .then(cats => self.setState({categories: cats}))
+                .then(cats => {
+                    for (c of cats) {
+                        if (this.props.selectedItems && this.props.selectedItems.indexOf(c) != -1) {
+                            c.checked = 'checked';
+                        } else {
+                            c.checked = '';
+                        }
+                    }
+                    self.setState({categories: cats});
+                })
                 .catch(e => self.setState({error: e}));
     }
 
@@ -67,7 +76,7 @@ class CategoryEditor extends React.Component {
             return (
                 <li key={key}>
                     <label>
-                        <input type="checkbox" onClick={this.props.onComponentSelect} /> {v.name}
+                        <input type="checkbox" onClick={this.props.onComponentSelect} defaultChecked={v.checked} /> {v.name}
                     </label>
                 </li>
             );
@@ -104,6 +113,7 @@ class CategoryEditor extends React.Component {
 
 
 CategoryEditor.propTypes = {
+    selectedItems: React.PropTypes.array,
     onComponentSelect: React.PropTypes.func
 };
 
