@@ -65,7 +65,8 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         authorId: user._id,
         authorName: user.username,
         published: msgreq.published || 0,
-        prettyUrl: urlUtils.sanitizeUrl(msgreq.prettyUrl)
+        prettyUrl: urlUtils.sanitizeUrl(msgreq.prettyUrl),
+        categories: msgreq.categories
     });
 
     m.save(function(serr, savedMsg) {
@@ -73,7 +74,6 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
 
         res.json(savedMsg);
     });
-
 });
 
 
@@ -91,6 +91,7 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
         msg.title = requestMessage.title;
         msg.prettyUrl = urlUtils.sanitizeUrl(requestMessage.prettyUrl);
         msg.published = requestMessage.published || 0;
+        msg.categories = requestMessage.categories
 
         msg.save(function(serr, savedMsg) {
             if (serr) next(serr);

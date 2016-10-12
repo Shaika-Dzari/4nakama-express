@@ -39,15 +39,13 @@ export default class MessageEditor extends React.Component {
                             self.setState({message: Immutable.fromJS(msg)});
                         })
                         .catch(e => self.setState({error: e}));
-
             }
         }
-
     }
 
     onEditorChange(value) {
         this.setState(({message}) => ({
-            message: message.update('text', value)
+            message: message.set('text', value)
         }));
     }
 
@@ -71,18 +69,18 @@ export default class MessageEditor extends React.Component {
         title = title.replace(/[^a-z0-9_\-]/gi, '_');
 
         this.setState(({message}) => ({
-            message: message.update('prettyUrl', event.target.value)
+            message: message.set('prettyUrl', title)
         }));
     }
 
     onPublishedClick(event) {
+        let pub = event.target.checked;
         this.setState(({message}) => ({
-            message: message.update('published', event.target.checked)
+            message: message.set('published', pub)
         }));
     }
 
     onCategorySelect(category) {
-        console.log(category);
 
         this.setState(({message}) => ({
             message: message.set('categories', message.get('categories').push(category))
@@ -90,18 +88,14 @@ export default class MessageEditor extends React.Component {
     }
 
     onSave(event) {
-
         let messageId = this.props.params.messageId;
-
         let message = this.state.message.toJS();
-
         this.saveMessage(messageId, message);
     }
 
     saveMessage(messageId, message) {
 
         let isNew = messageId && messageId != 'new';
-
         let url = MESSAGE_URL + (isNew ? '/' + messageId : '');
         let protocol = isNew ? 'PUT' : 'POST'
 
