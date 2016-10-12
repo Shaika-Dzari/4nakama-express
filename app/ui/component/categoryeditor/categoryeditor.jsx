@@ -12,7 +12,7 @@ class CategoryEditor extends React.Component {
         this.onCategoryAddInputChange = this.onCategoryAddInputChange.bind(this);
         this.onSaveCategory = this.onSaveCategory.bind(this);
         this.state = {
-            categories: [],
+            categories: List(),
             showAddInput: false,
             newcategory: '',
             error: ''
@@ -60,6 +60,19 @@ class CategoryEditor extends React.Component {
         this.setState({newcategory: event.target.value});
     }
 
+    onCheckCategory(event) {
+        // Get category from state
+        let value = event.target.value;
+
+        let cat = this.state.categories.find(c => c._id === value);
+
+        if (!cat) {
+            console.log('Unable to find category #' + value);
+        }
+
+        this.props.onComponentSelect(cat);
+    }
+
     fetchCategory() {
         let self = this;
 
@@ -75,7 +88,7 @@ class CategoryEditor extends React.Component {
                         }
                     }
 
-                    self.setState({categories: cats});
+                    self.setState({categories: List(cats)});
                 })
                 .catch(e => {
                     console.log(e);
@@ -91,7 +104,7 @@ class CategoryEditor extends React.Component {
             return (
                 <li key={key}>
                     <label>
-                        <input type="checkbox" onClick={this.props.onComponentSelect} defaultChecked={v.checked} /> {v.name}
+                        <input type="checkbox" onClick={this.props.onComponentSelect} defaultChecked={v.checked} value={v._id} /> {v.name}
                     </label>
                 </li>
             );
@@ -130,7 +143,7 @@ class CategoryEditor extends React.Component {
 
 
 CategoryEditor.propTypes = {
-    selectedItems: React.PropTypes.array,
+    // selectedItems: React.PropTypes.isInstance(List),
     onComponentSelect: React.PropTypes.func
 };
 

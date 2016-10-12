@@ -1,5 +1,6 @@
 import React from 'react';
-import {Map, List} from 'immutable';
+import Immutable, {Map, List} from 'immutable';
+import AlertBox from '../../component/alertbox/alertbox.jsx';
 import Editor from '../../component/editor/editor.jsx';
 import CategoryEditor from '../../component/categoryeditor/categoryeditor.jsx';
 
@@ -20,7 +21,7 @@ export default class MessageEditor extends React.Component {
         this.onCategorySelect = this.onCategorySelect.bind(this);
 
         this.state = {
-            message : Map({text: '', title: '', prettyUrl: '', published: false, categories: []})
+            message : Immutable.fromJS({text: '', title: '', prettyUrl: '', published: false, categories: []})
         }
     }
 
@@ -35,7 +36,7 @@ export default class MessageEditor extends React.Component {
                 window.fetch('/api/messages/' + messageId, {credentials: 'include'})
                         .then(r => r.json())
                         .then(msg => {
-                            self.setState({message: Map(msg)});
+                            self.setState({message: Immutable.fromJS(msg)});
                         })
                         .catch(e => self.setState({error: e}));
 
@@ -45,50 +46,54 @@ export default class MessageEditor extends React.Component {
     }
 
     onEditorChange(value) {
-        this.setState(({message}) => {
+        this.setState(({message}) => ({
             message: message.update('text', value)
-        });
+        }));
     }
 
     onTitleChange(event) {
-        this.setState({titleValue: event.target.value});
+        let v = event.target.value;
+        this.setState(({message}) => ({
+            message: message.set('title', v)
+        }));
     }
 
     onPrettyUrlChange(event) {
-        this.setState({prettyUrlValue: event.target.value});
+        this.setState(({message}) => ({
+            message: message.set('prettyUrl', event.target.value)
+        }));
     }
 
     onTitleBlur(event) {
-        let titleValue = this.state.titleValue || '';
+        let title = this.state.message.get('title') || '';
 
-        titleValue = titleValue.replace(/[!$?*&#\\]/g, '');
-        titleValue = titleValue.replace(/[^a-z0-9_\-]/gi, '_');
+        title = title.replace(/[!$?*&#\\]/g, '');
+        title = title.replace(/[^a-z0-9_\-]/gi, '_');
 
-        this.setState({prettyUrlValue: titleValue.toLowerCase()});
+        this.setState(({message}) => ({
+            message: message.update('prettyUrl', event.target.value)
+        }));
     }
 
     onPublishedClick(event) {
-        this.setState({publishedValue: event.target.checked});
+        this.setState(({message}) => ({
+            message: message.update('published', event.target.checked)
+        }));
     }
 
-    onCategorySelect(event) {
-        let c = [].joint(this.state.selectedCategories);
-        c.push(event.target.value);
-        this.setState({selectedCategories: c});
+    onCategorySelect(category) {
+        console.log(category);
+
+        this.setState(({message}) => ({
+            message: message.set('categories', message.get('categories').push(category))
+        }));
     }
 
     onSave(event) {
 
         let messageId = this.props.params.messageId;
 
-        let message = Object.assign({},
-                                    this.state.message,
-                                    {
-                                        text: this.state.editorValue,
-                                        title: this.state.titleValue,
-                                        prettyUrl: this.state.prettyUrlValue,
-                                        published: this.state.publishedValue ? 1:0
-                                    });
+        let message = this.state.message.toJS();
 
         this.saveMessage(messageId, message);
     }
@@ -109,13 +114,11 @@ export default class MessageEditor extends React.Component {
             body: JSON.stringify(message),
             credentials: 'include'
         })
-        .then(function(res){ console.log(res) })
-        .catch(function(res){ console.log(res) })
+        .then(function(res){ console.log(res) }) // Need saved feedback
+        .catch(e => self.setState({error: e}))
     }
 
     render() {
-
-        let error = this.state.error ? <div>{this.state.error}</div> : null;
 
         return (
             <div className="message-editor-ctn box bluebox">
@@ -130,7 +133,7 @@ export default class MessageEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    {error}
+                    <AlertBox message={this.state.error} />
                     <div className="row">
                         <div className="col-9">
                             <div className="box">

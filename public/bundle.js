@@ -46845,6 +46845,12 @@
 
 	var _immutable = __webpack_require__(617);
 
+	var _immutable2 = _interopRequireDefault(_immutable);
+
+	var _alertbox = __webpack_require__(544);
+
+	var _alertbox2 = _interopRequireDefault(_alertbox);
+
 	var _editor = __webpack_require__(618);
 
 	var _editor2 = _interopRequireDefault(_editor);
@@ -46882,7 +46888,7 @@
 	        _this.onCategorySelect = _this.onCategorySelect.bind(_this);
 
 	        _this.state = {
-	            message: (0, _immutable.Map)({ text: '', title: '', prettyUrl: '', published: false, categories: [] })
+	            message: _immutable2.default.fromJS({ text: '', title: '', prettyUrl: '', published: false, categories: [] })
 	        };
 	        return _this;
 	    }
@@ -46900,7 +46906,7 @@
 	                    window.fetch('/api/messages/' + messageId, { credentials: 'include' }).then(function (r) {
 	                        return r.json();
 	                    }).then(function (msg) {
-	                        self.setState({ message: (0, _immutable.Map)(msg) });
+	                        self.setState({ message: _immutable2.default.fromJS(msg) });
 	                    }).catch(function (e) {
 	                        return self.setState({ error: e });
 	                    });
@@ -46912,41 +46918,68 @@
 	        value: function onEditorChange(value) {
 	            this.setState(function (_ref) {
 	                var message = _ref.message;
-
-	                message: message.update('text', value);
+	                return {
+	                    message: message.update('text', value)
+	                };
 	            });
 	        }
 	    }, {
 	        key: 'onTitleChange',
 	        value: function onTitleChange(event) {
-	            this.setState({ titleValue: event.target.value });
+	            var v = event.target.value;
+	            this.setState(function (_ref2) {
+	                var message = _ref2.message;
+	                return {
+	                    message: message.set('title', v)
+	                };
+	            });
 	        }
 	    }, {
 	        key: 'onPrettyUrlChange',
 	        value: function onPrettyUrlChange(event) {
-	            this.setState({ prettyUrlValue: event.target.value });
+	            this.setState(function (_ref3) {
+	                var message = _ref3.message;
+	                return {
+	                    message: message.set('prettyUrl', event.target.value)
+	                };
+	            });
 	        }
 	    }, {
 	        key: 'onTitleBlur',
 	        value: function onTitleBlur(event) {
-	            var titleValue = this.state.titleValue || '';
+	            var title = this.state.message.get('title') || '';
 
-	            titleValue = titleValue.replace(/[!$?*&#\\]/g, '');
-	            titleValue = titleValue.replace(/[^a-z0-9_\-]/gi, '_');
+	            title = title.replace(/[!$?*&#\\]/g, '');
+	            title = title.replace(/[^a-z0-9_\-]/gi, '_');
 
-	            this.setState({ prettyUrlValue: titleValue.toLowerCase() });
+	            this.setState(function (_ref4) {
+	                var message = _ref4.message;
+	                return {
+	                    message: message.update('prettyUrl', event.target.value)
+	                };
+	            });
 	        }
 	    }, {
 	        key: 'onPublishedClick',
 	        value: function onPublishedClick(event) {
-	            this.setState({ publishedValue: event.target.checked });
+	            this.setState(function (_ref5) {
+	                var message = _ref5.message;
+	                return {
+	                    message: message.update('published', event.target.checked)
+	                };
+	            });
 	        }
 	    }, {
 	        key: 'onCategorySelect',
-	        value: function onCategorySelect(event) {
-	            var c = [].joint(this.state.selectedCategories);
-	            c.push(event.target.value);
-	            this.setState({ selectedCategories: c });
+	        value: function onCategorySelect(category) {
+	            console.log(category);
+
+	            this.setState(function (_ref6) {
+	                var message = _ref6.message;
+	                return {
+	                    message: message.set('categories', message.get('categories').push(category))
+	                };
+	            });
 	        }
 	    }, {
 	        key: 'onSave',
@@ -46954,12 +46987,7 @@
 
 	            var messageId = this.props.params.messageId;
 
-	            var message = Object.assign({}, this.state.message, {
-	                text: this.state.editorValue,
-	                title: this.state.titleValue,
-	                prettyUrl: this.state.prettyUrlValue,
-	                published: this.state.publishedValue ? 1 : 0
-	            });
+	            var message = this.state.message.toJS();
 
 	            this.saveMessage(messageId, message);
 	        }
@@ -46982,19 +47010,14 @@
 	                credentials: 'include'
 	            }).then(function (res) {
 	                console.log(res);
-	            }).catch(function (res) {
-	                console.log(res);
+	            }) // Need saved feedback
+	            .catch(function (e) {
+	                return self.setState({ error: e });
 	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-
-	            var error = this.state.error ? _react2.default.createElement(
-	                'div',
-	                null,
-	                this.state.error
-	            ) : null;
 
 	            return _react2.default.createElement(
 	                'div',
@@ -47029,7 +47052,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'body' },
-	                    error,
+	                    _react2.default.createElement(_alertbox2.default, { message: this.state.error }),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'row' },
@@ -72414,7 +72437,7 @@
 	        _this.onCategoryAddInputChange = _this.onCategoryAddInputChange.bind(_this);
 	        _this.onSaveCategory = _this.onSaveCategory.bind(_this);
 	        _this.state = {
-	            categories: [],
+	            categories: (0, _immutable.List)(),
 	            showAddInput: false,
 	            newcategory: '',
 	            error: ''
@@ -72465,6 +72488,22 @@
 	            this.setState({ newcategory: event.target.value });
 	        }
 	    }, {
+	        key: 'onCheckCategory',
+	        value: function onCheckCategory(event) {
+	            // Get category from state
+	            var value = event.target.value;
+
+	            var cat = this.state.categories.find(function (c) {
+	                return c._id === value;
+	            });
+
+	            if (!cat) {
+	                console.log('Unable to find category #' + value);
+	            }
+
+	            this.props.onComponentSelect(cat);
+	        }
+	    }, {
 	        key: 'fetchCategory',
 	        value: function fetchCategory() {
 	            var self = this;
@@ -72502,7 +72541,7 @@
 	                    }
 	                }
 
-	                self.setState({ categories: cats });
+	                self.setState({ categories: (0, _immutable.List)(cats) });
 	            }).catch(function (e) {
 	                console.log(e);
 	                self.setState({ error: e });
@@ -72523,7 +72562,7 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        null,
-	                        _react2.default.createElement('input', { type: 'checkbox', onClick: _this2.props.onComponentSelect, defaultChecked: v.checked }),
+	                        _react2.default.createElement('input', { type: 'checkbox', onClick: _this2.props.onComponentSelect, defaultChecked: v.checked, value: v._id }),
 	                        ' ',
 	                        v.name
 	                    )
@@ -72583,7 +72622,7 @@
 	}(_react2.default.Component);
 
 	CategoryEditor.propTypes = {
-	    selectedItems: _react2.default.PropTypes.array,
+	    // selectedItems: React.PropTypes.isInstance(List),
 	    onComponentSelect: _react2.default.PropTypes.func
 	};
 
