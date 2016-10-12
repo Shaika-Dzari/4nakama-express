@@ -1,4 +1,5 @@
 import React from 'react';
+import {Map, List} from 'immutable';
 import Editor from '../../component/editor/editor.jsx';
 import CategoryEditor from '../../component/categoryeditor/categoryeditor.jsx';
 
@@ -19,16 +20,8 @@ export default class MessageEditor extends React.Component {
         this.onCategorySelect = this.onCategorySelect.bind(this);
 
         this.state = {
-            message: null,
-            editorValue: '',
-            titleValue: '',
-            prettyUrlValue: '',
-            publishedValue: false,
-            categories: [],
-            selectedCategories: []
-        };
-
-        // this.props.params.userId
+            message : Map({text: '', title: '', prettyUrl: '', published: false, categories: []})
+        }
     }
 
     componentWillMount() {
@@ -42,16 +35,9 @@ export default class MessageEditor extends React.Component {
                 window.fetch('/api/messages/' + messageId, {credentials: 'include'})
                         .then(r => r.json())
                         .then(msg => {
-                            self.setState({
-                                            message: msg,
-                                            editorValue: msg.text,
-                                            titleValue: msg.title,
-                                            prettyUrlValue: msg.prettyUrl || '',
-                                            publishedValue: msg.published == 1 ? true : false,
-                                            selectedCategories: msg.categories
-                                         });
+                            self.setState({message: Map(msg)});
                         })
-                        .catch(e => self.setState({messages: {error: e}}));
+                        .catch(e => self.setState({error: e}));
 
             }
         }
@@ -59,7 +45,9 @@ export default class MessageEditor extends React.Component {
     }
 
     onEditorChange(value) {
-        this.setState({editorValue: value});
+        this.setState(({message}) => {
+            message: message.update('text', value)
+        });
     }
 
     onTitleChange(event) {
@@ -127,6 +115,7 @@ export default class MessageEditor extends React.Component {
 
     render() {
 
+        let error = this.state.error ? <div>{this.state.error}</div> : null;
 
         return (
             <div className="message-editor-ctn box bluebox">
@@ -141,17 +130,18 @@ export default class MessageEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
+                    {error}
                     <div className="row">
                         <div className="col-9">
                             <div className="box">
                                 <div className="body">
                                     <div className="frm">
                                         <label htmlFor="msg-title">Titre</label>
-                                        <input type="text" value={this.state.titleValue} onChange={this.onTitleChange} onBlur={this.onTitleBlur} id="msg-title" />
+                                        <input type="text" value={this.state.message.get('title')} onChange={this.onTitleChange} onBlur={this.onTitleBlur} id="msg-title" />
                                         <label htmlFor="msg-url">URL</label>
-                                        <input type="text" value={this.state.prettyUrlValue} onChange={this.onPrettyUrlChange} id="msg-url" />
+                                        <input type="text" value={this.state.message.get('prettyUrl')} onChange={this.onPrettyUrlChange} id="msg-url" />
                                         <label htmlFor="msg-text">Message</label>
-                                        <Editor value={this.state.editorValue} onEditorChange={this.onEditorChange} id="msg-text" />
+                                        <Editor value={this.state.message.get('text')} onEditorChange={this.onEditorChange} id="msg-text" />
                                     </div>
                                 </div>
                             </div>
@@ -162,11 +152,11 @@ export default class MessageEditor extends React.Component {
                                     <div className="box bluebox">
                                         <div className="heading">
                                             <h4>
-                                                <input type="checkbox" checked={this.state.publishedValue} onClick={this.onPublishedClick} /> Publié
+                                                <input type="checkbox" checked={this.state.message.get('published')} onClick={this.onPublishedClick} /> Publié
                                             </h4>
                                         </div>
                                     </div>
-                                    <CategoryEditor onComponentSelect={this.onCategorySelect} />
+                                    <CategoryEditor onComponentSelect={this.onCategorySelect} selectedItems={this.state.message.get('categories')} />
                                 </div>
                             </div>
                         </div>

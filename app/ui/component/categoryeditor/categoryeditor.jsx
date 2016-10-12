@@ -1,4 +1,6 @@
 import React from 'react';
+import {Map, List} from 'immutable';
+import AlertBox from '../alertbox/alertbox.jsx';
 
 const CATEGORY_URL = '/api/categories';
 
@@ -11,7 +13,9 @@ class CategoryEditor extends React.Component {
         this.onSaveCategory = this.onSaveCategory.bind(this);
         this.state = {
             categories: [],
-            showAddInput: false
+            showAddInput: false,
+            newcategory: '',
+            error: ''
         };
     }
 
@@ -41,9 +45,14 @@ class CategoryEditor extends React.Component {
         .then( newcat => {
             let cats = self.state.categories;
             let catsprime = cats.concat(newcat);
+
+
             self.setState({categories: catsprime});
         })
-        .catch(e => self.setState({error: e}))
+        .catch(e => {
+            console.log(e);
+            self.setState({error: e})
+        });
 
     }
 
@@ -57,19 +66,25 @@ class CategoryEditor extends React.Component {
         window.fetch(CATEGORY_URL, {credentials: 'include'})
                 .then(r => r.json())
                 .then(cats => {
-                    for (c of cats) {
-                        if (this.props.selectedItems && this.props.selectedItems.indexOf(c) != -1) {
+
+                    for (let c of cats) {
+                        if (self.props.selectedItems && self.props.selectedItems.indexOf(c) != -1) {
                             c.checked = 'checked';
                         } else {
                             c.checked = '';
                         }
                     }
+
                     self.setState({categories: cats});
                 })
-                .catch(e => self.setState({error: e}));
+                .catch(e => {
+                    console.log(e);
+                    self.setState({error: e})
+                });
     }
 
     render() {
+
 
         let cs = this.state.categories.map((v, idx) => {
             let key = 'c-' + v._id;
@@ -82,13 +97,15 @@ class CategoryEditor extends React.Component {
             );
         });
 
+
+
         return (
             <div className="box bluebox">
                 <div className="heading">
                     <div className="row">
                         <div className="col-6">
                             <h4 className={this.state.showAddInput ? 'hidden' : ''}>Catégories</h4>
-                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'} onChange={this.onCategoryAddInputChange} />
+                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'} onChange={this.onCategoryAddInputChange} value={this.state.newcategory} />
                         </div>
                         <div className="col-6 right">
                             <button className="btn" className={this.state.showAddInput ? 'hidden' : ''} onClick={this.onAddCategory}>
@@ -101,7 +118,7 @@ class CategoryEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-
+                    <AlertBox message={this.state.error} />
                     <ul className="simple-list">
                         {cs}
                     </ul>

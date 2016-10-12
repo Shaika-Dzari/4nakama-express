@@ -3,11 +3,13 @@ import './alertbox.scss';
 
 const AlertBox = (props) => {
 
+    if (!props.message) {
+        return null;
+    }
+
     return (
         <div className="alert">
-            <p>
-                {props.message}
-            </p>
+            <p>{props.message}</p>
         </div>
     );
 };
