@@ -60,7 +60,7 @@ app.use(function(err, req, res, next) {
 });
 
 // Pipe to index
-app.use(/\/(?!(api|\.css|\.js)).*/, function(req, res, next) {
+app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
     res.sendFile('index.html', { root: publicFolder });
 });
 

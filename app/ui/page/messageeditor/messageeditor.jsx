@@ -81,15 +81,24 @@ export default class MessageEditor extends React.Component {
     }
 
     onCategorySelect(category) {
+        console.log(category);
+        let cs = this.state.message.get('categories');
+        let csprime = cs.push(category);
+
+        console.log(cs.toJS());
+        console.log(csprime.toJS());
 
         this.setState(({message}) => ({
-            message: message.set('categories', message.get('categories').push(category))
+            message: message.set('categories', csprime)
         }));
     }
 
     onSave(event) {
         let messageId = this.props.params.messageId;
         let message = this.state.message.toJS();
+
+        console.log(message);
+
         this.saveMessage(messageId, message);
     }
 

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { IndexLink, Link, withRouter } from 'react-router';
 import AuthenticationService from '../../utils/AuthenticationService.js';
+import Feedback from '../feedback/feedback.jsx';
 
 import './pageheader.scss';
 
@@ -44,7 +45,10 @@ class PageHeader extends Component {
                 <div className="col-6">
                     <h1 className="site-title"><Link to="/">4nakama</Link></h1>
                 </div>
-                <div className="col-6">
+                <div className="col-1">
+                    <Feedback />
+                </div>
+                <div className="col-5">
                     <nav className="site-menu">
                         {links}
                     </nav>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Map, List} from 'immutable';
 import AlertBox from '../alertbox/alertbox.jsx';
+import HttpUtils from '../../utils/HttpUtils.js';
 
 const CATEGORY_URL = '/api/categories';
 
@@ -11,6 +12,7 @@ class CategoryEditor extends React.Component {
         this.onAddCategory = this.onAddCategory.bind(this);
         this.onCategoryAddInputChange = this.onCategoryAddInputChange.bind(this);
         this.onSaveCategory = this.onSaveCategory.bind(this);
+        this.onCheckCategory = this.onCheckCategory.bind(this);
         this.state = {
             categories: List(),
             showAddInput: false,
@@ -20,7 +22,25 @@ class CategoryEditor extends React.Component {
     }
 
     componentWillMount() {
-        this.fetchCategory();
+
+        let self = this;
+
+        HttpUtils.query(CATEGORY_URL, {credentials: 'include'}, r => r.json(), cats => {
+
+                    for (let c of cats) {
+                        if (self.props.selectedItems && self.props.selectedItems.indexOf(c) != -1) {
+                            c.checked = 'checked';
+                        } else {
+                            c.checked = '';
+                        }
+                    }
+
+                    self.setState({categories: List(cats)});
+                }, e => {
+                    self.setState({error: e})
+                });
+
+        //this.fetchCategory();
     }
 
     onAddCategory() {
@@ -69,7 +89,7 @@ class CategoryEditor extends React.Component {
         if (!cat) {
             console.log('Unable to find category #' + value);
         }
-
+        console.log(cat);
         this.props.onComponentSelect(cat);
     }
 
@@ -91,7 +111,6 @@ class CategoryEditor extends React.Component {
                     self.setState({categories: List(cats)});
                 })
                 .catch(e => {
-                    console.log(e);
                     self.setState({error: e})
                 });
     }
@@ -104,7 +123,7 @@ class CategoryEditor extends React.Component {
             return (
                 <li key={key}>
                     <label>
-                        <input type="checkbox" onClick={this.props.onComponentSelect} defaultChecked={v.checked} value={v._id} /> {v.name}
+                        <input type="checkbox" onClick={this.onCheckCategory} defaultChecked={v.checked} value={v._id} /> {v.name}
                     </label>
                 </li>
             );
