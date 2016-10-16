@@ -1,15 +1,14 @@
-import React, {PropType} from 'react';
+import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 
 import './message.scss';
 
-const Message = (props) => {
-
+const Message = ({title, text, texthtml, authorName, createdAt, categories}) => {
 
     var cats = null;
 
-    if (props.categories) {
-        cats = props.categories.map((v, i) => {
+    if (categories) {
+        cats = categories.map((v, i) => {
             return <span key={v._id}>{v.name}</span> ;
         });
     }
@@ -17,11 +16,11 @@ const Message = (props) => {
     return (
         <article className="blog-message">
             <header>
-                <h1>{props.title}</h1>
+                <h1>{title}</h1>
 
                 <div className="row">
                     <div className="col-6">
-                        <p>{props.authorName} - {props.createdAt}</p>
+                        <p>{authorName} - {createdAt}</p>
                     </div>
                     <div className="col-6 right">
                         {cats}
@@ -31,7 +30,7 @@ const Message = (props) => {
             </header>
 
             <div className="blog-message-body">
-                <div dangerouslySetInnerHTML={{__html: props.texthtml}}></div>
+                <div dangerouslySetInnerHTML={{__html: texthtml}}></div>
             </div>
 
         </article>
@@ -39,11 +38,11 @@ const Message = (props) => {
 }
 
 Message.propTypes = {
-    title: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string.isRequired,
-    authorName: React.PropTypes.string.isRequired,
-    createdAt: React.PropTypes.string.isRequired,
-    categories: React.PropTypes.array
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    authorName: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    categories: PropTypes.array
 };
 
 export default Message;

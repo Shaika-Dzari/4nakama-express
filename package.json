@@ -26,8 +26,12 @@
     "passport-local-mongoose": "^4.0.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-simplemde-editor": "^3.6.4",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.7.0",
+    "redux-thunk": "^2.1.0",
     "remarkable": "^1.7.1",
     "whatwg-fetch": "^1.0.0"
   },

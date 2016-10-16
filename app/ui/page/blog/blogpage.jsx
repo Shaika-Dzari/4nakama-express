@@ -1,12 +1,58 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
+import { connect } from 'react-redux'
 import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
 import Remarkable from 'remarkable';
 
+import {doMessageFetch} from '../../actions/messageActions.js';
+
 import './blogpage.scss';
 
 
+const mapStateToProps = (state) => {
+    return {
+        messages: state.messages.items,
+        page: state.messages.page
+    }
+}
+
+class BlogPage extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        const { dispatch } = this.props
+        dispatch(doMessageFetch());
+    }
+
+    render() {
+        return (
+                <div className="row">
+                    <div className="col-10">
+                        <div className="list-ctn">
+                            <MessageList messages={this.props.messages} />
+                        </div>
+                    </div>
+                    <div className="col-2">
+                        <div className="list-ctn">
+                            <div className="info-element">
+                                <h3>Catégories</h3>
+                                <CategoryList categories={this.props.categories} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+    }
+}
+
+export default connect(mapStateToProps)(BlogPage);
+
+
+/*
 export default class BlogPage extends React.Component {
 
     constructor(props) {
@@ -48,12 +94,6 @@ export default class BlogPage extends React.Component {
                 })
                 .catch(e => self.setState({messages: {error: e}}));
 
-        // Tags
-        window.fetch('/api/tags', {credentials: 'include'})
-                .then(r => r.json())
-                .then(tgs => self.setState({tags: {data: tgs}}))
-                .catch(e => self.setState({tags: {error: e}}));
-
         // Categories
         window.fetch('/api/categories', {credentials: 'include'})
                 .then(r => r.json())
@@ -85,3 +125,4 @@ export default class BlogPage extends React.Component {
         );
     }
 }
+*/

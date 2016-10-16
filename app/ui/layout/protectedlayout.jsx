@@ -7,8 +7,6 @@ class ProtectedLayout extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
-        this.disconnect = this.disconnect.bind(this);
     }
 
     getUser() {
@@ -17,12 +15,6 @@ class ProtectedLayout extends React.Component {
             user: sessionStorage.getItem("4nuser")
         };
     }
-
-    disconnect(event) {
-        event.preventDefault();
-        this.props.router.push('/');
-    }
-
 
     componentWillMount() {
         // Check that the user is logged in before the component mounts

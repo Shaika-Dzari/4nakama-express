@@ -2,13 +2,13 @@ import React from 'react';
 import {Link, withRouter} from 'react-router';
 
 
-const Table = (props) => {
+const Table = ({cdef, items}) => {
 
     var rows = null;
-    var cdef = props.cdef;
+    var cdef = cdef;
 
-    if (Array.isArray(props.items)) {
-        rows = props.items.map((v, i) => {
+    if (Array.isArray(items)) {
+        rows = items.map((v, i) => {
 
             let name = null;
 
