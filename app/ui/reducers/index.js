@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { messageReducers } from './messageReducers.js';
+import { categoryReducers } from './categoryReducers.js';
 import { navigationReducers } from './navigationReducers.js';
 
-const NakamaApp = combineReducers({
+const Reducers = combineReducers({
     navigation: navigationReducers,
-    messages: messageReducers
+    messages: messageReducers,
+    categories: categoryReducers
 });
 
-export default NakamaApp;
+export default Reducers;

@@ -6,6 +6,7 @@ import MessageList from '../../component/messagelist/messagelist.jsx';
 import Remarkable from 'remarkable';
 
 import {doMessageFetch} from '../../actions/messageActions.js';
+import {doCategoryFetch} from '../../actions/categoryActions.js';
 
 import './blogpage.scss';
 
@@ -13,7 +14,8 @@ import './blogpage.scss';
 const mapStateToProps = (state) => {
     return {
         messages: state.messages.items,
-        page: state.messages.page
+        page: state.messages.page,
+        categories: state.categories.items
     }
 }
 
@@ -26,6 +28,7 @@ class BlogPage extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props
         dispatch(doMessageFetch());
+        dispatch(doCategoryFetch());
     }
 
     render() {
