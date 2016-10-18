@@ -1,29 +1,36 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
+import { connect } from 'react-redux';
 import Table from '../../component/table/table.jsx';
 
 const MESSAGE_TABLE_DEF = {
     id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
 };
 
-class MessageList extends React.Component {
+
+const mapStateToProps = (state) => {
+    return {
+        messages: state.messages.items,
+        page: state.messages.page
+    }
+}
+
+
+class MessageAdmin extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            messages: {
-                data: [],
-                error: null
-            }
-        };
-
         this.onNewMessage = this.onNewMessage.bind(this);
     }
 
+    componentDidMount() {
+        const { dispatch } = this.props
+        dispatch(doMessageFetch());
+    }
+
+    /*
     componentWillMount() {
         var self = this;
-        // params ? check if children is null
-        // Messages
         window.fetch('/api/messages', {credentials: 'include'})
                 .then(r => r.json())
                 .then(function(msgs) {
@@ -39,6 +46,7 @@ class MessageList extends React.Component {
                 })
                 .catch(e => self.setState({messages: {error: e}}));
     }
+    */
 
     onNewMessage() {
         this.props.router.push('/dashboard/messages/new');
@@ -58,11 +66,14 @@ class MessageList extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <Table cdef={MESSAGE_TABLE_DEF} items={this.state.messages.data} />
+                    <Table cdef={MESSAGE_TABLE_DEF} items={this.props.messages} linkTo='/dashboard/messages/' />
                 </div>
             </div>
         );
     }
 }
 
-export default withRouter(MessageList);
+
+export default connect(mapStateToProps)(withRouter(MessageAdmin));
+
+//export default withRouter(MessageList);

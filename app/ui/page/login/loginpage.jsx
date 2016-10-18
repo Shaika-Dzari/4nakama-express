@@ -1,52 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
 import AuthenticationService from '../../utils/AuthenticationService.js';
+import {doLoginPageUsernameKp, doLoginPagePasswdKp, doLoginPageSubmit} from '../../actions/userActions.js';
 
 import './loginpage.scss';
+
+const mapStateToProps = (state) => {
+    return {
+        username: state.user.username,
+        passwd: state.user.passwd,
+        error: state.user.error
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onUsernameChange: (event) => { dispatch(doLoginPageUsernameKp(event.target.value)); },
+        onPasswordChange: (event) => { dispatch(doLoginPagePasswdKp(event.target.value)); },
+        onLoginClick: (event) => { event.preventDefault(); dispatch(doLoginPageSubmit())}
+    };
+};
 
 
 class LoginPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
-        this.login = this.login.bind(this);
-        this.handleUserNameChange = this.handleUserNameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-
-    }
-
-    login(event) {
-        event.preventDefault();
-
-        var self = this;
-        var u = this.state.username;
-        var p = this.state.passwd;
-
-        AuthenticationService.connection(u, p, function(user) {
-            self.props.router.push('/');
-        });
-    }
-
-    handleUserNameChange(event) {
-        this.setState({
-            username : event.target.value
-        });
-    }
-
-    handlePasswordChange(event) {
-        this.setState({
-            passwd : event.target.value
-        });
     }
 
     render () {
 
-        var msg = this.state.loginErrMsg;
+        var msg = this.props.error;
         var alertBox = msg ? <AlertBox message={msg} /> : '';
 
-                            //
         return (
             <div className="login">
                 <div className="box darkbox">
@@ -54,17 +42,16 @@ class LoginPage extends Component {
                         {alertBox}
                         <form className="frm">
                             <label htmlFor="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" name="username" onChange={this.handleUserNameChange} />
+                            <input type="text" id="username" name="username" onChange={this.props.onUsernameChange} />
                             <label htmlFor="passwd">Nom d'utilisateur</label>
-                            <input type="password" id="passwd" name="password" onChange={this.handlePasswordChange} />
-                            <button className="btn btnblue" onClick={this.login}>Connexion</button>
+                            <input type="password" id="passwd" name="password" onChange={this.props.onPasswordChange} />
+                            <button className="btn btnblue" onClick={this.props.onLoginClick}>Connexion</button>
                         </form>
                     </div>
                 </div>
-
             </div>
         );
     }
 }
 
-export default withRouter(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -11,7 +11,7 @@ import NotFound from './page/notfound.jsx';
 import BlogPage from './page/blog/blogpage.jsx';
 import DashboardPage from './page/dashboard/dashboardpage.jsx'
 import LoginPage from './page/login/loginpage.jsx';
-import MessageList from './page/messagelist/messagelist.jsx';
+import MessageAdmin from './page/messageadmin/messageadmin.jsx';
 import MessageEditor from './page/messageeditor/messageeditor.jsx';
 
 // Store
@@ -29,7 +29,7 @@ const AppRoute = () => {
                     <Route path="/dashboard" component={ ProtectedLayout }>
                         <IndexRoute component={ DashboardPage } />
                         <Route path="" component={ DashboardPage }>
-                            <Route path="messages" component={ MessageList } />
+                            <Route path="messages" component={ MessageAdmin } />
                             <Route path="messages/:messageId" component={ MessageEditor } />
                         </Route>
                     </Route>

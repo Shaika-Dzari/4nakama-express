@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 import { messageReducers } from './messageReducers.js';
 import { categoryReducers } from './categoryReducers.js';
 import { navigationReducers } from './navigationReducers.js';
+import { userReducers } from './userReducers.js';
 
-const Reducers = combineReducers({
+const RootReducers = combineReducers({
     navigation: navigationReducers,
     messages: messageReducers,
-    categories: categoryReducers
+    categories: categoryReducers,
+    user: userReducers
 });
 
-export default Reducers;
+export default RootReducers;

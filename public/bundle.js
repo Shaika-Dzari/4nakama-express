@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(633);
 
-	__webpack_require__(666);
+	__webpack_require__(668);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29425,15 +29425,15 @@
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
-	var _messagelist = __webpack_require__(641);
+	var _messageadmin = __webpack_require__(642);
 
-	var _messagelist2 = _interopRequireDefault(_messagelist);
+	var _messageadmin2 = _interopRequireDefault(_messageadmin);
 
-	var _messageeditor = __webpack_require__(643);
+	var _messageeditor = __webpack_require__(644);
 
 	var _messageeditor2 = _interopRequireDefault(_messageeditor);
 
-	var _createstore = __webpack_require__(654);
+	var _createstore = __webpack_require__(655);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -29459,7 +29459,7 @@
 	                    _react2.default.createElement(
 	                        _reactRouter.Route,
 	                        { path: '', component: _dashboardpage2.default },
-	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages', component: _messagelist2.default }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages', component: _messageadmin2.default }),
 	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages/:messageId', component: _messageeditor2.default })
 	                    )
 	                ),
@@ -48705,6 +48705,8 @@
 
 	var _reactRouter = __webpack_require__(470);
 
+	var _reactRedux = __webpack_require__(533);
+
 	var _alertbox = __webpack_require__(567);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
@@ -48713,7 +48715,9 @@
 
 	var _AuthenticationService2 = _interopRequireDefault(_AuthenticationService);
 
-	__webpack_require__(640);
+	var _userActions = __webpack_require__(640);
+
+	__webpack_require__(641);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48723,57 +48727,44 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        username: state.user.username,
+	        passwd: state.user.passwd,
+	        error: state.user.error
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        onUsernameChange: function onUsernameChange(event) {
+	            dispatch((0, _userActions.doLoginPageUsernameKp)(event.target.value));
+	        },
+	        onPasswordChange: function onPasswordChange(event) {
+	            dispatch((0, _userActions.doLoginPagePasswdKp)(event.target.value));
+	        },
+	        onLoginClick: function onLoginClick(event) {
+	            event.preventDefault();dispatch((0, _userActions.doLoginPageSubmit)());
+	        }
+	    };
+	};
+
 	var LoginPage = function (_Component) {
 	    _inherits(LoginPage, _Component);
 
 	    function LoginPage(props) {
 	        _classCallCheck(this, LoginPage);
 
-	        var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
-
-	        _this.state = {};
-	        _this.login = _this.login.bind(_this);
-	        _this.handleUserNameChange = _this.handleUserNameChange.bind(_this);
-	        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
-
-	        return _this;
+	        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
 	    }
 
 	    _createClass(LoginPage, [{
-	        key: 'login',
-	        value: function login(event) {
-	            event.preventDefault();
-
-	            var self = this;
-	            var u = this.state.username;
-	            var p = this.state.passwd;
-
-	            _AuthenticationService2.default.connection(u, p, function (user) {
-	                self.props.router.push('/');
-	            });
-	        }
-	    }, {
-	        key: 'handleUserNameChange',
-	        value: function handleUserNameChange(event) {
-	            this.setState({
-	                username: event.target.value
-	            });
-	        }
-	    }, {
-	        key: 'handlePasswordChange',
-	        value: function handlePasswordChange(event) {
-	            this.setState({
-	                passwd: event.target.value
-	            });
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 
-	            var msg = this.state.loginErrMsg;
+	            var msg = this.props.error;
 	            var alertBox = msg ? _react2.default.createElement(_alertbox2.default, { message: msg }) : '';
 
-	            //
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'login' },
@@ -48792,16 +48783,16 @@
 	                                { htmlFor: 'username' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.handleUserNameChange }),
+	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.props.onUsernameChange }),
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'passwd' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.handlePasswordChange }),
+	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.props.onPasswordChange }),
 	                            _react2.default.createElement(
 	                                'button',
-	                                { className: 'btn btnblue', onClick: this.login },
+	                                { className: 'btn btnblue', onClick: this.props.onLoginClick },
 	                                'Connexion'
 	                            )
 	                        )
@@ -48814,16 +48805,70 @@
 	    return LoginPage;
 	}(_react.Component);
 
-	exports.default = (0, _reactRouter.withRouter)(LoginPage);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 /***/ },
 /* 640 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.doLoginPageUsernameKp = doLoginPageUsernameKp;
+	exports.doLoginPagePasswdKp = doLoginPagePasswdKp;
+	exports.doLoginPageSubmit = doLoginPageSubmit;
+	exports.doSuccessLogin = doSuccessLogin;
+	exports.doBadCredential = doBadCredential;
+	var USER_LP_USERNAME_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = 'USER_LP_LOGIN_KEYPRESS';
+	var USER_LP_PASSWD_KEYPRESS = exports.USER_LP_PASSWD_KEYPRESS = 'USER_LP_PASSWD_KEYPRESS';
+	var USER_LP_SUBMIT = exports.USER_LP_SUBMIT = 'USER_LP_SUBMIT';
+	var USER_SUCCESS_LOGIN = exports.USER_SUCCESS_LOGIN = 'USER_SUCCESS_LOGIN';
+	var USER_BAD_CREDENTIAL = exports.USER_BAD_CREDENTIAL = 'USER_BAD_CREDENTIAL';
+
+	function doLoginPageUsernameKp(value) {
+	    return {
+	        type: USER_LP_USERNAME_KEYPRESS,
+	        value: value
+	    };
+	}
+
+	function doLoginPagePasswdKp(value) {
+	    return {
+	        type: USER_LP_PASSWD_KEYPRESS,
+	        value: value
+	    };
+	}
+
+	function doLoginPageSubmit() {
+	    return {
+	        type: USER_LP_SUBMIT
+	    };
+	}
+
+	function doSuccessLogin(user) {
+	    return {
+	        type: USER_SUCCESS_LOGIN,
+	        user: user
+	    };
+	}
+
+	function doBadCredential(error) {
+	    return {
+	        type: USER_BAD_CREDENTIAL,
+	        error: error
+	    };
+	}
 
 /***/ },
 /* 641 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 642 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48840,7 +48885,9 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _table = __webpack_require__(642);
+	var _reactRedux = __webpack_require__(533);
+
+	var _table = __webpack_require__(643);
 
 	var _table2 = _interopRequireDefault(_table);
 
@@ -48856,47 +48903,51 @@
 	    id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
 	};
 
-	var MessageList = function (_React$Component) {
-	    _inherits(MessageList, _React$Component);
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        messages: state.messages.items,
+	        page: state.messages.page
+	    };
+	};
 
-	    function MessageList(props) {
-	        _classCallCheck(this, MessageList);
+	var MessageAdmin = function (_React$Component) {
+	    _inherits(MessageAdmin, _React$Component);
 
-	        var _this = _possibleConstructorReturn(this, (MessageList.__proto__ || Object.getPrototypeOf(MessageList)).call(this, props));
+	    function MessageAdmin(props) {
+	        _classCallCheck(this, MessageAdmin);
 
-	        _this.state = {
-	            messages: {
-	                data: [],
-	                error: null
-	            }
-	        };
+	        var _this = _possibleConstructorReturn(this, (MessageAdmin.__proto__ || Object.getPrototypeOf(MessageAdmin)).call(this, props));
 
 	        _this.onNewMessage = _this.onNewMessage.bind(_this);
 	        return _this;
 	    }
 
-	    _createClass(MessageList, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            var self = this;
-	            // params ? check if children is null
-	            // Messages
-	            window.fetch('/api/messages', { credentials: 'include' }).then(function (r) {
-	                return r.json();
-	            }).then(function (msgs) {
-	                // Add a link
+	    _createClass(MessageAdmin, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var dispatch = this.props.dispatch;
 
-	                if (msgs) {
-	                    for (var i = 0, j = msgs.length; i < j; i++) {
-	                        msgs[i].link = '/dashboard/messages/' + msgs[i]._id;
-	                    }
-	                }
-
-	                self.setState({ messages: { data: msgs } });
-	            }).catch(function (e) {
-	                return self.setState({ messages: { error: e } });
-	            });
+	            dispatch(doMessageFetch());
 	        }
+
+	        /*
+	        componentWillMount() {
+	            var self = this;
+	            window.fetch('/api/messages', {credentials: 'include'})
+	                    .then(r => r.json())
+	                    .then(function(msgs) {
+	                        // Add a link
+	                         if (msgs) {
+	                            for (let i = 0, j = msgs.length; i < j; i++) {
+	                                msgs[i].link = '/dashboard/messages/' + msgs[i]._id;
+	                            }
+	                        }
+	                         self.setState({messages: {data: msgs}})
+	                    })
+	                    .catch(e => self.setState({messages: {error: e}}));
+	        }
+	        */
+
 	    }, {
 	        key: 'onNewMessage',
 	        value: function onNewMessage() {
@@ -48937,19 +48988,21 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'body' },
-	                    _react2.default.createElement(_table2.default, { cdef: MESSAGE_TABLE_DEF, items: this.state.messages.data })
+	                    _react2.default.createElement(_table2.default, { cdef: MESSAGE_TABLE_DEF, items: this.props.messages, linkTo: '/dashboard/messages/' })
 	                )
 	            );
 	        }
 	    }]);
 
-	    return MessageList;
+	    return MessageAdmin;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRouter.withRouter)(MessageList);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(MessageAdmin));
+
+	//export default withRouter(MessageList);
 
 /***/ },
-/* 642 */
+/* 643 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48969,6 +49022,7 @@
 	var Table = function Table(_ref) {
 	    var cdef = _ref.cdef;
 	    var items = _ref.items;
+	    var linkTo = _ref.linkTo;
 
 
 	    var rows = null;
@@ -48979,10 +49033,11 @@
 
 	            var name = null;
 
-	            if (cdef.link) {
+	            if (linkTo) {
+	                var link = linkTo + "/" + v[cdef.id];
 	                name = _react2.default.createElement(
 	                    _reactRouter.Link,
-	                    { to: v[cdef.link] },
+	                    { to: link },
 	                    v[cdef.name]
 	                );
 	            } else {
@@ -49046,19 +49101,20 @@
 	};
 
 	Table.propTypes = {
-	    cdef: _react2.default.PropTypes.shape({
-	        id: _react2.default.PropTypes.string,
-	        name: _react2.default.PropTypes.string,
-	        rowdate: _react2.default.PropTypes.string,
-	        link: _react2.default.PropTypes.string
+	    cdef: _react.PropTypes.shape({
+	        id: _react.PropTypes.string,
+	        name: _react.PropTypes.string,
+	        rowdate: _react.PropTypes.string,
+	        link: _react.PropTypes.string
 	    }).isRequired,
-	    items: _react2.default.PropTypes.array
+	    items: _react.PropTypes.array,
+	    linkTo: _react.PropTypes.string
 	};
 
 	exports.default = Table;
 
 /***/ },
-/* 643 */
+/* 644 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49073,7 +49129,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _immutable = __webpack_require__(644);
+	var _immutable = __webpack_require__(645);
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
@@ -49081,15 +49137,15 @@
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _editor = __webpack_require__(645);
+	var _editor = __webpack_require__(646);
 
 	var _editor2 = _interopRequireDefault(_editor);
 
-	var _categoryeditor = __webpack_require__(651);
+	var _categoryeditor = __webpack_require__(652);
 
 	var _categoryeditor2 = _interopRequireDefault(_categoryeditor);
 
-	__webpack_require__(653);
+	__webpack_require__(654);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49364,7 +49420,7 @@
 	exports.default = MessageEditor;
 
 /***/ },
-/* 644 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -54348,7 +54404,7 @@
 	}));
 
 /***/ },
-/* 645 */
+/* 646 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54361,11 +54417,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactSimplemdeEditor = __webpack_require__(646);
+	var _reactSimplemdeEditor = __webpack_require__(647);
 
 	var _reactSimplemdeEditor2 = _interopRequireDefault(_reactSimplemdeEditor);
 
-	__webpack_require__(647);
+	__webpack_require__(648);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54392,7 +54448,7 @@
 	exports.default = Editor;
 
 /***/ },
-/* 646 */
+/* 647 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -74282,16 +74338,16 @@
 	//# sourceMappingURL=react-simplemde-editor.js.map
 
 /***/ },
-/* 647 */
+/* 648 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(648);
+	var content = __webpack_require__(649);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(650)(content, {});
+	var update = __webpack_require__(651)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -74308,10 +74364,10 @@
 	}
 
 /***/ },
-/* 648 */
+/* 649 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(649)();
+	exports = module.exports = __webpack_require__(650)();
 	// imports
 
 
@@ -74322,7 +74378,7 @@
 
 
 /***/ },
-/* 649 */
+/* 650 */
 /***/ function(module, exports) {
 
 	/*
@@ -74378,7 +74434,7 @@
 
 
 /***/ },
-/* 650 */
+/* 651 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -74630,7 +74686,7 @@
 
 
 /***/ },
-/* 651 */
+/* 652 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74645,13 +74701,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _immutable = __webpack_require__(644);
+	var _immutable = __webpack_require__(645);
 
 	var _alertbox = __webpack_require__(567);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _HttpUtils = __webpack_require__(652);
+	var _HttpUtils = __webpack_require__(653);
 
 	var _HttpUtils2 = _interopRequireDefault(_HttpUtils);
 
@@ -74912,7 +74968,7 @@
 	exports.default = CategoryEditor;
 
 /***/ },
-/* 652 */
+/* 653 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74960,13 +75016,13 @@
 	exports.default = HttpUtils;
 
 /***/ },
-/* 653 */
+/* 654 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 654 */
+/* 655 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74977,15 +75033,15 @@
 
 	var _redux = __webpack_require__(540);
 
-	var _reduxThunk = __webpack_require__(655);
+	var _reduxThunk = __webpack_require__(656);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reducers = __webpack_require__(656);
+	var _rootreducers = __webpack_require__(657);
 
-	var _reducers2 = _interopRequireDefault(_reducers);
+	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _reduxLogger = __webpack_require__(660);
+	var _reduxLogger = __webpack_require__(662);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
@@ -74993,12 +75049,12 @@
 
 	var logger = (0, _reduxLogger2.default)();
 
-	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, logger));
+	var store = (0, _redux.createStore)(_rootreducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, logger));
 
 	exports.default = store;
 
 /***/ },
-/* 655 */
+/* 656 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -75026,7 +75082,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 656 */
+/* 657 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75037,22 +75093,25 @@
 
 	var _redux = __webpack_require__(540);
 
-	var _messageReducers = __webpack_require__(657);
+	var _messageReducers = __webpack_require__(658);
 
-	var _categoryReducers = __webpack_require__(658);
+	var _categoryReducers = __webpack_require__(659);
 
-	var _navigationReducers = __webpack_require__(659);
+	var _navigationReducers = __webpack_require__(660);
 
-	var Reducers = (0, _redux.combineReducers)({
+	var _userReducers = __webpack_require__(661);
+
+	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
 	    messages: _messageReducers.messageReducers,
-	    categories: _categoryReducers.categoryReducers
+	    categories: _categoryReducers.categoryReducers,
+	    user: _userReducers.userReducers
 	});
 
-	exports.default = Reducers;
+	exports.default = RootReducers;
 
 /***/ },
-/* 657 */
+/* 658 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75077,7 +75136,7 @@
 	}
 
 /***/ },
-/* 658 */
+/* 659 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75102,7 +75161,7 @@
 	}
 
 /***/ },
-/* 659 */
+/* 660 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75131,7 +75190,38 @@
 	}
 
 /***/ },
-/* 660 */
+/* 661 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.userReducers = userReducers;
+
+	var _userActions = __webpack_require__(640);
+
+	function userReducers() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { username: '', passwd: '' } : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _userActions.USER_LP_USERNAME_KEYPRESS:
+	            return Object.assign({}, state, { username: action.value });
+	        case _userActions.USER_LP_PASSWD_KEYPRESS:
+	            return Object.assign({}, state, { passwd: action.value });
+	        case _userActions.USER_SUCCESS_LOGIN:
+	            return Object.assign({}, state, { connectedUser: action.user });
+	        case _userActions.USER_BAD_CREDENTIAL:
+	            return Object.assign({}, state, { error: action.error });
+	        default:
+	            return state;
+	    }
+	}
+
+/***/ },
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75142,11 +75232,11 @@
 	  value: true
 	});
 
-	var _core = __webpack_require__(661);
+	var _core = __webpack_require__(663);
 
-	var _helpers = __webpack_require__(662);
+	var _helpers = __webpack_require__(664);
 
-	var _defaults = __webpack_require__(665);
+	var _defaults = __webpack_require__(667);
 
 	var _defaults2 = _interopRequireDefault(_defaults);
 
@@ -75249,7 +75339,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 661 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75259,9 +75349,9 @@
 	});
 	exports.printBuffer = printBuffer;
 
-	var _helpers = __webpack_require__(662);
+	var _helpers = __webpack_require__(664);
 
-	var _diff = __webpack_require__(663);
+	var _diff = __webpack_require__(665);
 
 	var _diff2 = _interopRequireDefault(_diff);
 
@@ -75382,7 +75472,7 @@
 	}
 
 /***/ },
-/* 662 */
+/* 664 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -75406,7 +75496,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 663 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75416,7 +75506,7 @@
 	});
 	exports.default = diffLogger;
 
-	var _deepDiff = __webpack_require__(664);
+	var _deepDiff = __webpack_require__(666);
 
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 
@@ -75502,7 +75592,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 664 */
+/* 666 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -75931,7 +76021,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 665 */
+/* 667 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -75982,7 +76072,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 666 */
+/* 668 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Link, withRouter} from 'react-router';
 
 
-const Table = ({cdef, items}) => {
+const Table = ({cdef, items, linkTo}) => {
 
     var rows = null;
     var cdef = cdef;
@@ -12,8 +12,9 @@ const Table = ({cdef, items}) => {
 
             let name = null;
 
-            if (cdef.link) {
-                name = <Link to={v[cdef.link]}>{v[cdef.name]}</Link>;
+            if (linkTo) {
+                let link = linkTo + "/" + v[cdef.id];
+                name = <Link to={link}>{v[cdef.name]}</Link>;
             } else {
                 name = v[cdef.name];
             }
@@ -45,13 +46,14 @@ const Table = ({cdef, items}) => {
 };
 
 Table.propTypes = {
-    cdef: React.PropTypes.shape({
-        id: React.PropTypes.string,
-        name: React.PropTypes.string,
-        rowdate: React.PropTypes.string,
-        link: React.PropTypes.string
+    cdef: PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string,
+        rowdate: PropTypes.string,
+        link: PropTypes.string
     }).isRequired,
-    items: React.PropTypes.array
+    items: PropTypes.array,
+    linkTo: PropTypes.string
 };
 
 export default Table;
