@@ -36995,15 +36995,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _pageheader = __webpack_require__(556);
-
-	var _pageheader2 = _interopRequireDefault(_pageheader);
+	var _reactRedux = __webpack_require__(533);
 
 	var _reactRouter = __webpack_require__(470);
-
-	var _AuthenticationService = __webpack_require__(557);
-
-	var _AuthenticationService2 = _interopRequireDefault(_AuthenticationService);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37012,6 +37006,12 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        connectedUser: state.user.connectedUser
+	    };
+	};
 
 	var ProtectedLayout = function (_React$Component) {
 	    _inherits(ProtectedLayout, _React$Component);
@@ -37023,18 +37023,10 @@
 	    }
 
 	    _createClass(ProtectedLayout, [{
-	        key: 'getUser',
-	        value: function getUser() {
-	            // Reactively know if the user is authenticated
-	            return {
-	                user: sessionStorage.getItem("4nuser")
-	            };
-	        }
-	    }, {
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            // Check that the user is logged in before the component mounts
-	            if (!this.getUser().user) {
+	            if (!this.props.connectedUser) {
 	                this.props.router.push('/login');
 	            }
 	        }
@@ -37045,7 +37037,7 @@
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate(prevProps, prevState) {
 	            // Now check that they are still logged in. Redirect to sign in page if they aren't.
-	            if (!this.getUser().user) {
+	            if (!this.props.connectedUser) {
 	                this.props.router.push('/login');
 	            }
 	        }
@@ -37064,7 +37056,9 @@
 	    return ProtectedLayout;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRouter.withRouter)(ProtectedLayout);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(ProtectedLayout));
+
+	//export default withRouter(ProtectedLayout);
 
 /***/ },
 /* 561 */
@@ -48711,10 +48705,6 @@
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _AuthenticationService = __webpack_require__(557);
-
-	var _AuthenticationService2 = _interopRequireDefault(_AuthenticationService);
-
 	var _userActions = __webpack_require__(640);
 
 	__webpack_require__(641);
@@ -48735,30 +48725,47 @@
 	    };
 	};
 
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	    return {
-	        onUsernameChange: function onUsernameChange(event) {
-	            dispatch((0, _userActions.doLoginPageUsernameKp)(event.target.value));
-	        },
-	        onPasswordChange: function onPasswordChange(event) {
-	            dispatch((0, _userActions.doLoginPagePasswdKp)(event.target.value));
-	        },
-	        onLoginClick: function onLoginClick(event) {
-	            event.preventDefault();dispatch((0, _userActions.doLoginPageSubmit)());
-	        }
-	    };
-	};
-
 	var LoginPage = function (_Component) {
 	    _inherits(LoginPage, _Component);
 
 	    function LoginPage(props) {
 	        _classCallCheck(this, LoginPage);
 
-	        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
+
+	        _this.onLoginClick = _this.onLoginClick.bind(_this);
+	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
+	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(LoginPage, [{
+	        key: 'onLoginClick',
+	        value: function onLoginClick(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _userActions.doLoginPageSubmit)(this.props.username, this.props.passwd));
+	        }
+	    }, {
+	        key: 'onUsernameChange',
+	        value: function onUsernameChange(event) {
+	            var dispatch = this.props.dispatch;
+
+	            var v = event.target.value;
+	            event.preventDefault();
+	            dispatch((0, _userActions.doLoginPageUsernameKp)(v));
+	        }
+	    }, {
+	        key: 'onPasswordChange',
+	        value: function onPasswordChange(event) {
+	            var dispatch = this.props.dispatch;
+
+	            var v = event.target.value;
+	            event.preventDefault();
+	            dispatch((0, _userActions.doLoginPagePasswdKp)(v));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
@@ -48783,16 +48790,16 @@
 	                                { htmlFor: 'username' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.props.onUsernameChange }),
+	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.onUsernameChange }),
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'passwd' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.props.onPasswordChange }),
+	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.onPasswordChange }),
 	                            _react2.default.createElement(
 	                                'button',
-	                                { className: 'btn btnblue', onClick: this.props.onLoginClick },
+	                                { className: 'btn btnblue', onClick: this.onLoginClick },
 	                                'Connexion'
 	                            )
 	                        )
@@ -48805,22 +48812,30 @@
 	    return LoginPage;
 	}(_react.Component);
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
 
 /***/ },
 /* 640 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.USER_BAD_CREDENTIAL = exports.USER_SUCCESS_LOGIN = exports.USER_LP_SUBMIT = exports.USER_LP_PASSWD_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = undefined;
 	exports.doLoginPageUsernameKp = doLoginPageUsernameKp;
 	exports.doLoginPagePasswdKp = doLoginPagePasswdKp;
 	exports.doLoginPageSubmit = doLoginPageSubmit;
 	exports.doSuccessLogin = doSuccessLogin;
 	exports.doBadCredential = doBadCredential;
+
+	__webpack_require__(633);
+
+	var _reactRouter = __webpack_require__(470);
+
+	var _navigationActions = __webpack_require__(634);
+
 	var USER_LP_USERNAME_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = 'USER_LP_LOGIN_KEYPRESS';
 	var USER_LP_PASSWD_KEYPRESS = exports.USER_LP_PASSWD_KEYPRESS = 'USER_LP_PASSWD_KEYPRESS';
 	var USER_LP_SUBMIT = exports.USER_LP_SUBMIT = 'USER_LP_SUBMIT';
@@ -48841,9 +48856,32 @@
 	    };
 	}
 
-	function doLoginPageSubmit() {
-	    return {
-	        type: USER_LP_SUBMIT
+	function doLoginPageSubmit(username, passwd) {
+
+	    return function (dispatch) {
+
+	        dispatch((0, _navigationActions.doStartLoading)());
+
+	        var u = 'username=' + encodeURIComponent(username);
+	        var p = 'password=' + encodeURIComponent(passwd);
+
+	        var opts = {
+	            method: "POST",
+	            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	            body: u + "&" + p,
+	            credentials: 'include'
+	        };
+
+	        return fetch("/api/sec/login", opts).then(function (r) {
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            return r.json();
+	        }).then(function (user) {
+	            sessionStorage.setItem('4nuser', user);
+	            dispatch(doSuccessLogin(user));
+	            _reactRouter.browserHistory.push('/');
+	        }).catch(function (e) {
+	            return dispatch(doBadCredential(e));
+	        });
 	    };
 	}
 

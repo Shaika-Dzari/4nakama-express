@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
-import AuthenticationService from '../../utils/AuthenticationService.js';
 import {doLoginPageUsernameKp, doLoginPagePasswdKp, doLoginPageSubmit} from '../../actions/userActions.js';
 
 import './loginpage.scss';
@@ -15,20 +14,35 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onUsernameChange: (event) => { dispatch(doLoginPageUsernameKp(event.target.value)); },
-        onPasswordChange: (event) => { dispatch(doLoginPagePasswdKp(event.target.value)); },
-        onLoginClick: (event) => { event.preventDefault(); dispatch(doLoginPageSubmit())}
-    };
-};
-
-
 class LoginPage extends Component {
 
     constructor(props) {
         super(props);
+        this.onLoginClick = this.onLoginClick.bind(this);
+        this.onUsernameChange = this.onUsernameChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
     }
+
+    onLoginClick(event) {
+        event.preventDefault();
+        const {dispatch} = this.props;
+        dispatch(doLoginPageSubmit(this.props.username, this.props.passwd));
+    }
+
+    onUsernameChange(event) {
+        const {dispatch} = this.props;
+        let v = event.target.value;
+        event.preventDefault();
+        dispatch(doLoginPageUsernameKp(v));
+    }
+
+    onPasswordChange(event) {
+        const {dispatch} = this.props;
+        let v = event.target.value;
+        event.preventDefault();
+        dispatch(doLoginPagePasswdKp(v));
+    }
+
 
     render () {
 
@@ -42,10 +56,10 @@ class LoginPage extends Component {
                         {alertBox}
                         <form className="frm">
                             <label htmlFor="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" name="username" onChange={this.props.onUsernameChange} />
+                            <input type="text" id="username" name="username" onChange={this.onUsernameChange} />
                             <label htmlFor="passwd">Nom d'utilisateur</label>
-                            <input type="password" id="passwd" name="password" onChange={this.props.onPasswordChange} />
-                            <button className="btn btnblue" onClick={this.props.onLoginClick}>Connexion</button>
+                            <input type="password" id="passwd" name="password" onChange={this.onPasswordChange} />
+                            <button className="btn btnblue" onClick={this.onLoginClick}>Connexion</button>
                         </form>
                     </div>
                 </div>
@@ -54,4 +68,4 @@ class LoginPage extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps)(LoginPage);

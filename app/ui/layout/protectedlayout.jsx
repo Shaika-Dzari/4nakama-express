@@ -1,7 +1,12 @@
 import React from 'react';
-import PageHeader from '../component/pageheader/pageheader.jsx';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import AuthenticationService from '../utils/AuthenticationService.js';
+
+const mapStateToProps = (state) => {
+    return {
+        connectedUser: state.user.connectedUser
+    }
+}
 
 class ProtectedLayout extends React.Component {
 
@@ -9,16 +14,9 @@ class ProtectedLayout extends React.Component {
         super(props);
     }
 
-    getUser() {
-        // Reactively know if the user is authenticated
-        return {
-            user: sessionStorage.getItem("4nuser")
-        };
-    }
-
     componentWillMount() {
         // Check that the user is logged in before the component mounts
-        if (!this.getUser().user) {
+        if (!this.props.connectedUser) {
             this.props.router.push('/login');
         }
     }
@@ -26,7 +24,7 @@ class ProtectedLayout extends React.Component {
     // When the data changes, this method is called
     componentDidUpdate(prevProps, prevState) {
         // Now check that they are still logged in. Redirect to sign in page if they aren't.
-        if (!this.getUser().user) {
+        if (!this.props.connectedUser) {
             this.props.router.push('/login');
         }
     }
@@ -41,4 +39,7 @@ class ProtectedLayout extends React.Component {
     }
 }
 
-export default withRouter(ProtectedLayout);
+
+export default connect(mapStateToProps)(withRouter(ProtectedLayout));
+
+//export default withRouter(ProtectedLayout);
