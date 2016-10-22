@@ -47977,10 +47977,16 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.MESSAGE_RECEIVE = exports.MESSAGE_OPEN = exports.MESSAGE_FETCH = undefined;
+	exports.MESSAGE_EDITOR_SAVEERROR = exports.MESSAGE_EDITOR_SAVED = exports.MESSAGE_EDITOR_TEXT_CHANGE = exports.MESSAGE_EDITOR_PRETTYURL_CHANGE = exports.MESSAGE_EDITOR_TITLE_BLUR = exports.MESSAGE_EDITOR_TITLE_CHANGE = exports.MESSAGE_RECEIVE = exports.MESSAGE_OPEN = exports.MESSAGE_FETCH = undefined;
 	exports.doMessageFetch = doMessageFetch;
 	exports.doMessageOpen = doMessageOpen;
 	exports.doMessageReceive = doMessageReceive;
+	exports.doMessageEditorTitleChange = doMessageEditorTitleChange;
+	exports.doMessageEditorTitleBlur = doMessageEditorTitleBlur;
+	exports.doMessageEditorPrettyUrlChange = doMessageEditorPrettyUrlChange;
+	exports.doMessageEditorTextChange = doMessageEditorTextChange;
+	exports.doMessageEditorSaveError = doMessageEditorSaveError;
+	exports.doMessageEditorSave = doMessageEditorSave;
 
 	__webpack_require__(633);
 
@@ -47995,7 +48001,14 @@
 	var MESSAGE_FETCH = exports.MESSAGE_FETCH = 'MESSAGE_FETCH';
 	var MESSAGE_OPEN = exports.MESSAGE_OPEN = 'MESSAGE_OPEN';
 	var MESSAGE_RECEIVE = exports.MESSAGE_RECEIVE = 'MESSAGE_RECEIVE';
+	var MESSAGE_EDITOR_TITLE_CHANGE = exports.MESSAGE_EDITOR_TITLE_CHANGE = 'MESSAGE_EDITOR_TITLE_CHANGE';
+	var MESSAGE_EDITOR_TITLE_BLUR = exports.MESSAGE_EDITOR_TITLE_BLUR = 'MESSAGE_EDITOR_TITLE_BLUE';
+	var MESSAGE_EDITOR_PRETTYURL_CHANGE = exports.MESSAGE_EDITOR_PRETTYURL_CHANGE = 'MESSAGE_EDITOR_PRETTYURL_CHANGE';
+	var MESSAGE_EDITOR_TEXT_CHANGE = exports.MESSAGE_EDITOR_TEXT_CHANGE = 'MESSAGE_EDITOR_TEXT_CHANGE';
+	var MESSAGE_EDITOR_SAVED = exports.MESSAGE_EDITOR_SAVED = 'MESSAGE_EDITOR_SAVED';
+	var MESSAGE_EDITOR_SAVEERROR = exports.MESSAGE_EDITOR_SAVEERROR = 'MESSAGE_EDITOR_SAVEERROR';
 
+	var MESSAGE_URL = '/api/messages';
 	var remarkable = new _remarkable2.default();
 
 	function doMessageFetch(page) {
@@ -48052,6 +48065,84 @@
 	        type: MESSAGE_RECEIVE,
 	        messages: messages,
 	        page: page
+	    };
+	}
+
+	function doMessageEditorTitleChange(value) {
+	    return {
+	        type: MESSAGE_EDITOR_TITLE_CHANGE,
+	        value: value
+	    };
+	}
+
+	function doMessageEditorTitleBlur(value) {
+	    return {
+	        type: MESSAGE_EDITOR_TITLE_BLUR,
+	        value: value
+	    };
+	}
+
+	function doMessageEditorPrettyUrlChange(value) {
+	    return {
+	        type: MESSAGE_EDITOR_PRETTYURL_CHANGE,
+	        value: value
+	    };
+	}
+
+	function doMessageEditorTextChange(value) {
+	    return {
+	        type: MESSAGE_EDITOR_TEXT_CHANGE,
+	        value: value
+	    };
+	}
+
+	function doMessageEditorSaveError(error) {
+	    return {
+	        type: MESSAGE_EDITOR_SAVEERROR,
+	        error: error
+	    };
+	}
+
+	function doMessageEditorSave() {
+
+	    return function (dispatch, getState) {
+
+	        var id = getState().messages.selectedMessage.id;
+	        var url = MESSAGE_URL + (id === 'new' ? '' : '/' + id);
+	        var protocol = id === 'new' ? 'PUT' : 'POST';
+	        var message = {}; // get from state
+
+	        var params = {
+	            headers: {
+	                'Accept': 'application/json',
+	                'Content-Type': 'application/json'
+	            },
+	            method: protocol,
+	            body: JSON.stringify(message),
+	            credentials: 'include'
+	        };
+
+	        return fetch(url, params).then(function (r) {
+	            //
+	        }).catch(function (e) {
+	            return dispatch(doMessageEditorSaveError(e));
+	        });
+	        /*
+	         let isNew = messageId && messageId != 'new';
+	        let url = MESSAGE_URL + (isNew ? '/' + messageId : '');
+	        let protocol = isNew ? 'PUT' : 'POST'
+	         fetch(url, {
+	            headers: {
+	                'Accept': 'application/json',
+	                'Content-Type': 'application/json'
+	            },
+	            method: protocol,
+	            body: JSON.stringify(message),
+	            credentials: 'include'
+	        })
+	        .then(function(res){ console.log(res) }) // Need saved feedback
+	        .catch(e => self.setState({error: e}))
+	         */
 	    };
 	}
 
@@ -48725,47 +48816,55 @@
 	    };
 	};
 
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        onLoginClick: function onLoginClick(event) {
+	            event.preventDefault();dispatch((0, _userActions.doLoginPageSubmit)());
+	        },
+	        onUsernameChange: function onUsernameChange(event) {
+	            return dispatch((0, _userActions.doLoginPageUsernameKp)(event.target.value));
+	        },
+	        onPasswordChange: function onPasswordChange(event) {
+	            return dispatch((0, _userActions.doLoginPagePasswdKp)(event.target.value));
+	        }
+	    };
+	};
+
 	var LoginPage = function (_Component) {
 	    _inherits(LoginPage, _Component);
 
 	    function LoginPage(props) {
 	        _classCallCheck(this, LoginPage);
 
-	        var _this = _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
-
-	        _this.onLoginClick = _this.onLoginClick.bind(_this);
-	        _this.onUsernameChange = _this.onUsernameChange.bind(_this);
-	        _this.onPasswordChange = _this.onPasswordChange.bind(_this);
-	        return _this;
+	        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
+	        /*
+	        this.onLoginClick = this.onLoginClick.bind(this);
+	        this.onUsernameChange = this.onUsernameChange.bind(this);
+	        this.onPasswordChange = this.onPasswordChange.bind(this);
+	        */
 	    }
 
+	    /*
+	    onLoginClick(event) {
+	        event.preventDefault();
+	        const {dispatch} = this.props;
+	        dispatch(doLoginPageSubmit(this.props.username, this.props.passwd));
+	    }
+	     onUsernameChange(event) {
+	        const {dispatch} = this.props;
+	        let v = event.target.value;
+	        event.preventDefault();
+	        dispatch(doLoginPageUsernameKp(v));
+	    }
+	     onPasswordChange(event) {
+	        const {dispatch} = this.props;
+	        let v = event.target.value;
+	        event.preventDefault();
+	        dispatch(doLoginPagePasswdKp(v));
+	    }
+	    */
+
 	    _createClass(LoginPage, [{
-	        key: 'onLoginClick',
-	        value: function onLoginClick(event) {
-	            event.preventDefault();
-	            var dispatch = this.props.dispatch;
-
-	            dispatch((0, _userActions.doLoginPageSubmit)(this.props.username, this.props.passwd));
-	        }
-	    }, {
-	        key: 'onUsernameChange',
-	        value: function onUsernameChange(event) {
-	            var dispatch = this.props.dispatch;
-
-	            var v = event.target.value;
-	            event.preventDefault();
-	            dispatch((0, _userActions.doLoginPageUsernameKp)(v));
-	        }
-	    }, {
-	        key: 'onPasswordChange',
-	        value: function onPasswordChange(event) {
-	            var dispatch = this.props.dispatch;
-
-	            var v = event.target.value;
-	            event.preventDefault();
-	            dispatch((0, _userActions.doLoginPagePasswdKp)(v));
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 
@@ -48790,16 +48889,16 @@
 	                                { htmlFor: 'username' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.onUsernameChange }),
+	                            _react2.default.createElement('input', { type: 'text', id: 'username', name: 'username', onChange: this.props.onUsernameChange }),
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'passwd' },
 	                                'Nom d\'utilisateur'
 	                            ),
-	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.onPasswordChange }),
+	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.props.onPasswordChange }),
 	                            _react2.default.createElement(
 	                                'button',
-	                                { className: 'btn btnblue', onClick: this.onLoginClick },
+	                                { className: 'btn btnblue', onClick: this.props.onLoginClick },
 	                                'Connexion'
 	                            )
 	                        )
@@ -48812,7 +48911,7 @@
 	    return LoginPage;
 	}(_react.Component);
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 /***/ },
 /* 640 */
@@ -48856,14 +48955,14 @@
 	    };
 	}
 
-	function doLoginPageSubmit(username, passwd) {
+	function doLoginPageSubmit() {
 
-	    return function (dispatch) {
+	    return function (dispatch, getState) {
 
 	        dispatch((0, _navigationActions.doStartLoading)());
 
-	        var u = 'username=' + encodeURIComponent(username);
-	        var p = 'password=' + encodeURIComponent(passwd);
+	        var u = 'username=' + encodeURIComponent(getState().user.username);
+	        var p = 'password=' + encodeURIComponent(getState().user.passwd);
 
 	        var opts = {
 	            method: "POST",
@@ -48925,6 +49024,8 @@
 
 	var _reactRedux = __webpack_require__(533);
 
+	var _messageActions = __webpack_require__(632);
+
 	var _table = __webpack_require__(643);
 
 	var _table2 = _interopRequireDefault(_table);
@@ -48965,27 +49066,8 @@
 	        value: function componentDidMount() {
 	            var dispatch = this.props.dispatch;
 
-	            dispatch(doMessageFetch());
+	            dispatch((0, _messageActions.doMessageFetch)());
 	        }
-
-	        /*
-	        componentWillMount() {
-	            var self = this;
-	            window.fetch('/api/messages', {credentials: 'include'})
-	                    .then(r => r.json())
-	                    .then(function(msgs) {
-	                        // Add a link
-	                         if (msgs) {
-	                            for (let i = 0, j = msgs.length; i < j; i++) {
-	                                msgs[i].link = '/dashboard/messages/' + msgs[i]._id;
-	                            }
-	                        }
-	                         self.setState({messages: {data: msgs}})
-	                    })
-	                    .catch(e => self.setState({messages: {error: e}}));
-	        }
-	        */
-
 	    }, {
 	        key: 'onNewMessage',
 	        value: function onNewMessage() {
@@ -49026,7 +49108,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'body' },
-	                    _react2.default.createElement(_table2.default, { cdef: MESSAGE_TABLE_DEF, items: this.props.messages, linkTo: '/dashboard/messages/' })
+	                    _react2.default.createElement(_table2.default, { cdef: MESSAGE_TABLE_DEF, items: this.props.messages, linkTo: '/dashboard/messages' })
 	                )
 	            );
 	        }
@@ -49036,8 +49118,6 @@
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(MessageAdmin));
-
-	//export default withRouter(MessageList);
 
 /***/ },
 /* 643 */

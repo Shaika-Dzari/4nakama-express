@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
+import {doMessageFetch} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 
 const MESSAGE_TABLE_DEF = {
@@ -15,7 +16,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-
 class MessageAdmin extends React.Component {
 
     constructor(props) {
@@ -27,26 +27,6 @@ class MessageAdmin extends React.Component {
         const { dispatch } = this.props
         dispatch(doMessageFetch());
     }
-
-    /*
-    componentWillMount() {
-        var self = this;
-        window.fetch('/api/messages', {credentials: 'include'})
-                .then(r => r.json())
-                .then(function(msgs) {
-                    // Add a link
-
-                    if (msgs) {
-                        for (let i = 0, j = msgs.length; i < j; i++) {
-                            msgs[i].link = '/dashboard/messages/' + msgs[i]._id;
-                        }
-                    }
-
-                    self.setState({messages: {data: msgs}})
-                })
-                .catch(e => self.setState({messages: {error: e}}));
-    }
-    */
 
     onNewMessage() {
         this.props.router.push('/dashboard/messages/new');
@@ -66,7 +46,7 @@ class MessageAdmin extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <Table cdef={MESSAGE_TABLE_DEF} items={this.props.messages} linkTo='/dashboard/messages/' />
+                    <Table cdef={MESSAGE_TABLE_DEF} items={this.props.messages} linkTo='/dashboard/messages' />
                 </div>
             </div>
         );
@@ -75,5 +55,3 @@ class MessageAdmin extends React.Component {
 
 
 export default connect(mapStateToProps)(withRouter(MessageAdmin));
-
-//export default withRouter(MessageList);

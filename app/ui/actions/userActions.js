@@ -22,14 +22,14 @@ export function doLoginPagePasswdKp(value) {
     };
 }
 
-export function doLoginPageSubmit(username, passwd) {
+export function doLoginPageSubmit() {
 
-    return dispatch => {
+    return (dispatch, getState) => {
 
         dispatch(doStartLoading());
 
-        let u = 'username=' + encodeURIComponent(username);
-        let p = 'password=' + encodeURIComponent(passwd);
+        let u = 'username=' + encodeURIComponent(getState().user.username);
+        let p = 'password=' + encodeURIComponent(getState().user.passwd);
 
 
         let opts = {

@@ -14,15 +14,26 @@ const mapStateToProps = (state) => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onLoginClick: (event) => { event.preventDefault(); dispatch(doLoginPageSubmit()); },
+        onUsernameChange: (event) => dispatch(doLoginPageUsernameKp(event.target.value)),
+        onPasswordChange: (event) => dispatch(doLoginPagePasswdKp(event.target.value))
+    };
+}
+
 class LoginPage extends Component {
 
     constructor(props) {
         super(props);
+        /*
         this.onLoginClick = this.onLoginClick.bind(this);
         this.onUsernameChange = this.onUsernameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        */
     }
 
+    /*
     onLoginClick(event) {
         event.preventDefault();
         const {dispatch} = this.props;
@@ -42,7 +53,7 @@ class LoginPage extends Component {
         event.preventDefault();
         dispatch(doLoginPagePasswdKp(v));
     }
-
+    */
 
     render () {
 
@@ -56,10 +67,10 @@ class LoginPage extends Component {
                         {alertBox}
                         <form className="frm">
                             <label htmlFor="username">Nom d'utilisateur</label>
-                            <input type="text" id="username" name="username" onChange={this.onUsernameChange} />
+                            <input type="text" id="username" name="username" onChange={this.props.onUsernameChange} />
                             <label htmlFor="passwd">Nom d'utilisateur</label>
-                            <input type="password" id="passwd" name="password" onChange={this.onPasswordChange} />
-                            <button className="btn btnblue" onClick={this.onLoginClick}>Connexion</button>
+                            <input type="password" id="passwd" name="password" onChange={this.props.onPasswordChange} />
+                            <button className="btn btnblue" onClick={this.props.onLoginClick}>Connexion</button>
                         </form>
                     </div>
                 </div>
@@ -68,4 +79,4 @@ class LoginPage extends Component {
     }
 }
 
-export default connect(mapStateToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
