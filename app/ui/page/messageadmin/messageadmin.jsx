@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
-import {doMessageFetch} from '../../actions/messageActions.js';
+import {doMessageFetch, doMessageFetchForEdit} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 
 const MESSAGE_TABLE_DEF = {
@@ -12,6 +12,7 @@ const MESSAGE_TABLE_DEF = {
 const mapStateToProps = (state) => {
     return {
         messages: state.messages.items,
+        index: state.messages.index,
         page: state.messages.page
     }
 }
@@ -21,10 +22,11 @@ class MessageAdmin extends React.Component {
     constructor(props) {
         super(props);
         this.onNewMessage = this.onNewMessage.bind(this);
+        this.onMessageClick = this.onMessageClick.bind(this);
     }
 
     componentDidMount() {
-        const { dispatch } = this.props
+        const { dispatch } = this.props;
         dispatch(doMessageFetch());
     }
 
@@ -32,7 +34,17 @@ class MessageAdmin extends React.Component {
         this.props.router.push('/dashboard/messages/new');
     }
 
+    onMessageClick(messageId) {
+        const { dispatch } = this.props;
+        dispatch(doMessageFetchForEdit(messageId));
+    }
+
     render() {
+
+        let msgs = this.props.index.map(i => {
+            return this.props.messages[i];
+        });
+
         return (
             <div className="box bluebox">
                 <div className="heading">
@@ -46,7 +58,7 @@ class MessageAdmin extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <Table cdef={MESSAGE_TABLE_DEF} items={this.props.messages} linkTo='/dashboard/messages' />
+                    <Table cdef={MESSAGE_TABLE_DEF} items={msgs} linkTo={this.onMessageClick} />
                 </div>
             </div>
         );

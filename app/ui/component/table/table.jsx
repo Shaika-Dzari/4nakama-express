@@ -1,6 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Link, withRouter} from 'react-router';
-
 
 const Table = ({cdef, items, linkTo}) => {
 
@@ -11,17 +9,19 @@ const Table = ({cdef, items, linkTo}) => {
         rows = items.map((v, i) => {
 
             let name = null;
+            let id = v[cdef.id];
 
             if (linkTo) {
-                let link = linkTo + "/" + v[cdef.id];
-                name = <Link to={link}>{v[cdef.name]}</Link>;
+                //let link = linkTo + "/" + v[cdef.id];
+                name = <a href="#" onClick={(e) => { e.preventDefault(); linkTo(id);}}>{v[cdef.name]}</a>
+                //name = <Link to={link}>{v[cdef.name]}</Link>;
             } else {
                 name = v[cdef.name];
             }
 
             return (
-                <tr key={v[cdef.id]}>
-                    <td>{v[cdef.id]}</td>
+                <tr key={id}>
+                    <td>{id}</td>
                     <td>{name}</td>
                     <td>{v[cdef.rowdate]}</td>
                 </tr>
@@ -53,7 +53,7 @@ Table.propTypes = {
         link: PropTypes.string
     }).isRequired,
     items: PropTypes.array,
-    linkTo: PropTypes.string
+    linkTo: PropTypes.func
 };
 
 export default Table;

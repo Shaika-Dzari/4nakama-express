@@ -1,27 +1,33 @@
 import React, { PropTypes } from 'react';
 
-const CategoryList = ({categories}) => {
+const CategoryList = ({categories, index}) => {
 
-    let c = 'Aucun';
+    let cats = 'Aucun';
 
-    if (categories) {
-        c = categories.map((v, idx) => {
-            return <li key={v._id}><a href="#">{v.name}</a></li>
+    if (categories && index) {
+        cats = index.map((v, idx) => {
+            let c = categories[v];
+            return <li key={v}><a href="#">{c.name}</a></li>
         });
     }
 
     return (
         <ul>
-            {c}
+            {cats}
         </ul>
     );
 }
 
 CategoryList.propTypes = {
-    categories: PropTypes.arrayOf(PropTypes.shape({
+    categories: PropTypes.object.isRequired,
+    index: PropTypes.array.isRequired
+};
+
+/*
+PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired
     }).isRequired)
-};
+ */
 
 export default CategoryList;

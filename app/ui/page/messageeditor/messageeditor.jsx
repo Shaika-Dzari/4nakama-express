@@ -1,14 +1,34 @@
 import React from 'react';
-import Immutable, {Map, List} from 'immutable';
+import { connect } from 'react-redux';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
 import Editor from '../../component/editor/editor.jsx';
 import CategoryEditor from '../../component/categoryeditor/categoryeditor.jsx';
+import {doMessageEditorTitleChange, doMessageEditorTitleBlur,
+        doMessageEditorPrettyUrlChange, doMessageEditorTextChange,
+        doMessageEditorPublishedCheck, doMessageEditorCategoryCheck,
+        doMessageEditorSave} from '../../actions/messageActions.js';
 
 import './messageeditor.scss';
 
 const MESSAGE_URL = '/api/messages';
 
-export default class MessageEditor extends React.Component {
+const mapStateToProps = (state) => {
+
+    let id = state.messages.selectedid;
+    let msg = state.messages.items[id];
+
+    return {
+        messageId: id,
+        title: msg.title,
+        prettyUrl: msg.prettyUrl,
+        text: msg.text,
+        published: msg.published,
+        categories: msg.categories,
+        error: state.messages.error
+    };
+};
+
+class MessageEditor extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,49 +40,31 @@ export default class MessageEditor extends React.Component {
         this.onPublishedClick = this.onPublishedClick.bind(this);
         this.onCategorySelect = this.onCategorySelect.bind(this);
 
-        this.state = {
-            message : Immutable.fromJS({text: '', title: '', prettyUrl: '', published: false, categories: []})
-        }
-    }
-
-    componentWillMount() {
-        var messageId = this.props.params.messageId;
-        var self = this;
-        if (messageId) {
-
-            if (messageId !== 'new') {
-
-                // Get message
-                window.fetch('/api/messages/' + messageId, {credentials: 'include'})
-                        .then(r => r.json())
-                        .then(msg => {
-                            self.setState({message: Immutable.fromJS(msg)});
-                        })
-                        .catch(e => self.setState({error: e}));
-            }
-        }
     }
 
     onEditorChange(value) {
-        this.setState(({message}) => ({
-            message: message.set('text', value)
-        }));
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorTextChange(this.props.messageId, value));
     }
 
     onTitleChange(event) {
         let v = event.target.value;
-        this.setState(({message}) => ({
-            message: message.set('title', v)
-        }));
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorTitleChange(this.props.messageId, v));
     }
 
     onPrettyUrlChange(event) {
-        this.setState(({message}) => ({
-            message: message.set('prettyUrl', event.target.value)
-        }));
+        let v = event.target.value;
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorPrettyUrlChange(this.props.messageId, v));
     }
 
     onTitleBlur(event) {
+        let v = event.target.value;
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorTitleBlur(this.props.messageId, v));
+
+        /*
         let title = this.state.message.get('title') || '';
 
         title = title.replace(/[!$?*&#\\]/g, '');
@@ -71,17 +73,20 @@ export default class MessageEditor extends React.Component {
         this.setState(({message}) => ({
             message: message.set('prettyUrl', title)
         }));
+        */
     }
 
     onPublishedClick(event) {
-        let pub = event.target.checked;
-        this.setState(({message}) => ({
-            message: message.set('published', pub)
-        }));
+        let published = event.target.checked;
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorPublishedCheck(this.props.messageId, published));
     }
 
     onCategorySelect(category) {
-        console.log(category);
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorCategoryCheck(this.props.messageId, category));
+
+        /*
         let cs = this.state.message.get('categories');
         let csprime = cs.push(category);
 
@@ -91,15 +96,19 @@ export default class MessageEditor extends React.Component {
         this.setState(({message}) => ({
             message: message.set('categories', csprime)
         }));
+        */
     }
 
     onSave(event) {
+
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorSave(this.props.messageId));
+        /*
         let messageId = this.props.params.messageId;
         let message = this.state.message.toJS();
 
-        console.log(message);
-
         this.saveMessage(messageId, message);
+        */
     }
 
     saveMessage(messageId, message) {
@@ -128,7 +137,7 @@ export default class MessageEditor extends React.Component {
                 <div className="heading">
                     <div className="row">
                         <div className="col-6">
-                            <h4>#{this.props.params.messageId}</h4>
+                            <h4>#{this.props.messageId}</h4>
                         </div>
                         <div className="col-6 right">
                             <button className="btn" onClick={this.onSave}>Save</button>
@@ -136,18 +145,18 @@ export default class MessageEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <AlertBox message={this.state.error} />
+                    <AlertBox message={this.props.error} />
                     <div className="row">
                         <div className="col-9">
                             <div className="box">
                                 <div className="body">
                                     <div className="frm">
                                         <label htmlFor="msg-title">Titre</label>
-                                        <input type="text" value={this.state.message.get('title')} onChange={this.onTitleChange} onBlur={this.onTitleBlur} id="msg-title" />
+                                        <input type="text" value={this.props.title} onChange={this.onTitleChange} onBlur={this.onTitleBlur} id="msg-title" />
                                         <label htmlFor="msg-url">URL</label>
-                                        <input type="text" value={this.state.message.get('prettyUrl')} onChange={this.onPrettyUrlChange} id="msg-url" />
+                                        <input type="text" value={this.props.prettyUrl} onChange={this.onPrettyUrlChange} id="msg-url" />
                                         <label htmlFor="msg-text">Message</label>
-                                        <Editor value={this.state.message.get('text')} onEditorChange={this.onEditorChange} id="msg-text" />
+                                        <Editor value={this.props.text} onEditorChange={this.onEditorChange} id="msg-text" />
                                     </div>
                                 </div>
                             </div>
@@ -158,11 +167,11 @@ export default class MessageEditor extends React.Component {
                                     <div className="box bluebox">
                                         <div className="heading">
                                             <h4>
-                                                <input type="checkbox" checked={this.state.message.get('published')} onClick={this.onPublishedClick} /> Publié
+                                                <input type="checkbox" checked={this.props.published} onClick={this.onPublishedClick} /> Publié
                                             </h4>
                                         </div>
                                     </div>
-                                    <CategoryEditor onComponentSelect={this.onCategorySelect} selectedItems={this.state.message.get('categories')} />
+                                    <CategoryEditor onComponentSelect={this.onCategorySelect} selectedItems={this.props.categories} />
                                 </div>
                             </div>
                         </div>
@@ -173,3 +182,6 @@ export default class MessageEditor extends React.Component {
         );
     }
 }
+
+
+export default connect(mapStateToProps)(MessageEditor);

@@ -1,16 +1,16 @@
 import React, {PropTypes} from 'react';
-import {Link, withRouter} from 'react-router';
 import Message from '../message/message.jsx';
 import AlertBox from '../alertbox/alertbox.jsx';
 import Pager from '../pager/pager.jsx';
 
-const MessageList = ({messages}) => {
+const MessageList = ({messages, index}) => {
 
     var  msgs = 'Aucun...';
 
-    if (messages && messages.length) {
-        msgs = messages.map((v, idx) => {
-            return <Message key={v._id} {...v} />
+    if (messages && index) {
+        msgs = index.map((v, idx) => {
+            let m = messages[v];
+            return <Message key={v} {...m} />
         });
     }
 
@@ -25,14 +25,21 @@ const MessageList = ({messages}) => {
 }
 
 MessageList.propTypes = {
-    messages: PropTypes.arrayOf(PropTypes.shape({
+    messages: PropTypes.object.isRequired,
+    index: PropTypes.array.isRequired
+};
+
+/*
+TODO: validate message form.
+
+messages: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         authorName: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         categories: PropTypes.array
-    }).isRequired).isRequired
-};
+    }).isRequired).isRequired,
+ */
 
-export default withRouter(MessageList);
+export default MessageList;

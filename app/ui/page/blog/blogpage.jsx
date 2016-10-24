@@ -14,8 +14,10 @@ import './blogpage.scss';
 const mapStateToProps = (state) => {
     return {
         messages: state.messages.items,
+        messagesindex: state.messages.index,
         page: state.messages.page,
-        categories: state.categories.items
+        categories: state.categories.items,
+        categoriesindex: state.categories.index
     }
 }
 
@@ -36,14 +38,14 @@ class BlogPage extends React.Component {
                 <div className="row">
                     <div className="col-10">
                         <div className="list-ctn">
-                            <MessageList messages={this.props.messages} />
+                            <MessageList messages={this.props.messages} index={this.props.messagesindex} />
                         </div>
                     </div>
                     <div className="col-2">
                         <div className="list-ctn">
                             <div className="info-element">
                                 <h3>Catégories</h3>
-                                <CategoryList categories={this.props.categories} />
+                                <CategoryList categories={this.props.categories} index={this.props.categoriesindex} />
                             </div>
                         </div>
                     </div>
@@ -51,6 +53,7 @@ class BlogPage extends React.Component {
             );
     }
 }
+
 
 export default connect(mapStateToProps)(BlogPage);
 

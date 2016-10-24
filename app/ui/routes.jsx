@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
 // Layouts
@@ -17,11 +18,13 @@ import MessageEditor from './page/messageeditor/messageeditor.jsx';
 // Store
 import store from './store/createstore.js';
 
+const history = syncHistoryWithStore(browserHistory, store)
+
 const AppRoute = () => {
 
     return (
         <Provider store={store}>
-            <Router history={ browserHistory }>
+            <Router history={ history }>
                 <Route path="/" component={ PublicLayout }>
                     <IndexRoute component={ BlogPage } />
                     <Route path="login" component={ LoginPage } />
