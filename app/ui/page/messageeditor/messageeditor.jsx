@@ -63,17 +63,6 @@ class MessageEditor extends React.Component {
         let v = event.target.value;
         const { dispatch } = this.props;
         dispatch(doMessageEditorTitleBlur(this.props.messageId, v));
-
-        /*
-        let title = this.state.message.get('title') || '';
-
-        title = title.replace(/[!$?*&#\\]/g, '');
-        title = title.replace(/[^a-z0-9_\-]/gi, '_');
-
-        this.setState(({message}) => ({
-            message: message.set('prettyUrl', title)
-        }));
-        */
     }
 
     onPublishedClick(event) {
@@ -85,49 +74,11 @@ class MessageEditor extends React.Component {
     onCategorySelect(category) {
         const { dispatch } = this.props;
         dispatch(doMessageEditorCategoryCheck(this.props.messageId, category));
-
-        /*
-        let cs = this.state.message.get('categories');
-        let csprime = cs.push(category);
-
-        console.log(cs.toJS());
-        console.log(csprime.toJS());
-
-        this.setState(({message}) => ({
-            message: message.set('categories', csprime)
-        }));
-        */
     }
 
     onSave(event) {
-
         const { dispatch } = this.props;
         dispatch(doMessageEditorSave(this.props.messageId));
-        /*
-        let messageId = this.props.params.messageId;
-        let message = this.state.message.toJS();
-
-        this.saveMessage(messageId, message);
-        */
-    }
-
-    saveMessage(messageId, message) {
-
-        let isNew = messageId && messageId != 'new';
-        let url = MESSAGE_URL + (isNew ? '/' + messageId : '');
-        let protocol = isNew ? 'PUT' : 'POST'
-
-        fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: protocol,
-            body: JSON.stringify(message),
-            credentials: 'include'
-        })
-        .then(function(res){ console.log(res) }) // Need saved feedback
-        .catch(e => self.setState({error: e}))
     }
 
     render() {
@@ -167,7 +118,7 @@ class MessageEditor extends React.Component {
                                     <div className="box bluebox">
                                         <div className="heading">
                                             <h4>
-                                                <input type="checkbox" checked={this.props.published} onClick={this.onPublishedClick} /> Publié
+                                                <input type="checkbox" defaultChecked={this.props.published} onClick={this.onPublishedClick} /> Publié
                                             </h4>
                                         </div>
                                     </div>

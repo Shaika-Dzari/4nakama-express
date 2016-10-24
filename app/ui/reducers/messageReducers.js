@@ -10,7 +10,6 @@ function updateMessage(messages, id, action) {
         }
     }
     let msg = Object.assign({}, messages[id], update);
-    console.log(JSON.stringify(msg));
     return Object.assign({}, messages, {[id]: msg});
 }
 
