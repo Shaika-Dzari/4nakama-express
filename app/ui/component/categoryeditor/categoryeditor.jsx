@@ -54,8 +54,9 @@ class CategoryEditor extends React.Component {
     }
 
     isSelected(cId) {
+        console.log('testing ' + cId, this.props.selectedItems);
         for (let c in this.props.selectedItems) {
-            if (c._id === cId) {
+            if (this.props.selectedItems[c]._id == cId) {
                 return true;
             }
         }
@@ -68,6 +69,8 @@ class CategoryEditor extends React.Component {
             let key = 'c-' + cid;
             let cat = this.props.categories[cid];
             let checked = this.isSelected(cid);
+            console.log(checked);
+
             return (
                 <li key={key}>
                     <label>

@@ -70304,8 +70304,9 @@
 	    }, {
 	        key: 'isSelected',
 	        value: function isSelected(cId) {
+	            console.log('testing ' + cId, this.props.selectedItems);
 	            for (var c in this.props.selectedItems) {
-	                if (c._id === cId) {
+	                if (this.props.selectedItems[c]._id == cId) {
 	                    return true;
 	                }
 	            }
@@ -70322,6 +70323,8 @@
 	                var key = 'c-' + cid;
 	                var cat = _this2.props.categories[cid];
 	                var checked = _this2.isSelected(cid);
+	                console.log(checked);
+
 	                return _react2.default.createElement(
 	                    'li',
 	                    { key: key },
