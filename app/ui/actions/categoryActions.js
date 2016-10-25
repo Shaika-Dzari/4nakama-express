@@ -48,7 +48,7 @@ export function doCategorySave(category) {
         dispatch(doStartLoading());
         let cid = category._id;
         let url = CATEGORY_URL + (cid === 'new' ? '' : '/' + cid);
-        let protocol = cid === 'new' ? 'PUT' : 'POST';
+        let protocol = cid === 'new' ? 'POST' : 'PUT';
 
         let params = {
             headers: {
@@ -61,7 +61,7 @@ export function doCategorySave(category) {
         };
 
         return fetch(url, params)
-            .then(r = r.json())
+            .then(r => r.json())
             .then(c => {
                 dispatch(doStopLoading());
                 dispatch(doCategoryUpdated(c))

@@ -81,8 +81,8 @@ export function doMessageEditorSave(messageId) {
 
         //let id = getState().messages.selectedMessage.id;
         let url = MSG_URL + (messageId === 'new' ? '' : '/' + messageId);
-        let protocol = messageId === 'new' ? 'PUT' : 'POST'
-        let message = getState().messages[messageId];
+        let protocol = messageId === 'new' ? 'POST' : 'PUT';
+        let message = getState().messages.items[messageId];
 
 
         let params = {
@@ -98,7 +98,7 @@ export function doMessageEditorSave(messageId) {
         dispatch(doStartLoading());
 
         return fetch(url, params)
-            .then(r = r.json())
+            .then(r => r.json())
             .then(m => {
                 dispatch(doStopLoading());
                 dispatch(doMessageUpdateReceive(m))

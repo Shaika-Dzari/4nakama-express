@@ -11,7 +11,6 @@ var MessageSchema = new Schema({
     updatedAt: { type: Date},
     authorId: {type: String, required: true},
     authorName: {type: String, required: true},
-    tags: [{_id: String, name: String}],
     categories: [{_id: String, name: String}],
     prettyUrl: String
 });

@@ -62,7 +62,7 @@ export function messageReducers(state = {items: {}, index: []}, action) {
         case MSG_EDITOR_CAT_CHECK:
             let csprime = [...state.items[action.messageId].categories];
             csprime.push(action.category);
-            return Object.assign({}, state, updateMessage(state.items, action.messageId, {'categories': csprime}));
+            return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'categories': csprime})});
 
 
         default:

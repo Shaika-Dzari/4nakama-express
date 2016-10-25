@@ -5,7 +5,7 @@ import RootReducers from '../reducers/rootreducers.js';
 import createLogger from 'redux-logger';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
-const logger = createLogger();
+const logger = createLogger({collapsed: true});
 const reduxRouterMiddleware = routerMiddleware(browserHistory);
 
 const store = createStore(
