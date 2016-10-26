@@ -48,6 +48,19 @@ export function messageReducers(state = {items: {}, index: []}, action) {
         case MSG_UPDATE_SAVEERROR:
             return Object.assign({}, state, {error: action.error});
 
+        case MSG_UPDATE_RECEIVE:
+            let index;
+
+            if (state.index.indexOf(action.message._id) != -1) {
+                index = state.index;
+            } else {
+                index = [...state.index];
+                index.push(action.message._id);
+            }
+            let msgList = Object.assign({}, state.items, {[action.message._id]: action.message});
+            return Object.assign({}, state, {items: msgList, index: index});
+
+
         // Editor changes
         case MSG_EDITOR_TITLE_CHANGE:
         case MSG_EDITOR_TEXT_CHANGE:

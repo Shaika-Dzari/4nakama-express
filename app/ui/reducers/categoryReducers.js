@@ -22,15 +22,16 @@ export function categoryReducers(state = {items: {}, index: []}, action) {
             let index;
 
             if (state.index.indexOf(action.category._id) != -1) {
-                index = this.state.index;
+                index = state.index;
             } else {
-                index = [...this.state.index];
+                index = [...state.index];
                 index.push(action.category._id);
             }
-            let catList = Object.assign({}, this.state.items, {[action.category._id]: action.category});
-            return Object.assign({}, state, {items: catList, index: catIdx});
+            let catList = Object.assign({}, state.items, {[action.category._id]: action.category});
+            return Object.assign({}, state, {items: catList, index: index});
 
         case CATEGORY_ERROR:
+            console.log('error', action.error);
             return Object.assign({}, state, {error: action.error});
 
         default:

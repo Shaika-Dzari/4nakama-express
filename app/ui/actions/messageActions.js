@@ -1,12 +1,12 @@
 import 'whatwg-fetch';
-import Remarkable from 'remarkable';
 import {  push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
+import Remarkable from 'remarkable';
 
 export const MSG_CACHE_HIT  = 'MSG_CACHE_HIT';
 export const MSG_LIST_FETCH = 'MSG_LIST_FETCH';
 export const MSG_OPEN = 'MSG_OPEN';
-export const MSG_EDIT  = 'MSG DIT';
+export const MSG_EDIT  = 'MSG_EDIT';
 export const MSG_LIST_RECEIVE  = 'MSG_LIST_RECEIVE';
 export const MSG_EDITOR_TITLE_CHANGE = 'MSG_EDITOR_TITLE_CHANGE';
 export const MSG_EDITOR_TITLE_BLUR = 'MSG_EDITOR_TITLE_BLUE';
@@ -44,15 +44,10 @@ export function doMessageFetch(page) {
             return fetch(MSG_URL, {credentials: 'include'})
                     .then(r => r.json())
                     .then(msgs => {
-
                         dispatch(doStopLoading());
-
-                        if(msgs && msgs.length > 0) {
-                            for(let msg of msgs) {
-                                msg.texthtml = remarkable.render(msg.text);
-                            }
+                        if (msgs) {
+                            msgs.forEach(m => m.texthtml = remarkable.render(m.text));
                         }
-
                         dispatch(doMessagesReceive(msgs, page));
                     });
         }
@@ -101,6 +96,11 @@ export function doMessageEditorSave(messageId) {
             .then(r => r.json())
             .then(m => {
                 dispatch(doStopLoading());
+
+                if (m) {
+                    m.texthtml = remarkable.render(m.text);
+                }
+
                 dispatch(doMessageUpdateReceive(m))
             }).catch(e => dispatch(doMessageEditorSaveError(e)));
 

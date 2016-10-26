@@ -9,7 +9,7 @@ const Message = ({title, text, texthtml, authorName, createdAt, categories}) => 
 
     if (categories) {
         cats = categories.map((v, i) => {
-            return <span key={v._id}>{v.name}</span> ;
+            return <span key={v._id} className="category">{v.name}</span> ;
         });
     }
 
