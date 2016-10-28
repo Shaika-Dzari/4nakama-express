@@ -14,8 +14,8 @@ const Pager = ({startdate, enddate}) => {
 
     return (
         <div className="pager">
-            <Link className="btn" to={precLink}>Précédent</Link>
-            <Link className="btn" to={nextLink}>Suivant</Link>
+            <a href="#">&lt; Précédent</a>
+            <a href="#">Suivant &gt;</a>
         </div>
     );
 }

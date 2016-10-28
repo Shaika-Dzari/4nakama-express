@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { push } from 'react-router-redux';
+import { doChallenge } from '../actions/userActions.js'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        connectedUser: state.user.connectedUser
+        connectedUser: state.user.connectedUser,
+        location: ownProps.location
     }
 }
 
@@ -16,8 +19,15 @@ class ProtectedLayout extends React.Component {
 
     componentWillMount() {
         // Check that the user is logged in before the component mounts
+
         if (!this.props.connectedUser) {
-            this.props.router.push('/login');
+            const { dispatch } = this.props;
+
+            if (sessionStorage.getItem('4nuser')) {
+                dispatch(doChallenge(location.pathname));
+            } else {
+                dispatch(push('/login'));
+            }
         }
     }
 
@@ -25,7 +35,8 @@ class ProtectedLayout extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         // Now check that they are still logged in. Redirect to sign in page if they aren't.
         if (!this.props.connectedUser) {
-            this.props.router.push('/login');
+            const { dispatch } = this.props;
+            dispatch(push('/login'));
         }
     }
 

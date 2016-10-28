@@ -6,15 +6,16 @@ import CategoryEditor from '../../component/categoryeditor/categoryeditor.jsx';
 import {doMessageEditorTitleChange, doMessageEditorTitleBlur,
         doMessageEditorPrettyUrlChange, doMessageEditorTextChange,
         doMessageEditorPublishedCheck, doMessageEditorCategoryCheck,
+        doMessageEditorCategoryUnCheck,
         doMessageEditorSave} from '../../actions/messageActions.js';
 
 import './messageeditor.scss';
 
 const MESSAGE_URL = '/api/messages';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
 
-    let id = state.messages.selectedid;
+    let id = ownProps.params.messageId;
     let msg = state.messages.items[id];
 
     return {
@@ -39,7 +40,7 @@ class MessageEditor extends React.Component {
         this.onPrettyUrlChange = this.onPrettyUrlChange.bind(this);
         this.onPublishedClick = this.onPublishedClick.bind(this);
         this.onCategorySelect = this.onCategorySelect.bind(this);
-
+        this.onCategoryUnSelect = this.onCategoryUnSelect.bind(this);
     }
 
     onEditorChange(value) {
@@ -74,6 +75,11 @@ class MessageEditor extends React.Component {
     onCategorySelect(category) {
         const { dispatch } = this.props;
         dispatch(doMessageEditorCategoryCheck(this.props.messageId, category));
+    }
+
+    onCategoryUnSelect(category) {
+        const { dispatch } = this.props;
+        dispatch(doMessageEditorCategoryUnCheck(this.props.messageId, category));
     }
 
     onSave(event) {
@@ -118,11 +124,15 @@ class MessageEditor extends React.Component {
                                     <div className="box bluebox">
                                         <div className="heading">
                                             <h4>
-                                                <input type="checkbox" defaultChecked={this.props.published} onClick={this.onPublishedClick} /> Publié
+                                                <input type="checkbox"
+                                                       defaultChecked={this.props.published}
+                                                       onClick={this.onPublishedClick} /> Publié
                                             </h4>
                                         </div>
                                     </div>
-                                    <CategoryEditor onComponentSelect={this.onCategorySelect} selectedItems={this.props.categories} />
+                                    <CategoryEditor onComponentSelect={this.onCategorySelect}
+                                                    onComponentUnSelect={this.onCategoryUnSelect}
+                                                    selectedItems={this.props.categories} />
                                 </div>
                             </div>
                         </div>

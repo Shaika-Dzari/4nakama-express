@@ -45,19 +45,22 @@ class CategoryEditor extends React.Component {
     }
 
     onCheckCategory(event) {
+        let checked = event.target.checked;
         let value = event.target.value;
         let cat = this.props.categories[value];
         if (cat) {
-            this.props.onComponentSelect(cat);
+            checked ? this.props.onComponentSelect(cat) : this.props.onComponentUnSelect(cat);
         } else {
             console.log('Unable to find category #' + value);
         }
     }
 
     isSelected(cId) {
-        for (let c in this.props.selectedItems) {
-            if (this.props.selectedItems[c]._id == cId) {
-                return true;
+        if (this.props.selectedItems) {
+            for (let c in this.props.selectedItems) {
+                if (this.props.selectedItems[c]._id == cId) {
+                    return true;
+                }
             }
         }
         return false;
@@ -65,7 +68,7 @@ class CategoryEditor extends React.Component {
 
     render() {
 
-        let cs = this.props.index.map((cid) => {
+        let cs = this.props.index.map(cid => {
             let key = 'c-' + cid;
             let cat = this.props.categories[cid];
             let checked = this.isSelected(cid);
@@ -111,7 +114,8 @@ class CategoryEditor extends React.Component {
 CategoryEditor.propTypes = {
     categories: React.PropTypes.object.isRequired,
     selectedItems: React.PropTypes.array,
-    onComponentSelect: React.PropTypes.func
+    onComponentSelect: React.PropTypes.func.isRequired,
+    onComponentUnSelect: React.PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(CategoryEditor);

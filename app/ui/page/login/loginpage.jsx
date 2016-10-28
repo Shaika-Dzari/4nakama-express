@@ -26,34 +26,7 @@ class LoginPage extends Component {
 
     constructor(props) {
         super(props);
-        /*
-        this.onLoginClick = this.onLoginClick.bind(this);
-        this.onUsernameChange = this.onUsernameChange.bind(this);
-        this.onPasswordChange = this.onPasswordChange.bind(this);
-        */
     }
-
-    /*
-    onLoginClick(event) {
-        event.preventDefault();
-        const {dispatch} = this.props;
-        dispatch(doLoginPageSubmit(this.props.username, this.props.passwd));
-    }
-
-    onUsernameChange(event) {
-        const {dispatch} = this.props;
-        let v = event.target.value;
-        event.preventDefault();
-        dispatch(doLoginPageUsernameKp(v));
-    }
-
-    onPasswordChange(event) {
-        const {dispatch} = this.props;
-        let v = event.target.value;
-        event.preventDefault();
-        dispatch(doLoginPagePasswdKp(v));
-    }
-    */
 
     render () {
 

@@ -61,6 +61,7 @@ app.use(function(err, req, res, next) {
 
 // Pipe to index
 app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
+    console.log('redirecting to index.html...')
     res.sendFile('index.html', { root: publicFolder });
 });
 

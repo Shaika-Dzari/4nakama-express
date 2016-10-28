@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import {  push } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import Remarkable from 'remarkable';
 
@@ -14,6 +14,7 @@ export const MSG_EDITOR_PRETTYURL_CHANGE = 'MSG_EDITOR_PRETTYURL_CHANGE';
 export const MSG_EDITOR_TEXT_CHANGE = 'MSG_EDITOR_TEXT_CHANGE';
 export const MSG_EDITOR_PUBL_CHECK = 'MSG_EDITOR_PUBL_CHECK';
 export const MSG_EDITOR_CAT_CHECK = 'MSG_EDITOR_CAT_CHECK';
+export const MSG_EDITOR_CAT_UNCHECK = 'MSG_EDITOR_CAT_UNCHECK';
 export const MSG_UPDATE_RECEIVE = 'MSG_UPDATE_RECEIVE';
 export const MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
 
@@ -54,8 +55,6 @@ export function doMessageFetch(page) {
     }
 }
 
-
-
 export function doMessageFetchForEdit(messageId) {
 
     return (dispatch, getState) => {
@@ -64,8 +63,7 @@ export function doMessageFetchForEdit(messageId) {
             .then(r => r.json())
             .then(msg => {
                     dispatch(doStopLoading());
-                    dispatch(doMessageEdit(msg));
-                    dispatch(push('/dashboard/messages/' + messageId));
+                    dispatch(doMessageEditAndNavigate(msg));
                 });
     };
 }
@@ -114,6 +112,14 @@ export function doMessageUpdateReceive(message) {
     }
 }
 
+export function doMessageEditAndNavigate(message) {
+    return dispatch => {
+        dispatch(doMessageEdit(message));
+        dispatch(push('/dashboard/messages/' + message._id));
+    }
+}
+
+// dispatch(push('/dashboard/messages/' + messageId));
 
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
@@ -125,3 +131,4 @@ export const doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETT
 export const doMessageEditorSaveError = makeActionCreator(MSG_UPDATE_SAVEERROR, 'error');
 export const doMessageEditorPublishedCheck = makeActionCreator(MSG_EDITOR_PUBL_CHECK, 'messageId', 'published');
 export const doMessageEditorCategoryCheck = makeActionCreator(MSG_EDITOR_CAT_CHECK, 'messageId', 'category');
+export const doMessageEditorCategoryUnCheck = makeActionCreator(MSG_EDITOR_CAT_UNCHECK, 'messageId', 'category');

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
-import {doMessageFetch, doMessageFetchForEdit} from '../../actions/messageActions.js';
+import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 
 const MESSAGE_TABLE_DEF = {
@@ -31,7 +31,9 @@ class MessageAdmin extends React.Component {
     }
 
     onNewMessage() {
-        this.props.router.push('/dashboard/messages/new');
+        const { dispatch } = this.props;
+        dispatch(doMessageEditAndNavigate({_id: 'new'}));
+        //this.props.router.push('/dashboard/messages/new');
     }
 
     onMessageClick(messageId) {

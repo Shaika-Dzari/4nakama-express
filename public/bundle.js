@@ -8195,9 +8195,9 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	__webpack_require__(638);
+	__webpack_require__(567);
 
-	__webpack_require__(666);
+	__webpack_require__(667);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29411,19 +29411,19 @@
 
 	var _protectedlayout2 = _interopRequireDefault(_protectedlayout);
 
-	var _notfound = __webpack_require__(566);
+	var _notfound = __webpack_require__(569);
 
 	var _notfound2 = _interopRequireDefault(_notfound);
 
-	var _blogpage = __webpack_require__(567);
+	var _blogpage = __webpack_require__(570);
 
 	var _blogpage2 = _interopRequireDefault(_blogpage);
 
-	var _dashboardpage = __webpack_require__(642);
+	var _dashboardpage = __webpack_require__(643);
 
 	var _dashboardpage2 = _interopRequireDefault(_dashboardpage);
 
-	var _loginpage = __webpack_require__(644);
+	var _loginpage = __webpack_require__(645);
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
@@ -29435,21 +29435,23 @@
 
 	var _messageeditor2 = _interopRequireDefault(_messageeditor);
 
-	var _createstore = __webpack_require__(658);
+	var _messagepage = __webpack_require__(658);
+
+	var _messagepage2 = _interopRequireDefault(_messagepage);
+
+	var _createstore = __webpack_require__(659);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, _createstore2.default);
-
-	// Store
-
-
 	// Pages
 
 
 	// Layouts
+	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, _createstore2.default);
+
+	// Store
 
 
 	var AppRoute = function AppRoute() {
@@ -29465,6 +29467,7 @@
 	                { path: '/', component: _publiclayout2.default },
 	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _blogpage2.default }),
 	                _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _loginpage2.default }),
+	                _react2.default.createElement(_reactRouter.Route, { path: 'blog/:messageId', component: _messagepage2.default }),
 	                _react2.default.createElement(
 	                    _reactRouter.Route,
 	                    { path: '/dashboard', component: _protectedlayout2.default },
@@ -37030,11 +37033,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(538);
+
+	var _reactRouterRedux = __webpack_require__(533);
+
 	var _reactRouter = __webpack_require__(470);
 
 	var _AuthenticationService = __webpack_require__(562);
 
 	var _AuthenticationService2 = _interopRequireDefault(_AuthenticationService);
+
+	var _userActions = __webpack_require__(566);
 
 	var _feedback = __webpack_require__(563);
 
@@ -37050,6 +37059,12 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        connectedUser: state.user.connectedUser
+	    };
+	};
+
 	var PageHeader = function (_Component) {
 	    _inherits(PageHeader, _Component);
 
@@ -37063,18 +37078,11 @@
 	    }
 
 	    _createClass(PageHeader, [{
-	        key: 'isAuthenticated',
-	        value: function isAuthenticated() {
-	            return _AuthenticationService2.default.isAuthenticated();
-	        }
-	    }, {
 	        key: 'disconnect',
-	        value: function disconnect(event) {
-	            var self = this;
-	            event.preventDefault();
-	            _AuthenticationService2.default.disconnect(function () {
-	                self.props.router.push('/');
-	            });
+	        value: function disconnect() {
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _userActions.doLogout)());
 	        }
 	    }, {
 	        key: 'render',
@@ -37089,7 +37097,7 @@
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/ecriture', activeClassName: 'active', key: 'pagehead_2' },
-	                'Écriture'
+	                'Histoire'
 	            ));
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
@@ -37099,10 +37107,10 @@
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/about', activeClassName: 'active', key: 'pagehead_4' },
-	                'À Propos'
+	                'A Propos'
 	            ));
 
-	            if (this.isAuthenticated()) {
+	            if (this.props.connectedUser) {
 	                links.push(_react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: '/dashboard', activeClassName: 'active', key: 'pagehead_5' },
@@ -37158,7 +37166,11 @@
 	    return PageHeader;
 	}(_react.Component);
 
-	exports.default = (0, _reactRouter.withRouter)(PageHeader);
+	PageHeader.propTypes = {
+	    connectedUser: _react.PropTypes.object
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(PageHeader));
 
 /***/ },
 /* 562 */
@@ -37367,6 +37379,10 @@
 
 	var _reactRouter = __webpack_require__(470);
 
+	var _reactRouterRedux = __webpack_require__(533);
+
+	var _userActions = __webpack_require__(566);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37375,9 +37391,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var mapStateToProps = function mapStateToProps(state) {
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	    return {
-	        connectedUser: state.user.connectedUser
+	        connectedUser: state.user.connectedUser,
+	        location: ownProps.location
 	    };
 	};
 
@@ -37394,8 +37411,16 @@
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            // Check that the user is logged in before the component mounts
+
 	            if (!this.props.connectedUser) {
-	                this.props.router.push('/login');
+	                var dispatch = this.props.dispatch;
+
+
+	                if (sessionStorage.getItem('4nuser')) {
+	                    dispatch((0, _userActions.doChallenge)(location.pathname));
+	                } else {
+	                    dispatch((0, _reactRouterRedux.push)('/login'));
+	                }
 	            }
 	        }
 
@@ -37406,7 +37431,9 @@
 	        value: function componentDidUpdate(prevProps, prevState) {
 	            // Now check that they are still logged in. Redirect to sign in page if they aren't.
 	            if (!this.props.connectedUser) {
-	                this.props.router.push('/login');
+	                var dispatch = this.props.dispatch;
+
+	                dispatch((0, _reactRouterRedux.push)('/login'));
 	            }
 	        }
 	    }, {
@@ -37437,6 +37464,605 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.USER_LOGOUT = exports.USER_CHALLENGE = exports.USER_BAD_CREDENTIAL = exports.USER_SUCCESS_LOGIN = exports.USER_LP_SUBMIT = exports.USER_LP_PASSWD_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = undefined;
+	exports.doLoginPageUsernameKp = doLoginPageUsernameKp;
+	exports.doLoginPagePasswdKp = doLoginPagePasswdKp;
+	exports.doLoginPageSubmit = doLoginPageSubmit;
+	exports.doSuccessLogin = doSuccessLogin;
+	exports.doBadCredential = doBadCredential;
+	exports.doLogoutSuccess = doLogoutSuccess;
+	exports.doLogout = doLogout;
+	exports.doChallenge = doChallenge;
+
+	__webpack_require__(567);
+
+	var _reactRouter = __webpack_require__(470);
+
+	var _reactRouterRedux = __webpack_require__(533);
+
+	var _navigationActions = __webpack_require__(568);
+
+	var USER_LP_USERNAME_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = 'USER_LP_LOGIN_KEYPRESS';
+	var USER_LP_PASSWD_KEYPRESS = exports.USER_LP_PASSWD_KEYPRESS = 'USER_LP_PASSWD_KEYPRESS';
+	var USER_LP_SUBMIT = exports.USER_LP_SUBMIT = 'USER_LP_SUBMIT';
+	var USER_SUCCESS_LOGIN = exports.USER_SUCCESS_LOGIN = 'USER_SUCCESS_LOGIN';
+	var USER_BAD_CREDENTIAL = exports.USER_BAD_CREDENTIAL = 'USER_BAD_CREDENTIAL';
+	var USER_CHALLENGE = exports.USER_CHALLENGE = 'USER_CHALLENGE';
+	var USER_LOGOUT = exports.USER_LOGOUT = 'USER_LOGOUT';
+
+	function doLoginPageUsernameKp(value) {
+	    return {
+	        type: USER_LP_USERNAME_KEYPRESS,
+	        value: value
+	    };
+	}
+
+	function doLoginPagePasswdKp(value) {
+	    return {
+	        type: USER_LP_PASSWD_KEYPRESS,
+	        value: value
+	    };
+	}
+
+	function doLoginPageSubmit() {
+
+	    return function (dispatch, getState) {
+
+	        dispatch((0, _navigationActions.doStartLoading)());
+
+	        var u = 'username=' + encodeURIComponent(getState().user.username);
+	        var p = 'password=' + encodeURIComponent(getState().user.passwd);
+
+	        var opts = {
+	            method: "POST",
+	            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	            body: u + "&" + p,
+	            credentials: 'include'
+	        };
+
+	        return fetch("/api/sec/login", opts).then(function (r) {
+	            return r.json();
+	        }).then(function (user) {
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            sessionStorage.setItem('4nuser', user);
+	            dispatch(doSuccessLogin(user));
+	            dispatch((0, _reactRouterRedux.push)('/'));
+	        }).catch(function (e) {
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            dispatch(doBadCredential(e));
+	        });
+	    };
+	}
+
+	function doSuccessLogin(user) {
+	    return {
+	        type: USER_SUCCESS_LOGIN,
+	        user: user
+	    };
+	}
+
+	function doBadCredential(error) {
+	    return {
+	        type: USER_BAD_CREDENTIAL,
+	        error: error
+	    };
+	}
+
+	function doLogoutSuccess() {
+	    return {
+	        type: USER_LOGOUT
+	    };
+	}
+
+	function doLogout() {
+	    return function (dispatch, getState) {
+
+	        sessionStorage.removeItem('4nuser');
+
+	        return window.fetch("/api/sec/logout", { credentials: 'include' }).then(function () {
+	            dispatch(doLogoutSuccess());
+	            dispatch((0, _reactRouterRedux.push)('/'));
+	        }).catch(function (e) {
+	            dispatch(doLogoutSuccess());
+	            dispatch((0, _reactRouterRedux.push)('/'));
+	        });
+	    };
+	}
+
+	function doChallenge(toUrl) {
+
+	    return function (dispatch, getState) {
+
+	        return fetch("/api/sec/challenge", { credentials: 'include' }).then(function (r) {
+	            return r.json();
+	        }).then(function (user) {
+
+	            sessionStorage.setItem('4nuser', user);
+	            dispatch(doSuccessLogin(user));
+
+	            if (toUrl) {
+	                dispatch((0, _reactRouterRedux.push)(toUrl));
+	            }
+	        }).catch(function (e) {
+	            _reactRouter.browserHistory.push('/login');
+	        });
+	    };
+	}
+
+/***/ },
+/* 567 */
+/***/ function(module, exports) {
+
+	(function(self) {
+	  'use strict';
+
+	  if (self.fetch) {
+	    return
+	  }
+
+	  var support = {
+	    searchParams: 'URLSearchParams' in self,
+	    iterable: 'Symbol' in self && 'iterator' in Symbol,
+	    blob: 'FileReader' in self && 'Blob' in self && (function() {
+	      try {
+	        new Blob()
+	        return true
+	      } catch(e) {
+	        return false
+	      }
+	    })(),
+	    formData: 'FormData' in self,
+	    arrayBuffer: 'ArrayBuffer' in self
+	  }
+
+	  function normalizeName(name) {
+	    if (typeof name !== 'string') {
+	      name = String(name)
+	    }
+	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+	      throw new TypeError('Invalid character in header field name')
+	    }
+	    return name.toLowerCase()
+	  }
+
+	  function normalizeValue(value) {
+	    if (typeof value !== 'string') {
+	      value = String(value)
+	    }
+	    return value
+	  }
+
+	  // Build a destructive iterator for the value list
+	  function iteratorFor(items) {
+	    var iterator = {
+	      next: function() {
+	        var value = items.shift()
+	        return {done: value === undefined, value: value}
+	      }
+	    }
+
+	    if (support.iterable) {
+	      iterator[Symbol.iterator] = function() {
+	        return iterator
+	      }
+	    }
+
+	    return iterator
+	  }
+
+	  function Headers(headers) {
+	    this.map = {}
+
+	    if (headers instanceof Headers) {
+	      headers.forEach(function(value, name) {
+	        this.append(name, value)
+	      }, this)
+
+	    } else if (headers) {
+	      Object.getOwnPropertyNames(headers).forEach(function(name) {
+	        this.append(name, headers[name])
+	      }, this)
+	    }
+	  }
+
+	  Headers.prototype.append = function(name, value) {
+	    name = normalizeName(name)
+	    value = normalizeValue(value)
+	    var list = this.map[name]
+	    if (!list) {
+	      list = []
+	      this.map[name] = list
+	    }
+	    list.push(value)
+	  }
+
+	  Headers.prototype['delete'] = function(name) {
+	    delete this.map[normalizeName(name)]
+	  }
+
+	  Headers.prototype.get = function(name) {
+	    var values = this.map[normalizeName(name)]
+	    return values ? values[0] : null
+	  }
+
+	  Headers.prototype.getAll = function(name) {
+	    return this.map[normalizeName(name)] || []
+	  }
+
+	  Headers.prototype.has = function(name) {
+	    return this.map.hasOwnProperty(normalizeName(name))
+	  }
+
+	  Headers.prototype.set = function(name, value) {
+	    this.map[normalizeName(name)] = [normalizeValue(value)]
+	  }
+
+	  Headers.prototype.forEach = function(callback, thisArg) {
+	    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+	      this.map[name].forEach(function(value) {
+	        callback.call(thisArg, value, name, this)
+	      }, this)
+	    }, this)
+	  }
+
+	  Headers.prototype.keys = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push(name) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.values = function() {
+	    var items = []
+	    this.forEach(function(value) { items.push(value) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.entries = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push([name, value]) })
+	    return iteratorFor(items)
+	  }
+
+	  if (support.iterable) {
+	    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+	  }
+
+	  function consumed(body) {
+	    if (body.bodyUsed) {
+	      return Promise.reject(new TypeError('Already read'))
+	    }
+	    body.bodyUsed = true
+	  }
+
+	  function fileReaderReady(reader) {
+	    return new Promise(function(resolve, reject) {
+	      reader.onload = function() {
+	        resolve(reader.result)
+	      }
+	      reader.onerror = function() {
+	        reject(reader.error)
+	      }
+	    })
+	  }
+
+	  function readBlobAsArrayBuffer(blob) {
+	    var reader = new FileReader()
+	    reader.readAsArrayBuffer(blob)
+	    return fileReaderReady(reader)
+	  }
+
+	  function readBlobAsText(blob) {
+	    var reader = new FileReader()
+	    reader.readAsText(blob)
+	    return fileReaderReady(reader)
+	  }
+
+	  function Body() {
+	    this.bodyUsed = false
+
+	    this._initBody = function(body) {
+	      this._bodyInit = body
+	      if (typeof body === 'string') {
+	        this._bodyText = body
+	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+	        this._bodyBlob = body
+	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+	        this._bodyFormData = body
+	      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	        this._bodyText = body.toString()
+	      } else if (!body) {
+	        this._bodyText = ''
+	      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+	        // Only support ArrayBuffers for POST method.
+	        // Receiving ArrayBuffers happens via Blobs, instead.
+	      } else {
+	        throw new Error('unsupported BodyInit type')
+	      }
+
+	      if (!this.headers.get('content-type')) {
+	        if (typeof body === 'string') {
+	          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+	        } else if (this._bodyBlob && this._bodyBlob.type) {
+	          this.headers.set('content-type', this._bodyBlob.type)
+	        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+	        }
+	      }
+	    }
+
+	    if (support.blob) {
+	      this.blob = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+
+	        if (this._bodyBlob) {
+	          return Promise.resolve(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as blob')
+	        } else {
+	          return Promise.resolve(new Blob([this._bodyText]))
+	        }
+	      }
+
+	      this.arrayBuffer = function() {
+	        return this.blob().then(readBlobAsArrayBuffer)
+	      }
+
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+
+	        if (this._bodyBlob) {
+	          return readBlobAsText(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as text')
+	        } else {
+	          return Promise.resolve(this._bodyText)
+	        }
+	      }
+	    } else {
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        return rejected ? rejected : Promise.resolve(this._bodyText)
+	      }
+	    }
+
+	    if (support.formData) {
+	      this.formData = function() {
+	        return this.text().then(decode)
+	      }
+	    }
+
+	    this.json = function() {
+	      return this.text().then(JSON.parse)
+	    }
+
+	    return this
+	  }
+
+	  // HTTP methods whose capitalization should be normalized
+	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+	  function normalizeMethod(method) {
+	    var upcased = method.toUpperCase()
+	    return (methods.indexOf(upcased) > -1) ? upcased : method
+	  }
+
+	  function Request(input, options) {
+	    options = options || {}
+	    var body = options.body
+	    if (Request.prototype.isPrototypeOf(input)) {
+	      if (input.bodyUsed) {
+	        throw new TypeError('Already read')
+	      }
+	      this.url = input.url
+	      this.credentials = input.credentials
+	      if (!options.headers) {
+	        this.headers = new Headers(input.headers)
+	      }
+	      this.method = input.method
+	      this.mode = input.mode
+	      if (!body) {
+	        body = input._bodyInit
+	        input.bodyUsed = true
+	      }
+	    } else {
+	      this.url = input
+	    }
+
+	    this.credentials = options.credentials || this.credentials || 'omit'
+	    if (options.headers || !this.headers) {
+	      this.headers = new Headers(options.headers)
+	    }
+	    this.method = normalizeMethod(options.method || this.method || 'GET')
+	    this.mode = options.mode || this.mode || null
+	    this.referrer = null
+
+	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+	      throw new TypeError('Body not allowed for GET or HEAD requests')
+	    }
+	    this._initBody(body)
+	  }
+
+	  Request.prototype.clone = function() {
+	    return new Request(this)
+	  }
+
+	  function decode(body) {
+	    var form = new FormData()
+	    body.trim().split('&').forEach(function(bytes) {
+	      if (bytes) {
+	        var split = bytes.split('=')
+	        var name = split.shift().replace(/\+/g, ' ')
+	        var value = split.join('=').replace(/\+/g, ' ')
+	        form.append(decodeURIComponent(name), decodeURIComponent(value))
+	      }
+	    })
+	    return form
+	  }
+
+	  function headers(xhr) {
+	    var head = new Headers()
+	    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
+	    pairs.forEach(function(header) {
+	      var split = header.trim().split(':')
+	      var key = split.shift().trim()
+	      var value = split.join(':').trim()
+	      head.append(key, value)
+	    })
+	    return head
+	  }
+
+	  Body.call(Request.prototype)
+
+	  function Response(bodyInit, options) {
+	    if (!options) {
+	      options = {}
+	    }
+
+	    this.type = 'default'
+	    this.status = options.status
+	    this.ok = this.status >= 200 && this.status < 300
+	    this.statusText = options.statusText
+	    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+	    this.url = options.url || ''
+	    this._initBody(bodyInit)
+	  }
+
+	  Body.call(Response.prototype)
+
+	  Response.prototype.clone = function() {
+	    return new Response(this._bodyInit, {
+	      status: this.status,
+	      statusText: this.statusText,
+	      headers: new Headers(this.headers),
+	      url: this.url
+	    })
+	  }
+
+	  Response.error = function() {
+	    var response = new Response(null, {status: 0, statusText: ''})
+	    response.type = 'error'
+	    return response
+	  }
+
+	  var redirectStatuses = [301, 302, 303, 307, 308]
+
+	  Response.redirect = function(url, status) {
+	    if (redirectStatuses.indexOf(status) === -1) {
+	      throw new RangeError('Invalid status code')
+	    }
+
+	    return new Response(null, {status: status, headers: {location: url}})
+	  }
+
+	  self.Headers = Headers
+	  self.Request = Request
+	  self.Response = Response
+
+	  self.fetch = function(input, init) {
+	    return new Promise(function(resolve, reject) {
+	      var request
+	      if (Request.prototype.isPrototypeOf(input) && !init) {
+	        request = input
+	      } else {
+	        request = new Request(input, init)
+	      }
+
+	      var xhr = new XMLHttpRequest()
+
+	      function responseURL() {
+	        if ('responseURL' in xhr) {
+	          return xhr.responseURL
+	        }
+
+	        // Avoid security warnings on getResponseHeader when not allowed by CORS
+	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+	          return xhr.getResponseHeader('X-Request-URL')
+	        }
+
+	        return
+	      }
+
+	      xhr.onload = function() {
+	        var options = {
+	          status: xhr.status,
+	          statusText: xhr.statusText,
+	          headers: headers(xhr),
+	          url: responseURL()
+	        }
+	        var body = 'response' in xhr ? xhr.response : xhr.responseText
+	        resolve(new Response(body, options))
+	      }
+
+	      xhr.onerror = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.ontimeout = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.open(request.method, request.url, true)
+
+	      if (request.credentials === 'include') {
+	        xhr.withCredentials = true
+	      }
+
+	      if ('responseType' in xhr && support.blob) {
+	        xhr.responseType = 'blob'
+	      }
+
+	      request.headers.forEach(function(value, name) {
+	        xhr.setRequestHeader(name, value)
+	      })
+
+	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+	    })
+	  }
+	  self.fetch.polyfill = true
+	})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ },
+/* 568 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.doStartLoading = doStartLoading;
+	exports.doStopLoading = doStopLoading;
+	var STARTLOADING = exports.STARTLOADING = 'STARTLOADING';
+	var STOPLOADING = exports.STOPLOADING = 'STOPLOADING';
+
+	function doStartLoading() {
+	    return {
+	        type: STARTLOADING
+	    };
+	}
+
+	function doStopLoading() {
+	    return {
+	        type: STOPLOADING
+	    };
+	}
+
+/***/ },
+/* 569 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
 	var _react = __webpack_require__(299);
 
@@ -37459,7 +38085,7 @@
 	exports.default = NotFound;
 
 /***/ },
-/* 567 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37478,23 +38104,23 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _categorylist = __webpack_require__(568);
+	var _categorylist = __webpack_require__(571);
 
 	var _categorylist2 = _interopRequireDefault(_categorylist);
 
-	var _messagelist = __webpack_require__(569);
+	var _messagelist = __webpack_require__(572);
 
 	var _messagelist2 = _interopRequireDefault(_messagelist);
 
-	var _remarkable = __webpack_require__(576);
+	var _remarkable = __webpack_require__(579);
 
 	var _remarkable2 = _interopRequireDefault(_remarkable);
 
-	var _messageActions = __webpack_require__(637);
+	var _messageActions = __webpack_require__(640);
 
-	var _categoryActions = __webpack_require__(640);
+	var _categoryActions = __webpack_require__(641);
 
-	__webpack_require__(641);
+	__webpack_require__(642);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37573,83 +38199,8 @@
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(BlogPage);
 
-	/*
-	export default class BlogPage extends React.Component {
-
-	    constructor(props) {
-	        super(props);
-	        this.state = {
-	            tags: {
-	                data: [],
-	                error: null
-	            },
-	            messages: {
-	                data: [],
-	                error: null
-	            },
-	            categories: {
-	                data: [],
-	                error: null
-	            }
-	        };
-	    }
-
-	    componentWillMount() {
-
-	        let md = new Remarkable();
-	        let self = this;
-
-	        // Messages
-	        window.fetch('/api/messages', {credentials: 'include'})
-	                .then(r => r.json())
-	                .then(msgs => {
-
-	                    // Parse Markdown
-	                    if (msgs && msgs.length > 0) {
-	                        for (let msg of msgs) {
-	                            msg.texthtml = md.render(msg.text);
-	                        }
-	                    }
-
-	                    self.setState({messages: {data: msgs}});
-	                })
-	                .catch(e => self.setState({messages: {error: e}}));
-
-	        // Categories
-	        window.fetch('/api/categories', {credentials: 'include'})
-	                .then(r => r.json())
-	                .then(cats => self.setState({categories: {data: cats}}))
-	                .catch(e => self.setState({categories: {error: e}}));
-
-
-	    }
-
-
-	    render() {
-
-	        return (
-	            <div className="row">
-	                <div className="col-10">
-	                    <div className="list-ctn">
-	                        <MessageList {...this.state.messages} />
-	                    </div>
-	                </div>
-	                <div className="col-2">
-	                    <div className="list-ctn">
-	                        <div className="info-element">
-	                            <h3>Catégories</h3>
-	                            <CategoryList {...this.state.categories} />
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        );
-	    }
-	}
-	*/
-
 /***/ },
-/* 568 */
+/* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37708,7 +38259,7 @@
 	exports.default = CategoryList;
 
 /***/ },
-/* 569 */
+/* 572 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37723,15 +38274,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _message = __webpack_require__(570);
+	var _message = __webpack_require__(573);
 
 	var _message2 = _interopRequireDefault(_message);
 
-	var _alertbox = __webpack_require__(572);
+	var _alertbox = __webpack_require__(575);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _pager = __webpack_require__(574);
+	var _pager = __webpack_require__(577);
 
 	var _pager2 = _interopRequireDefault(_pager);
 
@@ -37740,14 +38291,16 @@
 	var MessageList = function MessageList(_ref) {
 	    var messages = _ref.messages;
 	    var index = _ref.index;
+	    var openMessage = _ref.openMessage;
 
 
 	    var msgs = 'Aucun...';
 
 	    if (messages && index) {
 	        msgs = index.map(function (v, idx) {
+	            console.log(v);
 	            var m = messages[v];
-	            return _react2.default.createElement(_message2.default, _extends({ key: v }, m));
+	            return _react2.default.createElement(_message2.default, _extends({ key: v }, m, { withLink: true }));
 	        });
 	    }
 
@@ -37786,7 +38339,7 @@
 	exports.default = MessageList;
 
 /***/ },
-/* 570 */
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37801,20 +38354,24 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(571);
+	__webpack_require__(574);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Message = function Message(_ref) {
+	    var _id = _ref._id;
 	    var title = _ref.title;
 	    var text = _ref.text;
 	    var texthtml = _ref.texthtml;
 	    var authorName = _ref.authorName;
 	    var createdAt = _ref.createdAt;
 	    var categories = _ref.categories;
+	    var prettyUrl = _ref.prettyUrl;
+	    var withLink = _ref.withLink;
 
 
 	    var cats = null;
+	    var innerTitle = null;
 
 	    if (categories) {
 	        cats = categories.map(function (v, i) {
@@ -37826,6 +38383,16 @@
 	        });
 	    }
 
+	    if (withLink) {
+	        innerTitle = _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/blog/' + _id },
+	            title
+	        );
+	    } else {
+	        innerTitle = title;
+	    }
+
 	    return _react2.default.createElement(
 	        'article',
 	        { className: 'blog-message' },
@@ -37835,7 +38402,7 @@
 	            _react2.default.createElement(
 	                'h1',
 	                null,
-	                title
+	                innerTitle
 	            ),
 	            _react2.default.createElement(
 	                'div',
@@ -37867,23 +38434,26 @@
 	};
 
 	Message.propTypes = {
+	    _id: _react.PropTypes.string.isRequired,
 	    title: _react.PropTypes.string.isRequired,
 	    text: _react.PropTypes.string.isRequired,
 	    authorName: _react.PropTypes.string.isRequired,
 	    createdAt: _react.PropTypes.string.isRequired,
-	    categories: _react.PropTypes.array
+	    categories: _react.PropTypes.array,
+	    prettyUrl: _react.PropTypes.string.isRequired,
+	    withLink: _react.PropTypes.bool
 	};
 
 	exports.default = Message;
 
 /***/ },
-/* 571 */
+/* 574 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 572 */
+/* 575 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37896,7 +38466,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(573);
+	__webpack_require__(576);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37922,13 +38492,13 @@
 	exports.default = AlertBox;
 
 /***/ },
-/* 573 */
+/* 576 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 574 */
+/* 577 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37943,7 +38513,7 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(575);
+	__webpack_require__(578);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37963,14 +38533,14 @@
 	        'div',
 	        { className: 'pager' },
 	        _react2.default.createElement(
-	            _reactRouter.Link,
-	            { className: 'btn', to: precLink },
-	            'Précédent'
+	            'a',
+	            { href: '#' },
+	            '< Précédent'
 	        ),
 	        _react2.default.createElement(
-	            _reactRouter.Link,
-	            { className: 'btn', to: nextLink },
-	            'Suivant'
+	            'a',
+	            { href: '#' },
+	            'Suivant >'
 	        )
 	    );
 	};
@@ -37983,22 +38553,22 @@
 	exports.default = Pager;
 
 /***/ },
-/* 575 */
+/* 578 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 576 */
+/* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(577);
+	module.exports = __webpack_require__(580);
 
 
 /***/ },
-/* 577 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38007,21 +38577,21 @@
 	 * Local dependencies
 	 */
 
-	var assign       = __webpack_require__(578).assign;
-	var Renderer     = __webpack_require__(580);
-	var ParserCore   = __webpack_require__(582);
-	var ParserBlock  = __webpack_require__(600);
-	var ParserInline = __webpack_require__(615);
-	var Ruler        = __webpack_require__(583);
+	var assign       = __webpack_require__(581).assign;
+	var Renderer     = __webpack_require__(583);
+	var ParserCore   = __webpack_require__(585);
+	var ParserBlock  = __webpack_require__(603);
+	var ParserInline = __webpack_require__(618);
+	var Ruler        = __webpack_require__(586);
 
 	/**
 	 * Preset configs
 	 */
 
 	var config = {
-	  'default':    __webpack_require__(634),
-	  'full':       __webpack_require__(635),
-	  'commonmark': __webpack_require__(636)
+	  'default':    __webpack_require__(637),
+	  'full':       __webpack_require__(638),
+	  'commonmark': __webpack_require__(639)
 	};
 
 	/**
@@ -38195,11 +38765,11 @@
 	 * rendering.
 	 */
 
-	module.exports.utils = __webpack_require__(578);
+	module.exports.utils = __webpack_require__(581);
 
 
 /***/ },
-/* 578 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38286,7 +38856,7 @@
 
 	var NAMED_ENTITY_RE   = /&([a-z#][a-z0-9]{1,31});/gi;
 	var DIGITAL_ENTITY_TEST_RE = /^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))/i;
-	var entities = __webpack_require__(579);
+	var entities = __webpack_require__(582);
 
 	function replaceEntityPattern(match, name) {
 	  var code = 0;
@@ -38346,7 +38916,7 @@
 
 
 /***/ },
-/* 579 */
+/* 582 */
 /***/ function(module, exports) {
 
 	// List of valid entities
@@ -40486,7 +41056,7 @@
 
 
 /***/ },
-/* 580 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40495,8 +41065,8 @@
 	 * Local dependencies
 	 */
 
-	var utils = __webpack_require__(578);
-	var rules = __webpack_require__(581);
+	var utils = __webpack_require__(581);
+	var rules = __webpack_require__(584);
 
 	/**
 	 * Expose `Renderer`
@@ -40567,7 +41137,7 @@
 
 
 /***/ },
-/* 581 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40576,10 +41146,10 @@
 	 * Local dependencies
 	 */
 
-	var has             = __webpack_require__(578).has;
-	var unescapeMd      = __webpack_require__(578).unescapeMd;
-	var replaceEntities = __webpack_require__(578).replaceEntities;
-	var escapeHtml      = __webpack_require__(578).escapeHtml;
+	var has             = __webpack_require__(581).has;
+	var unescapeMd      = __webpack_require__(581).unescapeMd;
+	var replaceEntities = __webpack_require__(581).replaceEntities;
+	var escapeHtml      = __webpack_require__(581).escapeHtml;
 
 	/**
 	 * Renderer rules cache
@@ -41002,7 +41572,7 @@
 
 
 /***/ },
-/* 582 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41011,22 +41581,22 @@
 	 * Local dependencies
 	 */
 
-	var Ruler = __webpack_require__(583);
+	var Ruler = __webpack_require__(586);
 
 	/**
 	 * Core parser `rules`
 	 */
 
 	var _rules = [
-	  [ 'block',          __webpack_require__(584)          ],
-	  [ 'abbr',           __webpack_require__(585)           ],
-	  [ 'references',     __webpack_require__(588)     ],
-	  [ 'inline',         __webpack_require__(593)         ],
-	  [ 'footnote_tail',  __webpack_require__(594)  ],
-	  [ 'abbr2',          __webpack_require__(595)          ],
-	  [ 'replacements',   __webpack_require__(596)   ],
-	  [ 'smartquotes',    __webpack_require__(597)    ],
-	  [ 'linkify',        __webpack_require__(598)        ]
+	  [ 'block',          __webpack_require__(587)          ],
+	  [ 'abbr',           __webpack_require__(588)           ],
+	  [ 'references',     __webpack_require__(591)     ],
+	  [ 'inline',         __webpack_require__(596)         ],
+	  [ 'footnote_tail',  __webpack_require__(597)  ],
+	  [ 'abbr2',          __webpack_require__(598)          ],
+	  [ 'replacements',   __webpack_require__(599)   ],
+	  [ 'smartquotes',    __webpack_require__(600)    ],
+	  [ 'linkify',        __webpack_require__(601)        ]
 	];
 
 	/**
@@ -41066,7 +41636,7 @@
 
 
 /***/ },
-/* 583 */
+/* 586 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41345,7 +41915,7 @@
 
 
 /***/ },
-/* 584 */
+/* 587 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41368,7 +41938,7 @@
 
 
 /***/ },
-/* 585 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Parse abbreviation definitions, i.e. `*[abbr]: description`
@@ -41377,8 +41947,8 @@
 	'use strict';
 
 
-	var StateInline    = __webpack_require__(586);
-	var parseLinkLabel = __webpack_require__(587);
+	var StateInline    = __webpack_require__(589);
+	var parseLinkLabel = __webpack_require__(590);
 
 
 	function parseAbbr(str, parserInline, options, env) {
@@ -41444,7 +42014,7 @@
 
 
 /***/ },
-/* 586 */
+/* 589 */
 /***/ function(module, exports) {
 
 	// Inline parser state
@@ -41526,7 +42096,7 @@
 
 
 /***/ },
-/* 587 */
+/* 590 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41591,17 +42161,17 @@
 
 
 /***/ },
-/* 588 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
-	var StateInline          = __webpack_require__(586);
-	var parseLinkLabel       = __webpack_require__(587);
-	var parseLinkDestination = __webpack_require__(589);
-	var parseLinkTitle       = __webpack_require__(591);
-	var normalizeReference   = __webpack_require__(592);
+	var StateInline          = __webpack_require__(589);
+	var parseLinkLabel       = __webpack_require__(590);
+	var parseLinkDestination = __webpack_require__(592);
+	var parseLinkTitle       = __webpack_require__(594);
+	var normalizeReference   = __webpack_require__(595);
 
 
 	function parseReference(str, parser, options, env) {
@@ -41695,14 +42265,14 @@
 
 
 /***/ },
-/* 589 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
-	var normalizeLink = __webpack_require__(590);
-	var unescapeMd    = __webpack_require__(578).unescapeMd;
+	var normalizeLink = __webpack_require__(593);
+	var unescapeMd    = __webpack_require__(581).unescapeMd;
 
 	/**
 	 * Parse link destination
@@ -41784,12 +42354,12 @@
 
 
 /***/ },
-/* 590 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var replaceEntities = __webpack_require__(578).replaceEntities;
+	var replaceEntities = __webpack_require__(581).replaceEntities;
 
 	module.exports = function normalizeLink(url) {
 	  var normalized = replaceEntities(url);
@@ -41803,13 +42373,13 @@
 
 
 /***/ },
-/* 591 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
-	var unescapeMd = __webpack_require__(578).unescapeMd;
+	var unescapeMd = __webpack_require__(581).unescapeMd;
 
 	/**
 	 * Parse link title
@@ -41855,7 +42425,7 @@
 
 
 /***/ },
-/* 592 */
+/* 595 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41869,7 +42439,7 @@
 
 
 /***/ },
-/* 593 */
+/* 596 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41888,7 +42458,7 @@
 
 
 /***/ },
-/* 594 */
+/* 597 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41989,7 +42559,7 @@
 
 
 /***/ },
-/* 595 */
+/* 598 */
 /***/ function(module, exports) {
 
 	// Enclose abbreviations in <abbr> tags
@@ -42083,7 +42653,7 @@
 
 
 /***/ },
-/* 596 */
+/* 599 */
 /***/ function(module, exports) {
 
 	// Simple typographical replacements
@@ -42153,7 +42723,7 @@
 
 
 /***/ },
-/* 597 */
+/* 600 */
 /***/ function(module, exports) {
 
 	// Convert straight quotation marks to typographic ones
@@ -42272,7 +42842,7 @@
 
 
 /***/ },
-/* 598 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Replace link-like texts with link nodes.
@@ -42282,7 +42852,7 @@
 	'use strict';
 
 
-	var Autolinker = __webpack_require__(599);
+	var Autolinker = __webpack_require__(602);
 
 
 	var LINK_SCAN_RE = /www|@|\:\/\//;
@@ -42439,7 +43009,7 @@
 
 
 /***/ },
-/* 599 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -44768,7 +45338,7 @@
 
 
 /***/ },
-/* 600 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44777,26 +45347,26 @@
 	 * Local dependencies
 	 */
 
-	var Ruler      = __webpack_require__(583);
-	var StateBlock = __webpack_require__(601);
+	var Ruler      = __webpack_require__(586);
+	var StateBlock = __webpack_require__(604);
 
 	/**
 	 * Parser rules
 	 */
 
 	var _rules = [
-	  [ 'code',       __webpack_require__(602) ],
-	  [ 'fences',     __webpack_require__(603),     [ 'paragraph', 'blockquote', 'list' ] ],
-	  [ 'blockquote', __webpack_require__(604), [ 'paragraph', 'blockquote', 'list' ] ],
-	  [ 'hr',         __webpack_require__(605),         [ 'paragraph', 'blockquote', 'list' ] ],
-	  [ 'list',       __webpack_require__(606),       [ 'paragraph', 'blockquote' ] ],
-	  [ 'footnote',   __webpack_require__(607),   [ 'paragraph' ] ],
-	  [ 'heading',    __webpack_require__(608),    [ 'paragraph', 'blockquote' ] ],
-	  [ 'lheading',   __webpack_require__(609) ],
-	  [ 'htmlblock',  __webpack_require__(610),  [ 'paragraph', 'blockquote' ] ],
-	  [ 'table',      __webpack_require__(612),      [ 'paragraph' ] ],
-	  [ 'deflist',    __webpack_require__(613),    [ 'paragraph' ] ],
-	  [ 'paragraph',  __webpack_require__(614) ]
+	  [ 'code',       __webpack_require__(605) ],
+	  [ 'fences',     __webpack_require__(606),     [ 'paragraph', 'blockquote', 'list' ] ],
+	  [ 'blockquote', __webpack_require__(607), [ 'paragraph', 'blockquote', 'list' ] ],
+	  [ 'hr',         __webpack_require__(608),         [ 'paragraph', 'blockquote', 'list' ] ],
+	  [ 'list',       __webpack_require__(609),       [ 'paragraph', 'blockquote' ] ],
+	  [ 'footnote',   __webpack_require__(610),   [ 'paragraph' ] ],
+	  [ 'heading',    __webpack_require__(611),    [ 'paragraph', 'blockquote' ] ],
+	  [ 'lheading',   __webpack_require__(612) ],
+	  [ 'htmlblock',  __webpack_require__(613),  [ 'paragraph', 'blockquote' ] ],
+	  [ 'table',      __webpack_require__(615),      [ 'paragraph' ] ],
+	  [ 'deflist',    __webpack_require__(616),    [ 'paragraph' ] ],
+	  [ 'paragraph',  __webpack_require__(617) ]
 	];
 
 	/**
@@ -44929,7 +45499,7 @@
 
 
 /***/ },
-/* 601 */
+/* 604 */
 /***/ function(module, exports) {
 
 	// Parser state class
@@ -45093,7 +45663,7 @@
 
 
 /***/ },
-/* 602 */
+/* 605 */
 /***/ function(module, exports) {
 
 	// Code block (4 spaces padded)
@@ -45135,7 +45705,7 @@
 
 
 /***/ },
-/* 603 */
+/* 606 */
 /***/ function(module, exports) {
 
 	// fences (``` lang, ~~~ lang)
@@ -45232,7 +45802,7 @@
 
 
 /***/ },
-/* 604 */
+/* 607 */
 /***/ function(module, exports) {
 
 	// Block quotes
@@ -45371,7 +45941,7 @@
 
 
 /***/ },
-/* 605 */
+/* 608 */
 /***/ function(module, exports) {
 
 	// Horizontal rule
@@ -45422,7 +45992,7 @@
 
 
 /***/ },
-/* 606 */
+/* 609 */
 /***/ function(module, exports) {
 
 	// Lists
@@ -45694,7 +46264,7 @@
 
 
 /***/ },
-/* 607 */
+/* 610 */
 /***/ function(module, exports) {
 
 	// Process footnote reference list
@@ -45767,7 +46337,7 @@
 
 
 /***/ },
-/* 608 */
+/* 611 */
 /***/ function(module, exports) {
 
 	// heading (#, ##, ...)
@@ -45831,7 +46401,7 @@
 
 
 /***/ },
-/* 609 */
+/* 612 */
 /***/ function(module, exports) {
 
 	// lheading (---, ===)
@@ -45892,7 +46462,7 @@
 
 
 /***/ },
-/* 610 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// HTML block
@@ -45900,7 +46470,7 @@
 	'use strict';
 
 
-	var block_names = __webpack_require__(611);
+	var block_names = __webpack_require__(614);
 
 
 	var HTML_TAG_OPEN_RE = /^<([a-zA-Z]{1,15})[\s\/>]/;
@@ -45972,7 +46542,7 @@
 
 
 /***/ },
-/* 611 */
+/* 614 */
 /***/ function(module, exports) {
 
 	// List of valid html blocks names, accorting to commonmark spec
@@ -46040,7 +46610,7 @@
 
 
 /***/ },
-/* 612 */
+/* 615 */
 /***/ function(module, exports) {
 
 	// GFM table, non-standard
@@ -46184,7 +46754,7 @@
 
 
 /***/ },
-/* 613 */
+/* 616 */
 /***/ function(module, exports) {
 
 	// Definition lists
@@ -46397,7 +46967,7 @@
 
 
 /***/ },
-/* 614 */
+/* 617 */
 /***/ function(module, exports) {
 
 	// Paragraph
@@ -46462,7 +47032,7 @@
 
 
 /***/ },
-/* 615 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46471,31 +47041,31 @@
 	 * Local dependencies
 	 */
 
-	var Ruler       = __webpack_require__(583);
-	var StateInline = __webpack_require__(586);
-	var utils       = __webpack_require__(578);
+	var Ruler       = __webpack_require__(586);
+	var StateInline = __webpack_require__(589);
+	var utils       = __webpack_require__(581);
 
 	/**
 	 * Inline Parser `rules`
 	 */
 
 	var _rules = [
-	  [ 'text',            __webpack_require__(616) ],
-	  [ 'newline',         __webpack_require__(617) ],
-	  [ 'escape',          __webpack_require__(618) ],
-	  [ 'backticks',       __webpack_require__(619) ],
-	  [ 'del',             __webpack_require__(620) ],
-	  [ 'ins',             __webpack_require__(621) ],
-	  [ 'mark',            __webpack_require__(622) ],
-	  [ 'emphasis',        __webpack_require__(623) ],
-	  [ 'sub',             __webpack_require__(624) ],
-	  [ 'sup',             __webpack_require__(625) ],
-	  [ 'links',           __webpack_require__(626) ],
-	  [ 'footnote_inline', __webpack_require__(627) ],
-	  [ 'footnote_ref',    __webpack_require__(628) ],
-	  [ 'autolink',        __webpack_require__(629) ],
-	  [ 'htmltag',         __webpack_require__(631) ],
-	  [ 'entity',          __webpack_require__(633) ]
+	  [ 'text',            __webpack_require__(619) ],
+	  [ 'newline',         __webpack_require__(620) ],
+	  [ 'escape',          __webpack_require__(621) ],
+	  [ 'backticks',       __webpack_require__(622) ],
+	  [ 'del',             __webpack_require__(623) ],
+	  [ 'ins',             __webpack_require__(624) ],
+	  [ 'mark',            __webpack_require__(625) ],
+	  [ 'emphasis',        __webpack_require__(626) ],
+	  [ 'sub',             __webpack_require__(627) ],
+	  [ 'sup',             __webpack_require__(628) ],
+	  [ 'links',           __webpack_require__(629) ],
+	  [ 'footnote_inline', __webpack_require__(630) ],
+	  [ 'footnote_ref',    __webpack_require__(631) ],
+	  [ 'autolink',        __webpack_require__(632) ],
+	  [ 'htmltag',         __webpack_require__(634) ],
+	  [ 'entity',          __webpack_require__(636) ]
 	];
 
 	/**
@@ -46629,7 +47199,7 @@
 
 
 /***/ },
-/* 616 */
+/* 619 */
 /***/ function(module, exports) {
 
 	// Skip text characters for text token, place those to pending buffer
@@ -46687,7 +47257,7 @@
 
 
 /***/ },
-/* 617 */
+/* 620 */
 /***/ function(module, exports) {
 
 	// Proceess '\n'
@@ -46747,7 +47317,7 @@
 
 
 /***/ },
-/* 618 */
+/* 621 */
 /***/ function(module, exports) {
 
 	// Proceess escaped chars and hardbreaks
@@ -46802,7 +47372,7 @@
 
 
 /***/ },
-/* 619 */
+/* 622 */
 /***/ function(module, exports) {
 
 	// Parse backticks
@@ -46854,7 +47424,7 @@
 
 
 /***/ },
-/* 620 */
+/* 623 */
 /***/ function(module, exports) {
 
 	// Process ~~deleted text~~
@@ -46944,7 +47514,7 @@
 
 
 /***/ },
-/* 621 */
+/* 624 */
 /***/ function(module, exports) {
 
 	// Process ++inserted text++
@@ -47034,7 +47604,7 @@
 
 
 /***/ },
-/* 622 */
+/* 625 */
 /***/ function(module, exports) {
 
 	// Process ==highlighted text==
@@ -47124,7 +47694,7 @@
 
 
 /***/ },
-/* 623 */
+/* 626 */
 /***/ function(module, exports) {
 
 	// Process *this* and _that_
@@ -47279,7 +47849,7 @@
 
 
 /***/ },
-/* 624 */
+/* 627 */
 /***/ function(module, exports) {
 
 	// Process ~subscript~
@@ -47343,7 +47913,7 @@
 
 
 /***/ },
-/* 625 */
+/* 628 */
 /***/ function(module, exports) {
 
 	// Process ^superscript^
@@ -47407,17 +47977,17 @@
 
 
 /***/ },
-/* 626 */
+/* 629 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Process [links](<to> "stuff")
 
 	'use strict';
 
-	var parseLinkLabel       = __webpack_require__(587);
-	var parseLinkDestination = __webpack_require__(589);
-	var parseLinkTitle       = __webpack_require__(591);
-	var normalizeReference   = __webpack_require__(592);
+	var parseLinkLabel       = __webpack_require__(590);
+	var parseLinkDestination = __webpack_require__(592);
+	var parseLinkTitle       = __webpack_require__(594);
+	var normalizeReference   = __webpack_require__(595);
 
 
 	module.exports = function links(state, silent) {
@@ -47583,14 +48153,14 @@
 
 
 /***/ },
-/* 627 */
+/* 630 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Process inline footnotes (^[...])
 
 	'use strict';
 
-	var parseLinkLabel = __webpack_require__(587);
+	var parseLinkLabel = __webpack_require__(590);
 
 
 	module.exports = function footnote_inline(state, silent) {
@@ -47642,7 +48212,7 @@
 
 
 /***/ },
-/* 628 */
+/* 631 */
 /***/ function(module, exports) {
 
 	// Process footnote references ([^...])
@@ -47710,15 +48280,15 @@
 
 
 /***/ },
-/* 629 */
+/* 632 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Process autolinks '<protocol:...>'
 
 	'use strict';
 
-	var url_schemas   = __webpack_require__(630);
-	var normalizeLink = __webpack_require__(590);
+	var url_schemas   = __webpack_require__(633);
+	var normalizeLink = __webpack_require__(593);
 
 
 	/*eslint max-len:0*/
@@ -47794,7 +48364,7 @@
 
 
 /***/ },
-/* 630 */
+/* 633 */
 /***/ function(module, exports) {
 
 	// List of valid url schemas, accorting to commonmark spec
@@ -47972,7 +48542,7 @@
 
 
 /***/ },
-/* 631 */
+/* 634 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Process html tags
@@ -47980,7 +48550,7 @@
 	'use strict';
 
 
-	var HTML_TAG_RE = __webpack_require__(632).HTML_TAG_RE;
+	var HTML_TAG_RE = __webpack_require__(635).HTML_TAG_RE;
 
 
 	function isLetter(ch) {
@@ -48027,7 +48597,7 @@
 
 
 /***/ },
-/* 632 */
+/* 635 */
 /***/ function(module, exports) {
 
 	// Regexps to match html elements
@@ -48092,17 +48662,17 @@
 
 
 /***/ },
-/* 633 */
+/* 636 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Process html entity - &#123;, &#xAF;, &quot;, ...
 
 	'use strict';
 
-	var entities          = __webpack_require__(579);
-	var has               = __webpack_require__(578).has;
-	var isValidEntityCode = __webpack_require__(578).isValidEntityCode;
-	var fromCodePoint     = __webpack_require__(578).fromCodePoint;
+	var entities          = __webpack_require__(582);
+	var has               = __webpack_require__(581).has;
+	var isValidEntityCode = __webpack_require__(581).isValidEntityCode;
+	var fromCodePoint     = __webpack_require__(581).fromCodePoint;
 
 
 	var DIGITAL_RE = /^&#((?:x[a-f0-9]{1,8}|[0-9]{1,8}));/i;
@@ -48146,7 +48716,7 @@
 
 
 /***/ },
-/* 634 */
+/* 637 */
 /***/ function(module, exports) {
 
 	// Remarkable default options
@@ -48232,7 +48802,7 @@
 
 
 /***/ },
-/* 635 */
+/* 638 */
 /***/ function(module, exports) {
 
 	// Remarkable default options
@@ -48276,7 +48846,7 @@
 
 
 /***/ },
-/* 636 */
+/* 639 */
 /***/ function(module, exports) {
 
 	// Commonmark default options
@@ -48353,7 +48923,7 @@
 
 
 /***/ },
-/* 637 */
+/* 640 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48361,19 +48931,20 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doMessageEditorCategoryCheck = exports.doMessageEditorPublishedCheck = exports.doMessageEditorSaveError = exports.doMessageEditorPrettyUrlChange = exports.doMessageEditorTitleBlur = exports.doMessageEditorTitleChange = exports.doMessageEditorTextChange = exports.doMessagesReceive = exports.doMessageOpen = exports.doMessageEdit = exports.MSG_UPDATE_SAVEERROR = exports.MSG_UPDATE_RECEIVE = exports.MSG_EDITOR_CAT_CHECK = exports.MSG_EDITOR_PUBL_CHECK = exports.MSG_EDITOR_TEXT_CHANGE = exports.MSG_EDITOR_PRETTYURL_CHANGE = exports.MSG_EDITOR_TITLE_BLUR = exports.MSG_EDITOR_TITLE_CHANGE = exports.MSG_LIST_RECEIVE = exports.MSG_EDIT = exports.MSG_OPEN = exports.MSG_LIST_FETCH = exports.MSG_CACHE_HIT = undefined;
+	exports.doMessageEditorCategoryUnCheck = exports.doMessageEditorCategoryCheck = exports.doMessageEditorPublishedCheck = exports.doMessageEditorSaveError = exports.doMessageEditorPrettyUrlChange = exports.doMessageEditorTitleBlur = exports.doMessageEditorTitleChange = exports.doMessageEditorTextChange = exports.doMessagesReceive = exports.doMessageOpen = exports.doMessageEdit = exports.MSG_UPDATE_SAVEERROR = exports.MSG_UPDATE_RECEIVE = exports.MSG_EDITOR_CAT_UNCHECK = exports.MSG_EDITOR_CAT_CHECK = exports.MSG_EDITOR_PUBL_CHECK = exports.MSG_EDITOR_TEXT_CHANGE = exports.MSG_EDITOR_PRETTYURL_CHANGE = exports.MSG_EDITOR_TITLE_BLUR = exports.MSG_EDITOR_TITLE_CHANGE = exports.MSG_LIST_RECEIVE = exports.MSG_EDIT = exports.MSG_OPEN = exports.MSG_LIST_FETCH = exports.MSG_CACHE_HIT = undefined;
 	exports.doMessageFetch = doMessageFetch;
 	exports.doMessageFetchForEdit = doMessageFetchForEdit;
 	exports.doMessageEditorSave = doMessageEditorSave;
 	exports.doMessageUpdateReceive = doMessageUpdateReceive;
+	exports.doMessageEditAndNavigate = doMessageEditAndNavigate;
 
-	__webpack_require__(638);
+	__webpack_require__(567);
 
 	var _reactRouterRedux = __webpack_require__(533);
 
-	var _navigationActions = __webpack_require__(639);
+	var _navigationActions = __webpack_require__(568);
 
-	var _remarkable = __webpack_require__(576);
+	var _remarkable = __webpack_require__(579);
 
 	var _remarkable2 = _interopRequireDefault(_remarkable);
 
@@ -48390,6 +48961,7 @@
 	var MSG_EDITOR_TEXT_CHANGE = exports.MSG_EDITOR_TEXT_CHANGE = 'MSG_EDITOR_TEXT_CHANGE';
 	var MSG_EDITOR_PUBL_CHECK = exports.MSG_EDITOR_PUBL_CHECK = 'MSG_EDITOR_PUBL_CHECK';
 	var MSG_EDITOR_CAT_CHECK = exports.MSG_EDITOR_CAT_CHECK = 'MSG_EDITOR_CAT_CHECK';
+	var MSG_EDITOR_CAT_UNCHECK = exports.MSG_EDITOR_CAT_UNCHECK = 'MSG_EDITOR_CAT_UNCHECK';
 	var MSG_UPDATE_RECEIVE = exports.MSG_UPDATE_RECEIVE = 'MSG_UPDATE_RECEIVE';
 	var MSG_UPDATE_SAVEERROR = exports.MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
 
@@ -48447,8 +49019,7 @@
 	            return r.json();
 	        }).then(function (msg) {
 	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doMessageEdit(msg));
-	            dispatch((0, _reactRouterRedux.push)('/dashboard/messages/' + messageId));
+	            dispatch(doMessageEditAndNavigate(msg));
 	        });
 	    };
 	}
@@ -48497,6 +49068,15 @@
 	    };
 	}
 
+	function doMessageEditAndNavigate(message) {
+	    return function (dispatch) {
+	        dispatch(doMessageEdit(message));
+	        dispatch((0, _reactRouterRedux.push)('/dashboard/messages/' + message._id));
+	    };
+	}
+
+	// dispatch(push('/dashboard/messages/' + messageId));
+
 	var doMessageEdit = exports.doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 	var doMessageOpen = exports.doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
 	var doMessagesReceive = exports.doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
@@ -48507,474 +49087,10 @@
 	var doMessageEditorSaveError = exports.doMessageEditorSaveError = makeActionCreator(MSG_UPDATE_SAVEERROR, 'error');
 	var doMessageEditorPublishedCheck = exports.doMessageEditorPublishedCheck = makeActionCreator(MSG_EDITOR_PUBL_CHECK, 'messageId', 'published');
 	var doMessageEditorCategoryCheck = exports.doMessageEditorCategoryCheck = makeActionCreator(MSG_EDITOR_CAT_CHECK, 'messageId', 'category');
+	var doMessageEditorCategoryUnCheck = exports.doMessageEditorCategoryUnCheck = makeActionCreator(MSG_EDITOR_CAT_UNCHECK, 'messageId', 'category');
 
 /***/ },
-/* 638 */
-/***/ function(module, exports) {
-
-	(function(self) {
-	  'use strict';
-
-	  if (self.fetch) {
-	    return
-	  }
-
-	  var support = {
-	    searchParams: 'URLSearchParams' in self,
-	    iterable: 'Symbol' in self && 'iterator' in Symbol,
-	    blob: 'FileReader' in self && 'Blob' in self && (function() {
-	      try {
-	        new Blob()
-	        return true
-	      } catch(e) {
-	        return false
-	      }
-	    })(),
-	    formData: 'FormData' in self,
-	    arrayBuffer: 'ArrayBuffer' in self
-	  }
-
-	  function normalizeName(name) {
-	    if (typeof name !== 'string') {
-	      name = String(name)
-	    }
-	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-	      throw new TypeError('Invalid character in header field name')
-	    }
-	    return name.toLowerCase()
-	  }
-
-	  function normalizeValue(value) {
-	    if (typeof value !== 'string') {
-	      value = String(value)
-	    }
-	    return value
-	  }
-
-	  // Build a destructive iterator for the value list
-	  function iteratorFor(items) {
-	    var iterator = {
-	      next: function() {
-	        var value = items.shift()
-	        return {done: value === undefined, value: value}
-	      }
-	    }
-
-	    if (support.iterable) {
-	      iterator[Symbol.iterator] = function() {
-	        return iterator
-	      }
-	    }
-
-	    return iterator
-	  }
-
-	  function Headers(headers) {
-	    this.map = {}
-
-	    if (headers instanceof Headers) {
-	      headers.forEach(function(value, name) {
-	        this.append(name, value)
-	      }, this)
-
-	    } else if (headers) {
-	      Object.getOwnPropertyNames(headers).forEach(function(name) {
-	        this.append(name, headers[name])
-	      }, this)
-	    }
-	  }
-
-	  Headers.prototype.append = function(name, value) {
-	    name = normalizeName(name)
-	    value = normalizeValue(value)
-	    var list = this.map[name]
-	    if (!list) {
-	      list = []
-	      this.map[name] = list
-	    }
-	    list.push(value)
-	  }
-
-	  Headers.prototype['delete'] = function(name) {
-	    delete this.map[normalizeName(name)]
-	  }
-
-	  Headers.prototype.get = function(name) {
-	    var values = this.map[normalizeName(name)]
-	    return values ? values[0] : null
-	  }
-
-	  Headers.prototype.getAll = function(name) {
-	    return this.map[normalizeName(name)] || []
-	  }
-
-	  Headers.prototype.has = function(name) {
-	    return this.map.hasOwnProperty(normalizeName(name))
-	  }
-
-	  Headers.prototype.set = function(name, value) {
-	    this.map[normalizeName(name)] = [normalizeValue(value)]
-	  }
-
-	  Headers.prototype.forEach = function(callback, thisArg) {
-	    Object.getOwnPropertyNames(this.map).forEach(function(name) {
-	      this.map[name].forEach(function(value) {
-	        callback.call(thisArg, value, name, this)
-	      }, this)
-	    }, this)
-	  }
-
-	  Headers.prototype.keys = function() {
-	    var items = []
-	    this.forEach(function(value, name) { items.push(name) })
-	    return iteratorFor(items)
-	  }
-
-	  Headers.prototype.values = function() {
-	    var items = []
-	    this.forEach(function(value) { items.push(value) })
-	    return iteratorFor(items)
-	  }
-
-	  Headers.prototype.entries = function() {
-	    var items = []
-	    this.forEach(function(value, name) { items.push([name, value]) })
-	    return iteratorFor(items)
-	  }
-
-	  if (support.iterable) {
-	    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
-	  }
-
-	  function consumed(body) {
-	    if (body.bodyUsed) {
-	      return Promise.reject(new TypeError('Already read'))
-	    }
-	    body.bodyUsed = true
-	  }
-
-	  function fileReaderReady(reader) {
-	    return new Promise(function(resolve, reject) {
-	      reader.onload = function() {
-	        resolve(reader.result)
-	      }
-	      reader.onerror = function() {
-	        reject(reader.error)
-	      }
-	    })
-	  }
-
-	  function readBlobAsArrayBuffer(blob) {
-	    var reader = new FileReader()
-	    reader.readAsArrayBuffer(blob)
-	    return fileReaderReady(reader)
-	  }
-
-	  function readBlobAsText(blob) {
-	    var reader = new FileReader()
-	    reader.readAsText(blob)
-	    return fileReaderReady(reader)
-	  }
-
-	  function Body() {
-	    this.bodyUsed = false
-
-	    this._initBody = function(body) {
-	      this._bodyInit = body
-	      if (typeof body === 'string') {
-	        this._bodyText = body
-	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-	        this._bodyBlob = body
-	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-	        this._bodyFormData = body
-	      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-	        this._bodyText = body.toString()
-	      } else if (!body) {
-	        this._bodyText = ''
-	      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-	        // Only support ArrayBuffers for POST method.
-	        // Receiving ArrayBuffers happens via Blobs, instead.
-	      } else {
-	        throw new Error('unsupported BodyInit type')
-	      }
-
-	      if (!this.headers.get('content-type')) {
-	        if (typeof body === 'string') {
-	          this.headers.set('content-type', 'text/plain;charset=UTF-8')
-	        } else if (this._bodyBlob && this._bodyBlob.type) {
-	          this.headers.set('content-type', this._bodyBlob.type)
-	        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-	          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-	        }
-	      }
-	    }
-
-	    if (support.blob) {
-	      this.blob = function() {
-	        var rejected = consumed(this)
-	        if (rejected) {
-	          return rejected
-	        }
-
-	        if (this._bodyBlob) {
-	          return Promise.resolve(this._bodyBlob)
-	        } else if (this._bodyFormData) {
-	          throw new Error('could not read FormData body as blob')
-	        } else {
-	          return Promise.resolve(new Blob([this._bodyText]))
-	        }
-	      }
-
-	      this.arrayBuffer = function() {
-	        return this.blob().then(readBlobAsArrayBuffer)
-	      }
-
-	      this.text = function() {
-	        var rejected = consumed(this)
-	        if (rejected) {
-	          return rejected
-	        }
-
-	        if (this._bodyBlob) {
-	          return readBlobAsText(this._bodyBlob)
-	        } else if (this._bodyFormData) {
-	          throw new Error('could not read FormData body as text')
-	        } else {
-	          return Promise.resolve(this._bodyText)
-	        }
-	      }
-	    } else {
-	      this.text = function() {
-	        var rejected = consumed(this)
-	        return rejected ? rejected : Promise.resolve(this._bodyText)
-	      }
-	    }
-
-	    if (support.formData) {
-	      this.formData = function() {
-	        return this.text().then(decode)
-	      }
-	    }
-
-	    this.json = function() {
-	      return this.text().then(JSON.parse)
-	    }
-
-	    return this
-	  }
-
-	  // HTTP methods whose capitalization should be normalized
-	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-	  function normalizeMethod(method) {
-	    var upcased = method.toUpperCase()
-	    return (methods.indexOf(upcased) > -1) ? upcased : method
-	  }
-
-	  function Request(input, options) {
-	    options = options || {}
-	    var body = options.body
-	    if (Request.prototype.isPrototypeOf(input)) {
-	      if (input.bodyUsed) {
-	        throw new TypeError('Already read')
-	      }
-	      this.url = input.url
-	      this.credentials = input.credentials
-	      if (!options.headers) {
-	        this.headers = new Headers(input.headers)
-	      }
-	      this.method = input.method
-	      this.mode = input.mode
-	      if (!body) {
-	        body = input._bodyInit
-	        input.bodyUsed = true
-	      }
-	    } else {
-	      this.url = input
-	    }
-
-	    this.credentials = options.credentials || this.credentials || 'omit'
-	    if (options.headers || !this.headers) {
-	      this.headers = new Headers(options.headers)
-	    }
-	    this.method = normalizeMethod(options.method || this.method || 'GET')
-	    this.mode = options.mode || this.mode || null
-	    this.referrer = null
-
-	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-	      throw new TypeError('Body not allowed for GET or HEAD requests')
-	    }
-	    this._initBody(body)
-	  }
-
-	  Request.prototype.clone = function() {
-	    return new Request(this)
-	  }
-
-	  function decode(body) {
-	    var form = new FormData()
-	    body.trim().split('&').forEach(function(bytes) {
-	      if (bytes) {
-	        var split = bytes.split('=')
-	        var name = split.shift().replace(/\+/g, ' ')
-	        var value = split.join('=').replace(/\+/g, ' ')
-	        form.append(decodeURIComponent(name), decodeURIComponent(value))
-	      }
-	    })
-	    return form
-	  }
-
-	  function headers(xhr) {
-	    var head = new Headers()
-	    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
-	    pairs.forEach(function(header) {
-	      var split = header.trim().split(':')
-	      var key = split.shift().trim()
-	      var value = split.join(':').trim()
-	      head.append(key, value)
-	    })
-	    return head
-	  }
-
-	  Body.call(Request.prototype)
-
-	  function Response(bodyInit, options) {
-	    if (!options) {
-	      options = {}
-	    }
-
-	    this.type = 'default'
-	    this.status = options.status
-	    this.ok = this.status >= 200 && this.status < 300
-	    this.statusText = options.statusText
-	    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
-	    this.url = options.url || ''
-	    this._initBody(bodyInit)
-	  }
-
-	  Body.call(Response.prototype)
-
-	  Response.prototype.clone = function() {
-	    return new Response(this._bodyInit, {
-	      status: this.status,
-	      statusText: this.statusText,
-	      headers: new Headers(this.headers),
-	      url: this.url
-	    })
-	  }
-
-	  Response.error = function() {
-	    var response = new Response(null, {status: 0, statusText: ''})
-	    response.type = 'error'
-	    return response
-	  }
-
-	  var redirectStatuses = [301, 302, 303, 307, 308]
-
-	  Response.redirect = function(url, status) {
-	    if (redirectStatuses.indexOf(status) === -1) {
-	      throw new RangeError('Invalid status code')
-	    }
-
-	    return new Response(null, {status: status, headers: {location: url}})
-	  }
-
-	  self.Headers = Headers
-	  self.Request = Request
-	  self.Response = Response
-
-	  self.fetch = function(input, init) {
-	    return new Promise(function(resolve, reject) {
-	      var request
-	      if (Request.prototype.isPrototypeOf(input) && !init) {
-	        request = input
-	      } else {
-	        request = new Request(input, init)
-	      }
-
-	      var xhr = new XMLHttpRequest()
-
-	      function responseURL() {
-	        if ('responseURL' in xhr) {
-	          return xhr.responseURL
-	        }
-
-	        // Avoid security warnings on getResponseHeader when not allowed by CORS
-	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-	          return xhr.getResponseHeader('X-Request-URL')
-	        }
-
-	        return
-	      }
-
-	      xhr.onload = function() {
-	        var options = {
-	          status: xhr.status,
-	          statusText: xhr.statusText,
-	          headers: headers(xhr),
-	          url: responseURL()
-	        }
-	        var body = 'response' in xhr ? xhr.response : xhr.responseText
-	        resolve(new Response(body, options))
-	      }
-
-	      xhr.onerror = function() {
-	        reject(new TypeError('Network request failed'))
-	      }
-
-	      xhr.ontimeout = function() {
-	        reject(new TypeError('Network request failed'))
-	      }
-
-	      xhr.open(request.method, request.url, true)
-
-	      if (request.credentials === 'include') {
-	        xhr.withCredentials = true
-	      }
-
-	      if ('responseType' in xhr && support.blob) {
-	        xhr.responseType = 'blob'
-	      }
-
-	      request.headers.forEach(function(value, name) {
-	        xhr.setRequestHeader(name, value)
-	      })
-
-	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-	    })
-	  }
-	  self.fetch.polyfill = true
-	})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ },
-/* 639 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.doStartLoading = doStartLoading;
-	exports.doStopLoading = doStopLoading;
-	var STARTLOADING = exports.STARTLOADING = 'STARTLOADING';
-	var STOPLOADING = exports.STOPLOADING = 'STOPLOADING';
-
-	function doStartLoading() {
-	    return {
-	        type: STARTLOADING
-	    };
-	}
-
-	function doStopLoading() {
-	    return {
-	        type: STOPLOADING
-	    };
-	}
-
-/***/ },
-/* 640 */
+/* 641 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48989,9 +49105,9 @@
 	exports.doCategoryError = doCategoryError;
 	exports.doCategorySave = doCategorySave;
 
-	__webpack_require__(638);
+	__webpack_require__(567);
 
-	var _navigationActions = __webpack_require__(639);
+	var _navigationActions = __webpack_require__(568);
 
 	var CATEGORY_FETCH = exports.CATEGORY_FETCH = 'CATEGORY_FETCH';
 	var CATEGORY_RECEIVE = exports.CATEGORY_RECEIVE = 'CATEGORY_RECEIVE';
@@ -49064,13 +49180,13 @@
 	}
 
 /***/ },
-/* 641 */
+/* 642 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 642 */
+/* 643 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49087,7 +49203,7 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	__webpack_require__(643);
+	__webpack_require__(644);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49180,13 +49296,13 @@
 	exports.default = DashboardPage;
 
 /***/ },
-/* 643 */
+/* 644 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 644 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49205,11 +49321,11 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(572);
+	var _alertbox = __webpack_require__(575);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _userActions = __webpack_require__(645);
+	var _userActions = __webpack_require__(566);
 
 	__webpack_require__(646);
 
@@ -49250,32 +49366,7 @@
 	        _classCallCheck(this, LoginPage);
 
 	        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
-	        /*
-	        this.onLoginClick = this.onLoginClick.bind(this);
-	        this.onUsernameChange = this.onUsernameChange.bind(this);
-	        this.onPasswordChange = this.onPasswordChange.bind(this);
-	        */
 	    }
-
-	    /*
-	    onLoginClick(event) {
-	        event.preventDefault();
-	        const {dispatch} = this.props;
-	        dispatch(doLoginPageSubmit(this.props.username, this.props.passwd));
-	    }
-	     onUsernameChange(event) {
-	        const {dispatch} = this.props;
-	        let v = event.target.value;
-	        event.preventDefault();
-	        dispatch(doLoginPageUsernameKp(v));
-	    }
-	     onPasswordChange(event) {
-	        const {dispatch} = this.props;
-	        let v = event.target.value;
-	        event.preventDefault();
-	        dispatch(doLoginPagePasswdKp(v));
-	    }
-	    */
 
 	    _createClass(LoginPage, [{
 	        key: 'render',
@@ -49327,91 +49418,6 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 /***/ },
-/* 645 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.USER_BAD_CREDENTIAL = exports.USER_SUCCESS_LOGIN = exports.USER_LP_SUBMIT = exports.USER_LP_PASSWD_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = undefined;
-	exports.doLoginPageUsernameKp = doLoginPageUsernameKp;
-	exports.doLoginPagePasswdKp = doLoginPagePasswdKp;
-	exports.doLoginPageSubmit = doLoginPageSubmit;
-	exports.doSuccessLogin = doSuccessLogin;
-	exports.doBadCredential = doBadCredential;
-
-	__webpack_require__(638);
-
-	var _reactRouter = __webpack_require__(470);
-
-	var _navigationActions = __webpack_require__(639);
-
-	var USER_LP_USERNAME_KEYPRESS = exports.USER_LP_USERNAME_KEYPRESS = 'USER_LP_LOGIN_KEYPRESS';
-	var USER_LP_PASSWD_KEYPRESS = exports.USER_LP_PASSWD_KEYPRESS = 'USER_LP_PASSWD_KEYPRESS';
-	var USER_LP_SUBMIT = exports.USER_LP_SUBMIT = 'USER_LP_SUBMIT';
-	var USER_SUCCESS_LOGIN = exports.USER_SUCCESS_LOGIN = 'USER_SUCCESS_LOGIN';
-	var USER_BAD_CREDENTIAL = exports.USER_BAD_CREDENTIAL = 'USER_BAD_CREDENTIAL';
-
-	function doLoginPageUsernameKp(value) {
-	    return {
-	        type: USER_LP_USERNAME_KEYPRESS,
-	        value: value
-	    };
-	}
-
-	function doLoginPagePasswdKp(value) {
-	    return {
-	        type: USER_LP_PASSWD_KEYPRESS,
-	        value: value
-	    };
-	}
-
-	function doLoginPageSubmit() {
-
-	    return function (dispatch, getState) {
-
-	        dispatch((0, _navigationActions.doStartLoading)());
-
-	        var u = 'username=' + encodeURIComponent(getState().user.username);
-	        var p = 'password=' + encodeURIComponent(getState().user.passwd);
-
-	        var opts = {
-	            method: "POST",
-	            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-	            body: u + "&" + p,
-	            credentials: 'include'
-	        };
-
-	        return fetch("/api/sec/login", opts).then(function (r) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            return r.json();
-	        }).then(function (user) {
-	            sessionStorage.setItem('4nuser', user);
-	            dispatch(doSuccessLogin(user));
-	            _reactRouter.browserHistory.push('/');
-	        }).catch(function (e) {
-	            return dispatch(doBadCredential(e));
-	        });
-	    };
-	}
-
-	function doSuccessLogin(user) {
-	    return {
-	        type: USER_SUCCESS_LOGIN,
-	        user: user
-	    };
-	}
-
-	function doBadCredential(error) {
-	    return {
-	        type: USER_BAD_CREDENTIAL,
-	        error: error
-	    };
-	}
-
-/***/ },
 /* 646 */
 /***/ function(module, exports) {
 
@@ -49437,7 +49443,7 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _messageActions = __webpack_require__(637);
+	var _messageActions = __webpack_require__(640);
 
 	var _table = __webpack_require__(648);
 
@@ -49486,7 +49492,10 @@
 	    }, {
 	        key: 'onNewMessage',
 	        value: function onNewMessage() {
-	            this.props.router.push('/dashboard/messages/new');
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _messageActions.doMessageEditAndNavigate)({ _id: 'new' }));
+	            //this.props.router.push('/dashboard/messages/new');
 	        }
 	    }, {
 	        key: 'onMessageClick',
@@ -49679,7 +49688,7 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(572);
+	var _alertbox = __webpack_require__(575);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
@@ -49691,7 +49700,7 @@
 
 	var _categoryeditor2 = _interopRequireDefault(_categoryeditor);
 
-	var _messageActions = __webpack_require__(637);
+	var _messageActions = __webpack_require__(640);
 
 	__webpack_require__(657);
 
@@ -49705,9 +49714,9 @@
 
 	var MESSAGE_URL = '/api/messages';
 
-	var mapStateToProps = function mapStateToProps(state) {
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
 
-	    var id = state.messages.selectedid;
+	    var id = ownProps.params.messageId;
 	    var msg = state.messages.items[id];
 
 	    return {
@@ -49736,7 +49745,7 @@
 	        _this.onPrettyUrlChange = _this.onPrettyUrlChange.bind(_this);
 	        _this.onPublishedClick = _this.onPublishedClick.bind(_this);
 	        _this.onCategorySelect = _this.onCategorySelect.bind(_this);
-
+	        _this.onCategoryUnSelect = _this.onCategoryUnSelect.bind(_this);
 	        return _this;
 	    }
 
@@ -49785,6 +49794,13 @@
 	            var dispatch = this.props.dispatch;
 
 	            dispatch((0, _messageActions.doMessageEditorCategoryCheck)(this.props.messageId, category));
+	        }
+	    }, {
+	        key: 'onCategoryUnSelect',
+	        value: function onCategoryUnSelect(category) {
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _messageActions.doMessageEditorCategoryUnCheck)(this.props.messageId, category));
 	        }
 	    }, {
 	        key: 'onSave',
@@ -49886,12 +49902,16 @@
 	                                            _react2.default.createElement(
 	                                                'h4',
 	                                                null,
-	                                                _react2.default.createElement('input', { type: 'checkbox', defaultChecked: this.props.published, onClick: this.onPublishedClick }),
+	                                                _react2.default.createElement('input', { type: 'checkbox',
+	                                                    defaultChecked: this.props.published,
+	                                                    onClick: this.onPublishedClick }),
 	                                                ' Publié'
 	                                            )
 	                                        )
 	                                    ),
-	                                    _react2.default.createElement(_categoryeditor2.default, { onComponentSelect: this.onCategorySelect, selectedItems: this.props.categories })
+	                                    _react2.default.createElement(_categoryeditor2.default, { onComponentSelect: this.onCategorySelect,
+	                                        onComponentUnSelect: this.onCategoryUnSelect,
+	                                        selectedItems: this.props.categories })
 	                                )
 	                            )
 	                        )
@@ -70206,11 +70226,11 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(572);
+	var _alertbox = __webpack_require__(575);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _categoryActions = __webpack_require__(640);
+	var _categoryActions = __webpack_require__(641);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70275,10 +70295,11 @@
 	    }, {
 	        key: 'onCheckCategory',
 	        value: function onCheckCategory(event) {
+	            var checked = event.target.checked;
 	            var value = event.target.value;
 	            var cat = this.props.categories[value];
 	            if (cat) {
-	                this.props.onComponentSelect(cat);
+	                checked ? this.props.onComponentSelect(cat) : this.props.onComponentUnSelect(cat);
 	            } else {
 	                console.log('Unable to find category #' + value);
 	            }
@@ -70286,9 +70307,11 @@
 	    }, {
 	        key: 'isSelected',
 	        value: function isSelected(cId) {
-	            for (var c in this.props.selectedItems) {
-	                if (this.props.selectedItems[c]._id == cId) {
-	                    return true;
+	            if (this.props.selectedItems) {
+	                for (var c in this.props.selectedItems) {
+	                    if (this.props.selectedItems[c]._id == cId) {
+	                        return true;
+	                    }
 	                }
 	            }
 	            return false;
@@ -70373,7 +70396,8 @@
 	CategoryEditor.propTypes = {
 	    categories: _react2.default.PropTypes.object.isRequired,
 	    selectedItems: _react2.default.PropTypes.array,
-	    onComponentSelect: _react2.default.PropTypes.func
+	    onComponentSelect: _react2.default.PropTypes.func.isRequired,
+	    onComponentUnSelect: _react2.default.PropTypes.func.isRequired
 	};
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CategoryEditor);
@@ -70391,6 +70415,80 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(538);
+
+	var _message = __webpack_require__(573);
+
+	var _message2 = _interopRequireDefault(_message);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	    var messageId = ownProps.params.messageId;
+	    return {
+	        selectedid: messageId,
+	        message: state.messages.items[messageId]
+	    };
+	};
+
+	var MessagePage = function (_React$Component) {
+	    _inherits(MessagePage, _React$Component);
+
+	    function MessagePage(props) {
+	        _classCallCheck(this, MessagePage);
+
+	        return _possibleConstructorReturn(this, (MessagePage.__proto__ || Object.getPrototypeOf(MessagePage)).call(this, props));
+	    }
+
+	    _createClass(MessagePage, [{
+	        key: 'render',
+	        value: function render() {
+	            console.log(this.props.message);
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-10' },
+	                    _react2.default.createElement(_message2.default, this.props.message)
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-2' },
+	                    'commentaires'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return MessagePage;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(MessagePage);
+
+/***/ },
+/* 659 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -70398,33 +70496,30 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(659);
+	var _reduxThunk = __webpack_require__(660);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(660);
+	var _rootreducers = __webpack_require__(661);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ReduxMiniLogger = __webpack_require__(665);
+	var _ActionsLogger = __webpack_require__(666);
 
-	var _ReduxMiniLogger2 = _interopRequireDefault(_ReduxMiniLogger);
+	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
 	var _reactRouterRedux = __webpack_require__(533);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	//const logger = createLogger({collapsed: true});
-
-	//import createLogger from 'redux-logger';
 	var reduxRouterMiddleware = (0, _reactRouterRedux.routerMiddleware)(_reactRouter.browserHistory);
 
-	var store = (0, _redux.createStore)(_rootreducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, reduxRouterMiddleware, _ReduxMiniLogger2.default));
+	var store = (0, _redux.createStore)(_rootreducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, reduxRouterMiddleware, _ActionsLogger2.default));
 
 	exports.default = store;
 
 /***/ },
-/* 659 */
+/* 660 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70452,7 +70547,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 660 */
+/* 661 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70465,13 +70560,13 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(661);
+	var _messageReducers = __webpack_require__(662);
 
-	var _categoryReducers = __webpack_require__(662);
+	var _categoryReducers = __webpack_require__(663);
 
-	var _navigationReducers = __webpack_require__(663);
+	var _navigationReducers = __webpack_require__(664);
 
-	var _userReducers = __webpack_require__(664);
+	var _userReducers = __webpack_require__(665);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -70484,7 +70579,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 661 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70497,7 +70592,7 @@
 
 	exports.messageReducers = messageReducers;
 
-	var _messageActions = __webpack_require__(637);
+	var _messageActions = __webpack_require__(640);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -70555,7 +70650,7 @@
 
 	            case _messageActions.MSG_EDIT:
 	                return {
-	                    v: Object.assign({}, state, { items: Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message)), selectedid: action.message._id })
+	                    v: Object.assign({}, state, { items: Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message)) })
 	                };
 
 	            case _messageActions.MSG_UPDATE_SAVEERROR:
@@ -70599,6 +70694,22 @@
 	                    v: Object.assign({}, state, { items: updateMessage(state.items, action.messageId, { 'categories': csprime }) })
 	                };
 
+	            case _messageActions.MSG_EDITOR_CAT_UNCHECK:
+	                var cs = state.items[action.messageId].categories;
+
+	                if (cs && action.category) {
+	                    var newCs = cs.filter(function (c) {
+	                        return c._id != action.category._id;
+	                    });
+	                    return {
+	                        v: Object.assign({}, state, { items: updateMessage(state.items, action.messageId, { 'categories': newCs }) })
+	                    };
+	                }
+
+	                return {
+	                    v: state
+	                };
+
 	            default:
 	                return {
 	                    v: state
@@ -70610,7 +70721,7 @@
 	}
 
 /***/ },
-/* 662 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70623,7 +70734,7 @@
 
 	exports.categoryReducers = categoryReducers;
 
-	var _categoryActions = __webpack_require__(640);
+	var _categoryActions = __webpack_require__(641);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -70685,7 +70796,7 @@
 	}
 
 /***/ },
-/* 663 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70695,7 +70806,7 @@
 	});
 	exports.navigationReducers = navigationReducers;
 
-	var _navigationActions = __webpack_require__(639);
+	var _navigationActions = __webpack_require__(568);
 
 	function navigationReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { isloading: false } : arguments[0];
@@ -70714,7 +70825,7 @@
 	}
 
 /***/ },
-/* 664 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70724,7 +70835,7 @@
 	});
 	exports.userReducers = userReducers;
 
-	var _userActions = __webpack_require__(645);
+	var _userActions = __webpack_require__(566);
 
 	function userReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { username: '', passwd: '' } : arguments[0];
@@ -70736,16 +70847,18 @@
 	        case _userActions.USER_LP_PASSWD_KEYPRESS:
 	            return Object.assign({}, state, { passwd: action.value });
 	        case _userActions.USER_SUCCESS_LOGIN:
-	            return Object.assign({}, state, { connectedUser: action.user });
+	            return Object.assign({}, state, { connectedUser: action.user, passwd: null, username: null });
 	        case _userActions.USER_BAD_CREDENTIAL:
 	            return Object.assign({}, state, { error: action.error });
+	        case _userActions.USER_LOGOUT:
+	            return Object.assign({}, state, { connectedUser: null });
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ },
-/* 665 */
+/* 666 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70767,7 +70880,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 666 */
+/* 667 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

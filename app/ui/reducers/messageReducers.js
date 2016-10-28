@@ -1,6 +1,6 @@
 import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
         MSG_EDITOR_TITLE_CHANGE, MSG_EDITOR_TITLE_BLUR, MSG_EDITOR_PRETTYURL_CHANGE, MSG_EDITOR_TEXT_CHANGE, MSG_EDITOR_PUBL_CHECK, MSG_EDITOR_CAT_CHECK,
-        MSG_UPDATE_RECEIVE,MSG_UPDATE_SAVEERROR} from '../actions/messageActions.js';
+        MSG_UPDATE_RECEIVE, MSG_EDITOR_CAT_UNCHECK , MSG_UPDATE_SAVEERROR} from '../actions/messageActions.js';
 
 function updateMessage(messages, id, action) {
     let update = {};
@@ -43,7 +43,7 @@ export function messageReducers(state = {items: {}, index: []}, action) {
             return Object.assign({}, state, {selectedid: action.messageid});
 
         case MSG_EDIT:
-            return Object.assign({}, state, {items: Object.assign({}, state.items, {[action.message._id]: action.message}), selectedid: action.message._id});
+            return Object.assign({}, state, {items: Object.assign({}, state.items, {[action.message._id]: action.message})});
 
         case MSG_UPDATE_SAVEERROR:
             return Object.assign({}, state, {error: action.error});
@@ -77,6 +77,15 @@ export function messageReducers(state = {items: {}, index: []}, action) {
             csprime.push(action.category);
             return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'categories': csprime})});
 
+        case MSG_EDITOR_CAT_UNCHECK:
+            let cs = state.items[action.messageId].categories;
+
+            if (cs && action.category) {
+                let newCs = cs.filter(c => c._id != action.category._id);
+                return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'categories': newCs})});
+            }
+
+            return state;
 
         default:
             return state;

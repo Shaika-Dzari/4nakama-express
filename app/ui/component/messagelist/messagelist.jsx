@@ -3,14 +3,15 @@ import Message from '../message/message.jsx';
 import AlertBox from '../alertbox/alertbox.jsx';
 import Pager from '../pager/pager.jsx';
 
-const MessageList = ({messages, index}) => {
+const MessageList = ({messages, index, openMessage}) => {
 
     var  msgs = 'Aucun...';
 
     if (messages && index) {
         msgs = index.map((v, idx) => {
+            console.log(v);
             let m = messages[v];
-            return <Message key={v} {...m} />
+            return <Message key={v} {...m} withLink={true} />
         });
     }
 

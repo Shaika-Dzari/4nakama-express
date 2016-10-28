@@ -1,8 +1,12 @@
+@import '../../variables.scss';
+
 div.pager {
     text-align: center;
 
-    button {
+    a {
         display: inline-block;
         margin: 5px 20px;
+        color: $color-font-4;
+        font-weight: bold;
     }
 }

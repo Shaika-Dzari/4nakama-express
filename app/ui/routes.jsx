@@ -14,6 +14,7 @@ import DashboardPage from './page/dashboard/dashboardpage.jsx'
 import LoginPage from './page/login/loginpage.jsx';
 import MessageAdmin from './page/messageadmin/messageadmin.jsx';
 import MessageEditor from './page/messageeditor/messageeditor.jsx';
+import MessagePage from './page/message/messagepage.jsx';
 
 // Store
 import store from './store/createstore.js';
@@ -28,6 +29,7 @@ const AppRoute = () => {
                 <Route path="/" component={ PublicLayout }>
                     <IndexRoute component={ BlogPage } />
                     <Route path="login" component={ LoginPage } />
+                    <Route path="blog/:messageId" component={ MessagePage } />
 
                     <Route path="/dashboard" component={ ProtectedLayout }>
                         <IndexRoute component={ DashboardPage } />
