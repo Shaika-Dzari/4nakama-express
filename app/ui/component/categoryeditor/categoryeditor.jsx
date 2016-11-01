@@ -1,9 +1,17 @@
 import React from 'react';
-import {Map, List} from 'immutable';
+import { connect } from 'react-redux';
 import AlertBox from '../alertbox/alertbox.jsx';
-import HttpUtils from '../../utils/HttpUtils.js';
+import {doCategorySave} from '../../actions/categoryActions.js';
 
 const CATEGORY_URL = '/api/categories';
+
+const mapStateToProps = (state) => {
+    return {
+        categories: state.categories.items,
+        index: state.categories.index,
+        error: state.categories.error
+    };
+};
 
 class CategoryEditor extends React.Component {
 
@@ -14,33 +22,9 @@ class CategoryEditor extends React.Component {
         this.onSaveCategory = this.onSaveCategory.bind(this);
         this.onCheckCategory = this.onCheckCategory.bind(this);
         this.state = {
-            categories: List(),
             showAddInput: false,
-            newcategory: '',
-            error: ''
+            newcategory: ''
         };
-    }
-
-    componentWillMount() {
-
-        let self = this;
-
-        HttpUtils.query(CATEGORY_URL, {credentials: 'include'}, r => r.json(), cats => {
-
-                    for (let c of cats) {
-                        if (self.props.selectedItems && self.props.selectedItems.indexOf(c) != -1) {
-                            c.checked = 'checked';
-                        } else {
-                            c.checked = '';
-                        }
-                    }
-
-                    self.setState({categories: List(cats)});
-                }, e => {
-                    self.setState({error: e})
-                });
-
-        //this.fetchCategory();
     }
 
     onAddCategory() {
@@ -49,31 +33,11 @@ class CategoryEditor extends React.Component {
 
     onSaveCategory() {
         this.setState({showAddInput: false});
-        let self = this;
-        let c = {name: this.state.newcategory};
+        this.setState({newcategory: ''});
 
-        fetch(CATEGORY_URL, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify(c),
-            credentials: 'include'
-        })
-        .then(r => r.json())
-        .then( newcat => {
-            let cats = self.state.categories;
-            let catsprime = cats.concat(newcat);
-
-
-            self.setState({categories: catsprime});
-        })
-        .catch(e => {
-            console.log(e);
-            self.setState({error: e})
-        });
-
+        let c = { _id: 'new', name: this.state.newcategory };
+        const { dispatch } = this.props;
+        dispatch(doCategorySave(c));
     }
 
     onCategoryAddInputChange(event) {
@@ -81,55 +45,42 @@ class CategoryEditor extends React.Component {
     }
 
     onCheckCategory(event) {
-        // Get category from state
+        let checked = event.target.checked;
         let value = event.target.value;
-
-        let cat = this.state.categories.find(c => c._id === value);
-
-        if (!cat) {
+        let cat = this.props.categories[value];
+        if (cat) {
+            checked ? this.props.onComponentSelect(cat) : this.props.onComponentUnSelect(cat);
+        } else {
             console.log('Unable to find category #' + value);
         }
-        console.log(cat);
-        this.props.onComponentSelect(cat);
     }
 
-    fetchCategory() {
-        let self = this;
-
-        window.fetch(CATEGORY_URL, {credentials: 'include'})
-                .then(r => r.json())
-                .then(cats => {
-
-                    for (let c of cats) {
-                        if (self.props.selectedItems && self.props.selectedItems.indexOf(c) != -1) {
-                            c.checked = 'checked';
-                        } else {
-                            c.checked = '';
-                        }
-                    }
-
-                    self.setState({categories: List(cats)});
-                })
-                .catch(e => {
-                    self.setState({error: e})
-                });
+    isSelected(cId) {
+        if (this.props.selectedItems) {
+            for (let c in this.props.selectedItems) {
+                if (this.props.selectedItems[c]._id == cId) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     render() {
 
+        let cs = this.props.index.map(cid => {
+            let key = 'c-' + cid;
+            let cat = this.props.categories[cid];
+            let checked = this.isSelected(cid);
 
-        let cs = this.state.categories.map((v, idx) => {
-            let key = 'c-' + v._id;
             return (
                 <li key={key}>
                     <label>
-                        <input type="checkbox" onClick={this.onCheckCategory} defaultChecked={v.checked} value={v._id} /> {v.name}
+                        <input type="checkbox" onClick={this.onCheckCategory} defaultChecked={checked} value={cid} /> {cat.name}
                     </label>
                 </li>
             );
         });
-
-
 
         return (
             <div className="box bluebox">
@@ -150,7 +101,7 @@ class CategoryEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <AlertBox message={this.state.error} />
+                    <AlertBox message={this.props.error} />
                     <ul className="simple-list">
                         {cs}
                     </ul>
@@ -160,10 +111,11 @@ class CategoryEditor extends React.Component {
     }
 }
 
-
 CategoryEditor.propTypes = {
-    // selectedItems: React.PropTypes.isInstance(List),
-    onComponentSelect: React.PropTypes.func
+    categories: React.PropTypes.object.isRequired,
+    selectedItems: React.PropTypes.array,
+    onComponentSelect: React.PropTypes.func.isRequired,
+    onComponentUnSelect: React.PropTypes.func.isRequired,
 };
 
-export default CategoryEditor;
+export default connect(mapStateToProps)(CategoryEditor);

@@ -1,9 +1,11 @@
 import React from 'react';
 import PageHeader from '../component/pageheader/pageheader.jsx';
 
-export const PublicLayout = ({ children }) => (
+const PublicLayout = ({ children }) => (
     <div>
         <PageHeader />
         { children }
     </div>
-)
+);
+
+export default PublicLayout;

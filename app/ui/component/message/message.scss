@@ -17,6 +17,15 @@
             font-size: 0.8em;
             margin: 3px 0;
         }
+
+        .category {
+            display: inline-block;
+            border: 1px solid #ddd;
+            padding: 4px 5px 2px 5px;
+            margin: 0 3px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
     }
 
     .blog-message-body {

@@ -1,37 +1,41 @@
-import React, {PropType} from 'react';
+import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 
 import './message.scss';
 
-const Message = (props) => {
+const Message = ({_id, title, text, texthtml, authorName, createdAt, categories, prettyUrl, withLink}) => {
 
+    let cats = null;
+    let innerTitle = null;
 
-    var cats = null;
-
-    if (props.categories) {
-        cats = props.categories.map((v, i) => {
-            return <span key={v._id}>{v.name}</span> ;
+    if (categories) {
+        cats = categories.map((v, i) => {
+            return <span key={v._id} className="category">{v.name}</span> ;
         });
+    }
+
+    if (withLink) {
+        innerTitle = <Link to={'/blog/' + _id}>{title}</Link>;
+    } else {
+        innerTitle = title;
     }
 
     return (
         <article className="blog-message">
             <header>
-                <h1>{props.title}</h1>
-
+                <h1>{innerTitle}</h1>
                 <div className="row">
                     <div className="col-6">
-                        <p>{props.authorName} - {props.createdAt}</p>
+                        <p>{authorName} - {createdAt}</p>
                     </div>
                     <div className="col-6 right">
                         {cats}
                     </div>
                 </div>
-
             </header>
 
             <div className="blog-message-body">
-                <div dangerouslySetInnerHTML={{__html: props.texthtml}}></div>
+                <div dangerouslySetInnerHTML={{__html: texthtml}}></div>
             </div>
 
         </article>
@@ -39,11 +43,14 @@ const Message = (props) => {
 }
 
 Message.propTypes = {
-    title: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string.isRequired,
-    authorName: React.PropTypes.string.isRequired,
-    createdAt: React.PropTypes.string.isRequired,
-    categories: React.PropTypes.array
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    authorName: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    categories: PropTypes.array,
+    prettyUrl: PropTypes.string.isRequired,
+    withLink: PropTypes.bool
 };
 
 export default Message;

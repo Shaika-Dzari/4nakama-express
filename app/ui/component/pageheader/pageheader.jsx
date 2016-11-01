@@ -1,9 +1,18 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { IndexLink, Link, withRouter } from 'react-router';
 import AuthenticationService from '../../utils/AuthenticationService.js';
+import { doLogout } from '../../actions/userActions.js';
 import Feedback from '../feedback/feedback.jsx';
 
 import './pageheader.scss';
+
+const mapStateToProps = (state) => {
+    return {
+        connectedUser: state.user.connectedUser
+    }
+}
 
 class PageHeader extends Component {
 
@@ -12,28 +21,20 @@ class PageHeader extends Component {
         this.disconnect = this.disconnect.bind(this);
     }
 
-    isAuthenticated() {
-        return AuthenticationService.isAuthenticated();
-    }
-
-    disconnect(event) {
-        var self = this;
-        event.preventDefault();
-        AuthenticationService.disconnect(function() {
-            self.props.router.push('/');
-        });
-
+    disconnect() {
+        const { dispatch } = this.props;
+        dispatch(doLogout());
     }
 
     render() {
 
         var links = [];
         links.push(<IndexLink to="/" activeClassName="active" key="pagehead_1">Blog</IndexLink>);
-        links.push(<Link to="/ecriture" activeClassName="active" key="pagehead_2">Écriture</Link>);
+        links.push(<Link to="/ecriture" activeClassName="active" key="pagehead_2">Histoire</Link>);
         links.push(<Link to="/projet" activeClassName="active" key="pagehead_3">Projets</Link>);
-        links.push(<Link to="/about" activeClassName="active" key="pagehead_4">À Propos</Link>);
+        links.push(<Link to="/about" activeClassName="active" key="pagehead_4">A Propos</Link>);
 
-        if (this.isAuthenticated()) {
+        if (this.props.connectedUser) {
             links.push(<Link to="/dashboard" activeClassName="active" key="pagehead_5">Administration</Link>);
             links.push(<a href="#" onClick={this.disconnect} key="pagehead_6">Déconnexion</a>);
         } else {
@@ -58,4 +59,8 @@ class PageHeader extends Component {
     }
 }
 
-export default withRouter(PageHeader);
+PageHeader.propTypes = {
+    connectedUser: PropTypes.object
+}
+
+export default connect(mapStateToProps)(withRouter(PageHeader));

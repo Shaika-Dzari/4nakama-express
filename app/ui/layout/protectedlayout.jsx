@@ -1,41 +1,42 @@
 import React from 'react';
-import PageHeader from '../component/pageheader/pageheader.jsx';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import AuthenticationService from '../utils/AuthenticationService.js';
+import { push } from 'react-router-redux';
+import { doChallenge } from '../actions/userActions.js'
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        connectedUser: state.user.connectedUser,
+        location: ownProps.location
+    }
+}
 
 class ProtectedLayout extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
-        this.disconnect = this.disconnect.bind(this);
     }
-
-    getUser() {
-        // Reactively know if the user is authenticated
-        return {
-            user: sessionStorage.getItem("4nuser")
-        };
-    }
-
-    disconnect(event) {
-        event.preventDefault();
-        this.props.router.push('/');
-    }
-
 
     componentWillMount() {
         // Check that the user is logged in before the component mounts
-        if (!this.getUser().user) {
-            this.props.router.push('/login');
+
+        if (!this.props.connectedUser) {
+            const { dispatch } = this.props;
+
+            if (sessionStorage.getItem('4nuser')) {
+                dispatch(doChallenge(location.pathname));
+            } else {
+                dispatch(push('/login'));
+            }
         }
     }
 
     // When the data changes, this method is called
     componentDidUpdate(prevProps, prevState) {
         // Now check that they are still logged in. Redirect to sign in page if they aren't.
-        if (!this.getUser().user) {
-            this.props.router.push('/login');
+        if (!this.props.connectedUser) {
+            const { dispatch } = this.props;
+            dispatch(push('/login'));
         }
     }
 
@@ -49,4 +50,7 @@ class ProtectedLayout extends React.Component {
     }
 }
 
-export default withRouter(ProtectedLayout);
+
+export default connect(mapStateToProps)(withRouter(ProtectedLayout));
+
+//export default withRouter(ProtectedLayout);

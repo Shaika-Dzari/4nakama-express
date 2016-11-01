@@ -6,6 +6,7 @@ var AccountSchema = new Schema({
     username: String,
     password: String,
     email: {type: String, required: true},
+    name: {type: String},
     createdAt: { type: Date, default: Date.now },
     role: {type: String, default: 'author'},
     enabled: {type: Number, default: 1}

@@ -1,26 +1,27 @@
-import React from 'react';
-import {Link, withRouter} from 'react-router';
+import React, {PropTypes} from 'react';
 
-
-const Table = (props) => {
+const Table = ({cdef, items, linkTo}) => {
 
     var rows = null;
-    var cdef = props.cdef;
+    var cdef = cdef;
 
-    if (Array.isArray(props.items)) {
-        rows = props.items.map((v, i) => {
+    if (Array.isArray(items)) {
+        rows = items.map((v, i) => {
 
             let name = null;
+            let id = v[cdef.id];
 
-            if (cdef.link) {
-                name = <Link to={v[cdef.link]}>{v[cdef.name]}</Link>;
+            if (linkTo) {
+                //let link = linkTo + "/" + v[cdef.id];
+                name = <a href="#" onClick={(e) => { e.preventDefault(); linkTo(id);}}>{v[cdef.name]}</a>
+                //name = <Link to={link}>{v[cdef.name]}</Link>;
             } else {
                 name = v[cdef.name];
             }
 
             return (
-                <tr key={v[cdef.id]}>
-                    <td>{v[cdef.id]}</td>
+                <tr key={id}>
+                    <td>{id}</td>
                     <td>{name}</td>
                     <td>{v[cdef.rowdate]}</td>
                 </tr>
@@ -45,13 +46,14 @@ const Table = (props) => {
 };
 
 Table.propTypes = {
-    cdef: React.PropTypes.shape({
-        id: React.PropTypes.string,
-        name: React.PropTypes.string,
-        rowdate: React.PropTypes.string,
-        link: React.PropTypes.string
+    cdef: PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string,
+        rowdate: PropTypes.string,
+        link: PropTypes.string
     }).isRequired,
-    items: React.PropTypes.array
+    items: PropTypes.array,
+    linkTo: PropTypes.func
 };
 
 export default Table;

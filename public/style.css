@@ -33,6 +33,13 @@
       color: #444;
       font-size: 0.8em;
       margin: 3px 0; }
+    .blog-message header .category {
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 4px 5px 2px 5px;
+      margin: 0 3px;
+      font-size: 0.8em;
+      text-transform: uppercase; }
   .blog-message .blog-message-body {
     padding: 5px 10px;
     text-align: justify; }
@@ -48,9 +55,11 @@
     font-weight: bold; }
 div.pager {
   text-align: center; }
-  div.pager button {
+  div.pager a {
     display: inline-block;
-    margin: 5px 20px; }
+    margin: 5px 20px;
+    color: #444;
+    font-weight: bold; }
 div.list-ctn {
   margin: 10px; }
   div.list-ctn .info-element {

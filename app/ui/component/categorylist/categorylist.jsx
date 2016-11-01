@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const CategoryList = (props) => {
+const CategoryList = ({categories, index}) => {
 
-    var c = 'Aucun';
+    let cats = 'Aucun';
 
-    if (props.data) {
-
-        c = props.data.map((v, idx) => {
-            return <li key={v._id}><a href="#">{v.name}</a></li>
+    if (categories && index) {
+        cats = index.map((v, idx) => {
+            let c = categories[v];
+            return <li key={v}><a href="#">{c.name}</a></li>
         });
-
-    } else if (props.error) {
-        c = <AlertBox message={props.error} />
     }
 
     return (
         <ul>
-            {c}
+            {cats}
         </ul>
     );
 }
+
+CategoryList.propTypes = {
+    categories: PropTypes.object.isRequired,
+    index: PropTypes.array.isRequired
+};
+
+/*
+PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired
+    }).isRequired)
+ */
 
 export default CategoryList;

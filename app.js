@@ -50,7 +50,7 @@ passport.deserializeUser(Account.deserializeUser());
 // ----------------------------------------------------------------------------
 app.use(function(req, res, next) {
     // do logging
-    console.log('Requested: ' + req.url);
+    console.log(req.method + ': ' + req.url);
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -61,6 +61,7 @@ app.use(function(err, req, res, next) {
 
 // Pipe to index
 app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
+    console.log('redirecting to index.html...')
     res.sendFile('index.html', { root: publicFolder });
 });
 

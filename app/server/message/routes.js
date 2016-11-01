@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Message = require('./message');
 var authUtils = require('../authutils');
-var urlUtils = require('../urlutils');
+var htmlutils = require('../htmlutils');
 
 var DEFAULT_PAGE_SIZE = 5;
 var DEFAULT_MAX_PAGE_SIZE = 20;
@@ -63,9 +63,9 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         title: msgreq.title,
         text: msgreq.text,
         authorId: user._id,
-        authorName: user.username,
+        authorName: user.name,
         published: msgreq.published || 0,
-        prettyUrl: urlUtils.sanitizeUrl(msgreq.prettyUrl),
+        prettyUrl: htmlutils.sanitizeUrl(msgreq.prettyUrl),
         categories: msgreq.categories
     });
 
@@ -89,7 +89,7 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
 
         msg.text = requestMessage.text;
         msg.title = requestMessage.title;
-        msg.prettyUrl = urlUtils.sanitizeUrl(requestMessage.prettyUrl);
+        msg.prettyUrl = htmlutils.sanitizeUrl(requestMessage.prettyUrl);
         msg.published = requestMessage.published || 0;
         msg.categories = requestMessage.categories
 

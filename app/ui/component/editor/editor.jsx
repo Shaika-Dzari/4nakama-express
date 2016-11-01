@@ -2,15 +2,15 @@ import React from 'react';
 import SimpleMDE from 'react-simplemde-editor';
 import 'simplemde/dist/simplemde.min.css';
 
-const Editor = (props) => {
+const Editor = ({value, onEditorChange}) => {
 
     return (
-        <SimpleMDE onChange={props.onEditorChange}
-                   value={props.value}
+        <SimpleMDE onChange={onEditorChange}
+                   value={value}
                    options={{
                         autofocus: true,
                         spellChecker: false,
-                        initialValue: props.value
+                        initialValue: value
                    }}
                    />
     );

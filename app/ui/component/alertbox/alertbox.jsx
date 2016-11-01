@@ -1,15 +1,15 @@
 import React from 'react';
 import './alertbox.scss';
 
-const AlertBox = (props) => {
+const AlertBox = ({message}) => {
 
-    if (!props.message) {
+    if (!message) {
         return null;
     }
 
     return (
         <div className="alert">
-            <p>{props.message}</p>
+            <p>{message}</p>
         </div>
     );
 };
