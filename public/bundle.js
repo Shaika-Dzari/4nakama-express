@@ -37009,9 +37009,17 @@
 	    var children = _ref.children;
 	    return _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(_pageheader2.default, null),
-	        children
+	        { className: 'page-layout' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'menu-section' },
+	            _react2.default.createElement(_pageheader2.default, null)
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'content-section' },
+	            children
+	        )
 	    );
 	};
 
@@ -37092,73 +37100,100 @@
 	            links.push(_react2.default.createElement(
 	                _reactRouter.IndexLink,
 	                { to: '/', activeClassName: 'active', key: 'pagehead_1' },
-	                'Blog'
+	                _react2.default.createElement('img', { src: '/menu-blog-icon.jpg' }),
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Blog'
+	                )
 	            ));
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/ecriture', activeClassName: 'active', key: 'pagehead_2' },
-	                'Histoire'
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Histoire'
+	                )
 	            ));
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/projet', activeClassName: 'active', key: 'pagehead_3' },
-	                'Projets'
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Projets'
+	                )
 	            ));
 	            links.push(_react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/about', activeClassName: 'active', key: 'pagehead_4' },
-	                'A Propos'
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'A Propos'
+	                )
 	            ));
 
 	            if (this.props.connectedUser) {
 	                links.push(_react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: '/dashboard', activeClassName: 'active', key: 'pagehead_5' },
-	                    'Administration'
+	                    _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        'Administration'
+	                    )
 	                ));
 	                links.push(_react2.default.createElement(
 	                    'a',
 	                    { href: '#', onClick: this.disconnect, key: 'pagehead_6' },
-	                    'Déconnexion'
+	                    _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        'Déconnexion'
+	                    )
 	                ));
 	            } else {
 	                links.push(_react2.default.createElement(
 	                    _reactRouter.Link,
 	                    { to: '/login', activeClassName: 'active', key: 'pagehead_7' },
-	                    'Connexion'
+	                    _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        'Connexion'
+	                    )
 	                ));
 	            }
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'row site-header' },
+	                { className: 'site-header' },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-6' },
+	                    'h1',
+	                    { className: 'site-title' },
 	                    _react2.default.createElement(
-	                        'h1',
-	                        { className: 'site-title' },
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/' },
-	                            '4nakama'
-	                        )
+	                        _reactRouter.Link,
+	                        { to: '/' },
+	                        _react2.default.createElement('img', { src: '/logo.jpg', alt: '4n' }),
+	                        'akama'
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-1' },
-	                    _react2.default.createElement(_feedback2.default, null)
+	                    'h5',
+	                    null,
+	                    'A whisper from my Ghost'
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-5' },
+	                    { className: 'page-header-menu' },
 	                    _react2.default.createElement(
 	                        'nav',
 	                        { className: 'site-menu' },
 	                        links
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement(_feedback2.default, null)
 	            );
 	        }
 	    }]);
@@ -37892,13 +37927,13 @@
 	                return _react2.default.createElement(
 	                    'span',
 	                    null,
-	                    'loading...'
+	                    'Loading...'
 	                );
 	            } else {
 	                return _react2.default.createElement(
 	                    'span',
 	                    null,
-	                    'waiting...'
+	                    'Waiting'
 	                );
 	            }
 	        }
@@ -37908,49 +37943,6 @@
 	}(_react2.default.Component);
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Feedback);
-
-	/*
-	export default class Feedback extends React.Component {
-
-	    constructor(props) {
-	        super(props);
-	        this.handleStart = this.handleStart.bind(this);
-	        this.handleStop = this.handleStop.bind(this);
-	        this.state = {
-	            isloading: false
-	        };
-	    }
-
-	    componentDidMount() {
-	        window.addEventListener('httpStart', this.handleStart);
-	        window.addEventListener('httpStop', this.handleStop);
-	    }
-
-	    componentWillUnmount() {
-	        window.removeEventListener('httpStart', this.handleStart);
-	        window.removeEventListener('httpStop', this.handleStop);
-	    }
-
-	    handleStart() {
-	        this.setState({isloading: true});
-	    }
-
-	    handleStop() {
-	        this.setState({isloading: false});
-	    }
-
-	    render() {
-
-	        if (this.state.isloading) {
-	            return <img alt="loading..." src="/ajax-loader.gif"></img>;
-	        } else {
-	            return null;
-	        }
-
-	    }
-	}
-
-	*/
 
 /***/ },
 /* 567 */

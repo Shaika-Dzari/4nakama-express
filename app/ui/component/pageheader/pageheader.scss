@@ -2,36 +2,78 @@
 
 .site-header {
     background-color: $color-back-dark;
-    border-bottom: 1px solid $color-border-1;
+    color: $color-font-1;
 
     h1.site-title {
-        margin: 8px 5px 3px 20px;
-
+        margin: 8px 5px 20px 20px;
         a {
             color: $color-font-1;
-            text-transform: uppercase;
+            img {
+                vertical-align: middle;
+            }
         }
     }
 
-    nav.site-menu {
-        text-align: right;
-        margin-right: 20px;
-        a {
-            display: inline-block;
-            font-weight: bold;
-            text-decoration: none;
-            margin: 16px 10px 0 10px;
-        }
+    h5 {
+        margin: 8px 5px 10px 20px;
+        font-size: 1em;
+    }
 
-        a:visited {
-            color: $color-font-2;
-        }
+    .page-header-menu {
+            margin-top: 5px;
+            padding: 0 0 0 5px;
 
-        a.active {
-            color: $color-font-1;
+        nav.site-menu {
+            a {
+                text-align: center;
+                display: inline-block;
+                font-weight: bold;
+                text-decoration: none;
+                margin: 16px 10px 0 10px;
+                padding: 10px;
+                border-top: 1px solid #176ba1;
+                border-bottom: 1px solid #176ba1;
+
+                span {
+                    display: none;
+                }
+
+                img {
+                    display: inline;
+                }
+            }
+
+            a:visited {
+                color: $color-font-2;
+            }
+
+            a.active {
+                color: $color-font-1;
+            }
+            a:hover {
+                background-color: #1f95e0;
+            }
         }
-        a:hover {
-            border-bottom: 3px solid $color-font-2;
+    }
+
+    @media only screen and (min-width: 920px) {
+        .page-header-menu {
+            margin-top: 20px;
+            padding: 20px 0;
+
+            nav.site-menu {
+                a {
+                    display: block;
+
+                    span {
+                        display: inline;
+                    }
+
+                    img {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 }

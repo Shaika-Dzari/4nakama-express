@@ -2,9 +2,15 @@ import React from 'react';
 import PageHeader from '../component/pageheader/pageheader.jsx';
 
 const PublicLayout = ({ children }) => (
-    <div>
-        <PageHeader />
-        { children }
+    <div className="page-layout">
+        <div className="menu-section">
+            <PageHeader />
+        </div>
+
+        <div className="content-section">
+            { children }
+        </div>
+
     </div>
 );
 
