@@ -26,8 +26,8 @@ export function messageReducers(state = {items: {}, index: []}, action) {
 
         case MSG_LIST_RECEIVE:
 
-            var msgList = {};
-            var msgIdx = [];
+            let msgList = {};
+            let msgIdx = [];
 
             if (action.messages) {
                 action.messages.forEach(m => {
