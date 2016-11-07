@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(667);
+	__webpack_require__(668);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29439,19 +29439,25 @@
 
 	var _messagepage2 = _interopRequireDefault(_messagepage);
 
-	var _createstore = __webpack_require__(659);
+	var _fileadmin = __webpack_require__(659);
+
+	var _fileadmin2 = _interopRequireDefault(_fileadmin);
+
+	var _createstore = __webpack_require__(660);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, _createstore2.default);
+
+	// Store
+
+
 	// Pages
 
 
 	// Layouts
-	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, _createstore2.default);
-
-	// Store
 
 
 	var AppRoute = function AppRoute() {
@@ -29476,7 +29482,8 @@
 	                        _reactRouter.Route,
 	                        { path: '', component: _dashboardpage2.default },
 	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages', component: _messageadmin2.default }),
-	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages/:messageId', component: _messageeditor2.default })
+	                        _react2.default.createElement(_reactRouter.Route, { path: 'messages/:messageId', component: _messageeditor2.default }),
+	                        _react2.default.createElement(_reactRouter.Route, { path: 'files', component: _fileadmin2.default })
 	                    )
 	                ),
 	                _react2.default.createElement(_reactRouter.Route, { path: '*', component: _notfound2.default })
@@ -49261,9 +49268,9 @@
 	                                'li',
 	                                { className: 'menu-item' },
 	                                _react2.default.createElement(
-	                                    'a',
-	                                    { href: '#' },
-	                                    'Catégories'
+	                                    _reactRouter.Link,
+	                                    { to: '/dashboard/files' },
+	                                    'Fichiers'
 	                                )
 	                            )
 	                        )
@@ -70481,6 +70488,94 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(470);
+
+	var _reactRedux = __webpack_require__(538);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FileAdmin = function (_React$Component) {
+	    _inherits(FileAdmin, _React$Component);
+
+	    function FileAdmin() {
+	        _classCallCheck(this, FileAdmin);
+
+	        return _possibleConstructorReturn(this, (FileAdmin.__proto__ || Object.getPrototypeOf(FileAdmin)).apply(this, arguments));
+	    }
+
+	    _createClass(FileAdmin, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'box bluebox' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'heading' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-6' },
+	                            _react2.default.createElement(
+	                                'h4',
+	                                null,
+	                                'Messages'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-6 right' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: this.onNewMessage },
+	                                'Créer'
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'body' },
+	                    _react2.default.createElement(
+	                        'form',
+	                        { action: '/api/files', method: 'post', encType: 'multipart/form-data' },
+	                        _react2.default.createElement('input', { type: 'file', name: 'test', value: 'Upload' }),
+	                        _react2.default.createElement('input', { type: 'submit', value: 'submit' })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return FileAdmin;
+	}(_react2.default.Component);
+
+	exports.default = FileAdmin;
+
+/***/ },
+/* 660 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -70488,15 +70583,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(660);
+	var _reduxThunk = __webpack_require__(661);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(661);
+	var _rootreducers = __webpack_require__(662);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(666);
+	var _ActionsLogger = __webpack_require__(667);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -70511,7 +70606,7 @@
 	exports.default = store;
 
 /***/ },
-/* 660 */
+/* 661 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70539,7 +70634,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 661 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70552,13 +70647,13 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(662);
+	var _messageReducers = __webpack_require__(663);
 
-	var _categoryReducers = __webpack_require__(663);
+	var _categoryReducers = __webpack_require__(664);
 
-	var _navigationReducers = __webpack_require__(664);
+	var _navigationReducers = __webpack_require__(665);
 
-	var _userReducers = __webpack_require__(665);
+	var _userReducers = __webpack_require__(666);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -70571,7 +70666,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 662 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70612,16 +70707,14 @@
 	function messageReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
 	    var action = arguments[1];
-	    var msgList;
-	    var msgIdx;
 
 	    var _ret = function () {
 	        switch (action.type) {
 
 	            case _messageActions.MSG_LIST_RECEIVE:
-	                msgList = {};
-	                msgIdx = [];
 
+	                var msgList = {};
+	                var msgIdx = [];
 
 	                if (action.messages) {
 	                    action.messages.forEach(function (m) {
@@ -70659,9 +70752,9 @@
 	                    index = [].concat(_toConsumableArray(state.index));
 	                    index.push(action.message._id);
 	                }
-	                var msgList = Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message));
+	                var msgUpdateList = Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message));
 	                return {
-	                    v: Object.assign({}, state, { items: msgList, index: index })
+	                    v: Object.assign({}, state, { items: msgUpdateList, index: index })
 	                };
 
 	            // Editor changes
@@ -70713,7 +70806,7 @@
 	}
 
 /***/ },
-/* 663 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70788,7 +70881,7 @@
 	}
 
 /***/ },
-/* 664 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70817,7 +70910,7 @@
 	}
 
 /***/ },
-/* 665 */
+/* 666 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70850,7 +70943,7 @@
 	}
 
 /***/ },
-/* 666 */
+/* 667 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70872,7 +70965,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 667 */
+/* 668 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
