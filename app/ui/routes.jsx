@@ -15,6 +15,7 @@ import LoginPage from './page/login/loginpage.jsx';
 import MessageAdmin from './page/messageadmin/messageadmin.jsx';
 import MessageEditor from './page/messageeditor/messageeditor.jsx';
 import MessagePage from './page/message/messagepage.jsx';
+import FileAdmin from './page/fileadmin/fileadmin.jsx';
 
 // Store
 import store from './store/createstore.js';
@@ -36,6 +37,7 @@ const AppRoute = () => {
                         <Route path="" component={ DashboardPage }>
                             <Route path="messages" component={ MessageAdmin } />
                             <Route path="messages/:messageId" component={ MessageEditor } />
+                            <Route path="files" component={ FileAdmin } />
                         </Route>
                     </Route>
                     <Route path="*" component={ NotFound } />

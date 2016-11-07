@@ -20,6 +20,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var busboy = require('connect-busboy');
 
 var publicFolder = path.join(__dirname, 'public');
 
@@ -28,6 +29,7 @@ var publicFolder = path.join(__dirname, 'public');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(busboy());
 app.use(require('express-session')({
     secret: 'qokajdteskah',
     resave: false,

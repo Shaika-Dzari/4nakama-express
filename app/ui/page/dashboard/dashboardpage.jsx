@@ -27,7 +27,7 @@ export default class DashboardPage extends React.Component {
                                 <a href="#">Histoires</a>
                             </li>
                             <li className="menu-item">
-                                <a href="#">Catégories</a>
+                                <Link to="/dashboard/files">Fichiers</Link>
                             </li>
 
                         </ul>

@@ -57,8 +57,8 @@ export function messageReducers(state = {items: {}, index: []}, action) {
                 index = [...state.index];
                 index.push(action.message._id);
             }
-            let msgList = Object.assign({}, state.items, {[action.message._id]: action.message});
-            return Object.assign({}, state, {items: msgList, index: index});
+            let msgUpdateList = Object.assign({}, state.items, {[action.message._id]: action.message});
+            return Object.assign({}, state, {items: msgUpdateList, index: index});
 
 
         // Editor changes
