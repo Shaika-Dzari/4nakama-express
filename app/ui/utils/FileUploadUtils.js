@@ -14,7 +14,7 @@ class FileUploaderUtils {
         if (this.options['progressCallback']) {
             if (event.lengthComputable) {
                 let percentComplete = Math.round((event.loaded / event.total) * 100);
-                this.options['progressCallback'].apply(null, percentComplete);
+                this.options['progressCallback'].apply(null, [percentComplete]);
             }
         }
     }
@@ -27,7 +27,9 @@ class FileUploaderUtils {
 
     _onComplete(request, event) {
         if (this.options['completeCallback']) {
-            this.options['completeCallback'].apply(null, request.status, this._processResponse(request))
+            let ret = this._processResponse(request) || [];
+            ret.push(request.status);
+            this.options['completeCallback'].apply(null, ret);
         }
     }
 
@@ -46,14 +48,13 @@ class FileUploaderUtils {
 
 
     upload(file, formParams) {
-        this._log('uploading', file.name);
         let formData = new FormData();
 
         formData.append(this.options['fileparam'], file);
 
-        if (params) {
-            for (let k in params) {
-                formData.append(k, params[k]);
+        if (formParams) {
+            for (let k in formParams) {
+                formData.append(k, formParams[k]);
             }
         }
 
@@ -66,12 +67,6 @@ class FileUploaderUtils {
 
         request.open(this.options['protocol'], this.url, true);
         request.send(formData);
-    }
-
-    _log() {
-        if (this.options['debug'] && window.console) {
-            console.log(arguments);
-        }
     }
 };
 

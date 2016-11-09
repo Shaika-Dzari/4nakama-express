@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(672);
+	__webpack_require__(677);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29443,7 +29443,7 @@
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _createstore = __webpack_require__(664);
+	var _createstore = __webpack_require__(668);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -70496,7 +70496,7 @@
 
 	var _fileupload2 = _interopRequireDefault(_fileupload);
 
-	var _togglebox = __webpack_require__(673);
+	var _togglebox = __webpack_require__(667);
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
@@ -70560,15 +70560,17 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _FileUploadUtils = __webpack_require__(674);
+	var _fileActions = __webpack_require__(661);
+
+	var _FileUploadUtils = __webpack_require__(663);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _onefile = __webpack_require__(661);
+	var _onefile = __webpack_require__(664);
 
 	var _onefile2 = _interopRequireDefault(_onefile);
 
-	__webpack_require__(663);
+	__webpack_require__(666);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70577,6 +70579,12 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        files: state.files.uploadfiles
+	    };
+	};
 
 	var FileUpload = function (_React$Component) {
 	    _inherits(FileUpload, _React$Component);
@@ -70588,49 +70596,39 @@
 
 	        _this.onFileChange = _this.onFileChange.bind(_this);
 	        _this.upload = _this.upload.bind(_this);
-
-	        _this.state = {
-	            files: null
-	        };
 	        return _this;
 	    }
 
 	    _createClass(FileUpload, [{
 	        key: 'upload',
 	        value: function upload() {
-	            console.log('upload');
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _fileActions.doFileUploadPostAll)());
 	        }
 	    }, {
 	        key: 'onFileChange',
 	        value: function onFileChange(event) {
 	            var inputFile = event.target;
-
 	            var files = Array.from(inputFile.files);
-	            var filesProgress = {};
-	            files.forEach(function (f) {
-	                filesProgress[f.name] = null;
-	            });
+	            var dispatch = this.props.dispatch;
 
-	            if (inputFile.files) {
-	                this.setState({ files: files, filesProgress: filesProgress });
-	            }
+	            dispatch((0, _fileActions.doFileUploadOnChange)(files));
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
 
 	            var toUpload = null;
 
-	            if (this.state.files) {
-	                toUpload = this.state.files.map(function (f) {
+	            if (this.props.files) {
+	                toUpload = this.props.files.map(function (f) {
 	                    var refid = 'li-' + f.name;
 	                    return _react2.default.createElement(_onefile2.default, { key: refid,
 	                        reffileid: refid,
 	                        name: f.name,
 	                        type: f.type,
-	                        size: f.size,
-	                        progress: _this2.state.filesProgress[f.name] });
+	                        size: f.size });
 	                });
 	            }
 
@@ -70655,7 +70653,7 @@
 	                        { className: 'upload-section' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btnblue', onClick: this.upload, disabled: !this.state.files },
+	                            { className: 'btn btnblue', onClick: this.upload, disabled: !this.props.files },
 	                            'Envoyer'
 	                        )
 	                    )
@@ -70672,10 +70670,229 @@
 	    return FileUpload;
 	}(_react2.default.Component);
 
-	exports.default = (0, _reactRedux.connect)()(FileUpload);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileUpload);
 
 /***/ },
 /* 661 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_DELETE = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
+	exports.doFileUploadOneFile = doFileUploadOneFile;
+	exports.doFileUploadPostAll = doFileUploadPostAll;
+
+	__webpack_require__(564);
+
+	var _navigationActions = __webpack_require__(565);
+
+	var _actionCreator = __webpack_require__(662);
+
+	var _actionCreator2 = _interopRequireDefault(_actionCreator);
+
+	var _FileUploadUtils = __webpack_require__(663);
+
+	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FILE_UPLOAD_ONCHANGE = exports.FILE_UPLOAD_ONCHANGE = 'FILE_UPLOAD_ONCHANGE';
+	var FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_POSTALL = 'FILE_UPLOAD_POSTALL';
+	var FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_ONEFILE = 'FILE_UPLOAD_ONEFILE';
+	var FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_SUCCESS = 'FILE_UPLOAD_SUCCESS';
+	var FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
+	var FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_REMOVE = 'FILE_UPLOAD_REMOVE';
+	var FILE_FETCH = exports.FILE_FETCH = 'FILE_FETCH';
+	var FILE_RECEIVED = exports.FILE_RECEIVED = 'FILE_RECEIVED';
+	var FILE_DELETE = exports.FILE_DELETE = 'FILE_DELETE';
+
+	var FILE_URL = "/api/files";
+
+	var doFileUploadOnChange = exports.doFileUploadOnChange = (0, _actionCreator2.default)(FILE_UPLOAD_ONCHANGE, 'files');
+	var doFileUploadSuccess = exports.doFileUploadSuccess = (0, _actionCreator2.default)(FILE_UPLOAD_SUCCESS, 'file');
+	var doFileUploadProgress = exports.doFileUploadProgress = (0, _actionCreator2.default)(FILE_UPLOAD_PROGRESS, 'progress');
+	var doFileReceived = exports.doFileReceived = (0, _actionCreator2.default)(FILE_RECEIVED, 'files', 'page');
+
+	function doFileUploadOneFile(file) {
+	    return function (dispatch) {
+	        var opts = {
+	            progressCallback: function progressCallback(progress) {
+	                console.log('progressCallback', progress);
+	            },
+	            errorCallback: function errorCallback(request) {
+	                console.log('errorCallback', request);
+	            },
+	            completeCallback: function completeCallback(request) {
+	                console.log('completeCallback', request);
+	            }
+	        };
+
+	        var uploadUtils = new _FileUploadUtils2.default(FILE_URL, opts);
+	        uploadUtils.upload(file);
+	    };
+	}
+
+	function doFileUploadPostAll() {
+	    return function (dispatch, getState) {
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	            for (var _iterator = getState().files.uploadfiles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                var file = _step.value;
+
+	                dispatch(doFileUploadOneFile(file));
+	            }
+	        } catch (err) {
+	            _didIteratorError = true;
+	            _iteratorError = err;
+	        } finally {
+	            try {
+	                if (!_iteratorNormalCompletion && _iterator.return) {
+	                    _iterator.return();
+	                }
+	            } finally {
+	                if (_didIteratorError) {
+	                    throw _iteratorError;
+	                }
+	            }
+	        }
+	    };
+	}
+
+/***/ },
+/* 662 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = makeActionCreator;
+	function makeActionCreator(type) {
+	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        argNames[_key - 1] = arguments[_key];
+	    }
+
+	    return function () {
+	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	            args[_key2] = arguments[_key2];
+	        }
+
+	        var action = { type: type };
+	        argNames.forEach(function (arg, index) {
+	            action[argNames[index]] = args[index];
+	        });
+	        return action;
+	    };
+	}
+
+/***/ },
+/* 663 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var FileUploaderUtils = function () {
+	    function FileUploaderUtils(url, options) {
+	        _classCallCheck(this, FileUploaderUtils);
+
+	        var baseOptions = {
+	            fileparam: 'file',
+	            protocol: 'POST'
+	        };
+
+	        this.url = url;
+	        this.options = Object.assign({}, baseOptions, options);
+	    }
+
+	    _createClass(FileUploaderUtils, [{
+	        key: '_onProgress',
+	        value: function _onProgress(event) {
+	            if (this.options['progressCallback']) {
+	                if (event.lengthComputable) {
+	                    var percentComplete = Math.round(event.loaded / event.total * 100);
+	                    this.options['progressCallback'].apply(null, [percentComplete]);
+	                }
+	            }
+	        }
+	    }, {
+	        key: '_onError',
+	        value: function _onError(request, event) {
+	            if (this.options['errorCallback']) {
+	                this.options['errorCallback'].apply(null, this._processResponse(request));
+	            }
+	        }
+	    }, {
+	        key: '_onComplete',
+	        value: function _onComplete(request, event) {
+	            if (this.options['completeCallback']) {
+	                var ret = this._processResponse(request) || [];
+	                ret.push(request.status);
+	                this.options['completeCallback'].apply(null, ret);
+	            }
+	        }
+	    }, {
+	        key: '_processResponse',
+	        value: function _processResponse(xhr) {
+	            if (xhr) {
+	                if (!xhr.responseType || xhr.responseType === "text") {
+	                    return [xhr.responseText];
+	                } else if (xhr.responseType === "document") {
+	                    return [xhr.responseXML];
+	                } else {
+	                    return [xhr.response];
+	                }
+	            }
+	            return null;
+	        }
+	    }, {
+	        key: 'upload',
+	        value: function upload(file, formParams) {
+	            var formData = new FormData();
+
+	            formData.append(this.options['fileparam'], file);
+
+	            if (formParams) {
+	                for (var k in formParams) {
+	                    formData.append(k, formParams[k]);
+	                }
+	            }
+
+	            var request = new XMLHttpRequest();
+
+	            request.upload.addEventListener('progress', this._onProgress.bind(this));
+	            request.upload.addEventListener('error', this._onError.bind(this, request));
+	            request.upload.addEventListener('abort', this._onError.bind(this, request));
+	            request.addEventListener('load', this._onComplete.bind(this, request));
+
+	            request.open(this.options['protocol'], this.url, true);
+	            request.send(formData);
+	        }
+	    }]);
+
+	    return FileUploaderUtils;
+	}();
+
+	;
+
+	exports.default = FileUploaderUtils;
+
+/***/ },
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70688,7 +70905,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(662);
+	__webpack_require__(665);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70756,19 +70973,105 @@
 	exports.default = OneFile;
 
 /***/ },
-/* 662 */
+/* 665 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 663 */
+/* 666 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 664 */
+/* 667 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ToggleBox = function (_React$Component) {
+	    _inherits(ToggleBox, _React$Component);
+
+	    function ToggleBox(props) {
+	        _classCallCheck(this, ToggleBox);
+
+	        var _this = _possibleConstructorReturn(this, (ToggleBox.__proto__ || Object.getPrototypeOf(ToggleBox)).call(this, props));
+
+	        _this.toggle = _this.toggle.bind(_this);
+	        _this.state = {
+	            showed: false
+	        };
+	        return _this;
+	    }
+
+	    _createClass(ToggleBox, [{
+	        key: 'toggle',
+	        value: function toggle() {
+	            console.log('toggle');
+	            this.setState({ showed: !this.state.showed });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var cssClass = this.state.showed ? 'show' : 'hidden';
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'box' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'heading' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'right' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btnblue', onClick: this.toggle },
+	                            '☰'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'body' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: cssClass },
+	                        this.props.children
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ToggleBox;
+	}(_react2.default.Component);
+
+	ToggleBox.propTypes = {};
+
+	exports.default = ToggleBox;
+
+/***/ },
+/* 668 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70781,15 +71084,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(665);
+	var _reduxThunk = __webpack_require__(669);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(666);
+	var _rootreducers = __webpack_require__(670);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(671);
+	var _ActionsLogger = __webpack_require__(676);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -70804,7 +71107,7 @@
 	exports.default = store;
 
 /***/ },
-/* 665 */
+/* 669 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70832,7 +71135,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 666 */
+/* 670 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70845,26 +71148,29 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(667);
+	var _messageReducers = __webpack_require__(671);
 
-	var _categoryReducers = __webpack_require__(668);
+	var _categoryReducers = __webpack_require__(672);
 
-	var _navigationReducers = __webpack_require__(669);
+	var _navigationReducers = __webpack_require__(673);
 
-	var _userReducers = __webpack_require__(670);
+	var _userReducers = __webpack_require__(674);
+
+	var _fileReducers = __webpack_require__(675);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
 	    messages: _messageReducers.messageReducers,
 	    categories: _categoryReducers.categoryReducers,
 	    user: _userReducers.userReducers,
-	    routing: _reactRouterRedux.routerReducer
+	    routing: _reactRouterRedux.routerReducer,
+	    files: _fileReducers.fileReducers
 	});
 
 	exports.default = RootReducers;
 
 /***/ },
-/* 667 */
+/* 671 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71004,7 +71310,7 @@
 	}
 
 /***/ },
-/* 668 */
+/* 672 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71079,7 +71385,7 @@
 	}
 
 /***/ },
-/* 669 */
+/* 673 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71108,7 +71414,7 @@
 	}
 
 /***/ },
-/* 670 */
+/* 674 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71141,7 +71447,33 @@
 	}
 
 /***/ },
-/* 671 */
+/* 675 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.fileReducers = fileReducers;
+
+	var _fileActions = __webpack_require__(661);
+
+	function fileReducers() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
+	    var action = arguments[1];
+
+
+	    switch (action.type) {
+	        case _fileActions.FILE_UPLOAD_ONCHANGE:
+	            return Object.assign({}, state, { uploadfiles: action.files });
+	        default:
+	            return state;
+	    }
+	}
+
+/***/ },
+/* 676 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71163,201 +71495,10 @@
 	exports.default = logger;
 
 /***/ },
-/* 672 */
+/* 677 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 673 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(299);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ToggleBox = function (_React$Component) {
-	    _inherits(ToggleBox, _React$Component);
-
-	    function ToggleBox(props) {
-	        _classCallCheck(this, ToggleBox);
-
-	        var _this = _possibleConstructorReturn(this, (ToggleBox.__proto__ || Object.getPrototypeOf(ToggleBox)).call(this, props));
-
-	        _this.toggle = _this.toggle.bind(_this);
-	        _this.state = {
-	            showed: false
-	        };
-	        return _this;
-	    }
-
-	    _createClass(ToggleBox, [{
-	        key: 'toggle',
-	        value: function toggle() {
-	            console.log('toggle');
-	            this.setState({ showed: !this.state.showed });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var cssClass = this.state.showed ? 'show' : 'hidden';
-
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'box' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'heading' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'right' },
-	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'btn btnblue', onClick: this.toggle },
-	                            '☰'
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'body' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: cssClass },
-	                        this.props.children
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ToggleBox;
-	}(_react2.default.Component);
-
-	ToggleBox.propTypes = {};
-
-	exports.default = ToggleBox;
-
-/***/ },
-/* 674 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var FileUploaderUtils = function () {
-	    function FileUploaderUtils(url, options) {
-	        _classCallCheck(this, FileUploaderUtils);
-
-	        var baseOptions = {
-	            fileparam: 'file',
-	            protocol: 'POST'
-	        };
-
-	        this.url = url;
-	        this.options = Object.assign({}, baseOptions, options);
-	    }
-
-	    _createClass(FileUploaderUtils, [{
-	        key: '_onProgress',
-	        value: function _onProgress(event) {
-	            if (this.options['progressCallback']) {
-	                if (event.lengthComputable) {
-	                    var percentComplete = Math.round(event.loaded / event.total * 100);
-	                    this.options['progressCallback'].apply(null, percentComplete);
-	                }
-	            }
-	        }
-	    }, {
-	        key: '_onError',
-	        value: function _onError(request, event) {
-	            if (this.options['errorCallback']) {
-	                this.options['errorCallback'].apply(null, this._processResponse(request));
-	            }
-	        }
-	    }, {
-	        key: '_onComplete',
-	        value: function _onComplete(request, event) {
-	            if (this.options['completeCallback']) {
-	                this.options['completeCallback'].apply(null, request.status, this._processResponse(request));
-	            }
-	        }
-	    }, {
-	        key: '_processResponse',
-	        value: function _processResponse(xhr) {
-	            if (xhr) {
-	                if (!xhr.responseType || xhr.responseType === "text") {
-	                    return [xhr.responseText];
-	                } else if (xhr.responseType === "document") {
-	                    return [xhr.responseXML];
-	                } else {
-	                    return [xhr.response];
-	                }
-	            }
-	            return null;
-	        }
-	    }, {
-	        key: 'upload',
-	        value: function upload(file, formParams) {
-	            this._log('uploading', file.name);
-	            var formData = new FormData();
-
-	            formData.append(this.options['fileparam'], file);
-
-	            if (params) {
-	                for (var k in params) {
-	                    formData.append(k, params[k]);
-	                }
-	            }
-
-	            var request = new XMLHttpRequest();
-
-	            request.upload.addEventListener('progress', this._onProgress.bind(this));
-	            request.upload.addEventListener('error', this._onError.bind(this, request));
-	            request.upload.addEventListener('abort', this._onError.bind(this, request));
-	            request.addEventListener('load', this._onComplete.bind(this, request));
-
-	            request.open(this.options['protocol'], this.url, true);
-	            request.send(formData);
-	        }
-	    }, {
-	        key: '_log',
-	        value: function _log() {
-	            if (this.options['debug'] && window.console) {
-	                console.log(arguments);
-	            }
-	        }
-	    }]);
-
-	    return FileUploaderUtils;
-	}();
-
-	;
-
-	exports.default = FileUploaderUtils;
 
 /***/ }
 /******/ ]);
