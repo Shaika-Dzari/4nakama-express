@@ -21,15 +21,12 @@
       margin: 16px 10px 0 10px;
       padding: 10px;
       border-top: 1px solid #176ba1;
-      border-bottom: 1px solid #176ba1; }
+      border-bottom: 1px solid #176ba1;
+      color: #fafafa; }
       .site-header .page-header-menu nav.site-menu a span {
         display: none; }
       .site-header .page-header-menu nav.site-menu a img {
         display: inline; }
-    .site-header .page-header-menu nav.site-menu a:visited {
-      color: #dfdfdf; }
-    .site-header .page-header-menu nav.site-menu a.active {
-      color: #fafafa; }
     .site-header .page-header-menu nav.site-menu a:hover {
       background-color: #1f95e0; }
   @media only screen and (min-width: 920px) {
@@ -87,16 +84,22 @@ div.list-ctn {
   div.list-ctn .info-element {
     padding: 10px; }
 div.dashboard div.dashboard-menu {
-  padding-top: 20px;
-  color: #fafafa; }
-  div.dashboard div.dashboard-menu ul.menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 0; }
-    div.dashboard div.dashboard-menu ul.menu-list li.menu-item a {
-      display: block;
-      padding: 10px 5px;
-      text-decoration: none; }
+  color: #fafafa;
+  margin: 16px 10px 0 10px; }
+  div.dashboard div.dashboard-menu .row .menu-item {
+    background-color: #1872ab;
+    color: #fafafa; }
+    div.dashboard div.dashboard-menu .row .menu-item a {
+      text-align: center;
+      display: inline-block;
+      font-weight: bold;
+      text-decoration: none;
+      padding: 10px;
+      border-top: 1px solid #176ba1;
+      border-bottom: 1px solid #176ba1;
+      color: #fafafa; }
+    div.dashboard div.dashboard-menu .row .menu-item a:hover {
+      background-color: #1f95e0; }
 
 div.dashboard div.dashboard-content {
   padding: 20px; }
@@ -112,7 +115,7 @@ div.login {
     border: 1px solid #dedede; }
 .onefile {
   border: 1px solid #ddd;
-  padding: 5px;
+  background-color: #fbfbfb;
   display: table;
   width: 100%; }
   .onefile .onefile-row {
@@ -120,32 +123,45 @@ div.login {
     width: 100%; }
     .onefile .onefile-row div {
       display: table-cell;
-      width: 50%; }
+      width: 50%;
+      padding: 0 10px; }
       .onefile .onefile-row div h5 {
         margin: 3px 0;
         font-weight: bold; }
       .onefile .onefile-row div span {
-        font-size: 0.9em; }
+        font-size: 0.8em; }
     .onefile .onefile-row div:last-child {
       text-align: right;
       vertical-align: middle; }
-.file-upload {
-  padding: 10px; }
-  .file-upload .file-upload-file {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1; }
-  .file-upload .file-upload-file + label {
-    display: inline-block;
-    border: 1px solid #ddd;
-    font-size: 1.1em;
-    padding: 3px 10px;
-    cursor: pointer; }
-  .file-upload .upload-list {
-    margin-top: 3px; }
+.file-upload .button-section {
+  display: table;
+  width: 100%; }
+  .file-upload .button-section .select-section {
+    display: table-cell; }
+    .file-upload .button-section .select-section .file-upload-file {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1; }
+    .file-upload .button-section .select-section .file-upload-file + label {
+      display: inline-block;
+      cursor: pointer;
+      padding: 2px 8px;
+      background-color: #1872ab;
+      color: #fff;
+      border: 1px solid #ccc;
+      border-bottom: 1px solid #0d5f94;
+      font-size: 16px; }
+  .file-upload .button-section .upload-section {
+    display: table-cell;
+    text-align: right; }
+    .file-upload .button-section .upload-section button {
+      font-size: 16px; }
+
+.file-upload .upload-list {
+  padding: 5px 0; }
 html, body {
   min-height: 100%;
   margin: 0;
@@ -157,7 +173,7 @@ body {
   background-color: #fff;
   color: #444;
   box-sizing: border-box;
-  font-family: "Open Sans", Helvetica, Arial, sans-serif; }
+  font-family: "Oxygen-Sans", "Open Sans", Helvetica, Arial, sans-serif; }
 
 a {
   text-decoration: none;

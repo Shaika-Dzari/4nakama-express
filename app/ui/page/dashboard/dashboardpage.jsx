@@ -13,30 +13,26 @@ export default class DashboardPage extends React.Component {
     render() {
 
         return (
-            <div className="dashboard row">
-                <div className="col-2">
-                    <div className="dashboard-menu">
-                        <ul className="menu-list">
-                            <li className="menu-item">
-                                <Link to="/dashboard/messages">Messages</Link>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#">Commentaires</a>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#">Histoires</a>
-                            </li>
-                            <li className="menu-item">
-                                <Link to="/dashboard/files">Fichiers</Link>
-                            </li>
-
-                        </ul>
+            <div className="dashboard">
+                <div className="dashboard-menu">
+                    <div className="row">
+                        <div className="col-3 menu-item">
+                            <Link to="/dashboard/messages">Messages</Link>
+                        </div>
+                        <div className="col-3 menu-item">
+                            <a href="#">Histoires</a>
+                        </div>
+                        <div className="col-3 menu-item">
+                            <Link to="/dashboard/files">Fichiers</Link>
+                        </div>
+                        <div className="col-3 menu-item">
+                            <a href="#">Commentaires</a>
+                        </div>
                     </div>
                 </div>
-                <div className="col-10">
-                    <div className="dashboard-content">
-                        {this.props.children}
-                    </div>
+
+                <div className="dashboard-content">
+                    {this.props.children}
                 </div>
             </div>
         );

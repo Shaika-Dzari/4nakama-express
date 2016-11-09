@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react';
 import './onefile.scss';
 
-const OneFile = ({reffileid, name, type, size}) => {
+const OneFile = ({reffileid, name, type, size, progress}) => {
 
+    let progressScore = progress ? progress + '%' : null;
     return (
         <div key={reffileid} className="onefile">
             <div className="onefile-row">
@@ -11,6 +12,7 @@ const OneFile = ({reffileid, name, type, size}) => {
                     <span>{type}</span> - <span>{size}</span>
                 </div>
                 <div>
+                    <span>{progressScore}</span>
                     <a className="link-close">X</a>
                 </div>
             </div>
@@ -23,7 +25,8 @@ OneFile.propTypes = {
     reffileid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string,
-    size: PropTypes.number
+    size: PropTypes.number,
+    progress: PropTypes.number
 }
 
 export default OneFile;

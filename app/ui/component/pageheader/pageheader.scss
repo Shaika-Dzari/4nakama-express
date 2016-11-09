@@ -33,6 +33,7 @@
                 padding: 10px;
                 border-top: 1px solid #176ba1;
                 border-bottom: 1px solid #176ba1;
+                color: $color-font-1;
 
                 span {
                     display: none;
@@ -43,13 +44,6 @@
                 }
             }
 
-            a:visited {
-                color: $color-font-2;
-            }
-
-            a.active {
-                color: $color-font-1;
-            }
             a:hover {
                 background-color: #1f95e0;
             }

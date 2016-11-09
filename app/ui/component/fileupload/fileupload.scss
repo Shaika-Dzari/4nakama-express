@@ -1,25 +1,45 @@
 .file-upload {
 
-    padding: 10px;
+    .button-section {
+        display: table;
+        width: 100%;
 
-    .file-upload-file {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
+        .select-section {
+            display: table-cell;
+
+            .file-upload-file {
+                width: 0.1px;
+                height: 0.1px;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+            }
+
+            .file-upload-file + label {
+                display: inline-block;
+                cursor: pointer;
+                padding: 2px 8px;
+                background-color: #1872ab;
+                color: #fff;
+                border: 1px solid #ccc;
+                border-bottom: 1px solid #0d5f94;
+                font-size: 16px;
+            }
+        }
+
+        .upload-section {
+            display: table-cell;
+            text-align: right;
+
+            button {
+                font-size: 16px;
+            }
+        }
     }
 
-    .file-upload-file + label {
-        display: inline-block;
-        border: 1px solid #ddd;
-        font-size: 1.1em;
-        padding: 3px 10px;
-        cursor: pointer;
-    }
 
     .upload-list {
-        margin-top: 3px;
+        padding: 5px 0;
     }
 }

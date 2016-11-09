@@ -16,7 +16,7 @@ var config = {
     // File settings
     file: {
         privateFolderPath: '/srv/folder/app',
-        privateFolderName: 'storage'
+        privateFolderName: 'storage',
         publicFolderName: 'storage', // Will be create in public folder on startup
         maxSize: 30
     }
