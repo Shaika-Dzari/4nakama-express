@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
+import FileUpload from '../../component/fileupload/fileupload.jsx';
 
 class FileAdmin extends React.Component {
 
@@ -18,10 +19,7 @@ class FileAdmin extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <form action="/api/files" method="post" encType="multipart/form-data">
-                        <input type="file" name="test" value="Upload" />
-                        <input type="submit" value="submit" />
-                    </form>
+                    <FileUpload />
                 </div>
             </div>
         );

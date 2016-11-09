@@ -49,6 +49,17 @@ table {
     }
 }
 
+a.link-close {
+    display: inline-block;
+    padding: 3px 6px;
+    text-transform: lowercase;
+    font-weight: bold;
+    cursor: pointer;
+    border-top: 1px solid #176ba1;
+    background-color: $color-back-dark;
+    color: $color-font-1;
+}
+
 @media only screen and (min-width: 920px) {
 
     .page-layout {

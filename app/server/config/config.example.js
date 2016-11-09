@@ -12,6 +12,13 @@ var config = {
     // Comment filter
     comment: {
         rejected: ['offensive', 'words']
+    },
+    // File settings
+    file: {
+        privateFolderPath: '/srv/folder/app',
+        privateFolderName: 'storage'
+        publicFolderName: 'storage', // Will be create in public folder on startup
+        maxSize: 30
     }
 };
 

@@ -1,0 +1,33 @@
+.onefile {
+    border: 1px solid #ddd;
+    padding: 5px;
+    display: table;
+    width: 100%;
+
+    .onefile-row {
+        display: table-row;
+        width: 100%;
+
+        div {
+            display: table-cell;
+            width: 50%;
+
+            h5 {
+                margin: 3px 0;
+                font-weight: bold;
+            }
+
+            span {
+                font-size: 0.9em;
+            }
+        }
+
+        div:last-child {
+            text-align: right;
+            vertical-align: middle;
+        }
+
+
+    }
+
+}

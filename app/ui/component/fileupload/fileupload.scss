@@ -1,0 +1,25 @@
+.file-upload {
+
+    padding: 10px;
+
+    .file-upload-file {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .file-upload-file + label {
+        display: inline-block;
+        border: 1px solid #ddd;
+        font-size: 1.1em;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+
+    .upload-list {
+        margin-top: 3px;
+    }
+}

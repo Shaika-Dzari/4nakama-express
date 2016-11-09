@@ -9,7 +9,6 @@ const MessageList = ({messages, index, openMessage}) => {
 
     if (messages && index) {
         msgs = index.map((v, idx) => {
-            console.log(v);
             let m = messages[v];
             return <Message key={v} {...m} withLink={true} />
         });

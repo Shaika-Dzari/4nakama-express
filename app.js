@@ -21,6 +21,7 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var busboy = require('connect-busboy');
+var fs = require('fs');
 
 var publicFolder = path.join(__dirname, 'public');
 
@@ -53,6 +54,7 @@ passport.deserializeUser(Account.deserializeUser());
 app.use(function(req, res, next) {
     // do logging
     console.log(req.method + ': ' + req.url);
+    req.publicFolder = publicFolder;
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -70,6 +72,25 @@ app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
 
 // All API routes
 app.use('/api', require('./app/server/routes.js'));
+
+// ----------------------------------------------------------------------------
+// Check storage
+// ----------------------------------------------------------------------------
+var privateFileFolderPath = config.file.privateFolderPath;
+var privateFileFolderName = config.file.privateFolderName;
+var publicFileFolderName = config.file.publicFolderName;
+
+var mkdir = (path) => {
+    try {
+        fs.mkdirSync(path);
+    } catch (e) {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+};
+
+mkdir(privateFileFolderPath + '/' + privateFileFolderName);
+mkdir(publicFolder + '/' + publicFileFolderName);
+
 
 
 // ----------------------------------------------------------------------------
