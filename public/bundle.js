@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(677);
+	__webpack_require__(682);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29443,7 +29443,7 @@
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _createstore = __webpack_require__(668);
+	var _createstore = __webpack_require__(672);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -70500,6 +70500,18 @@
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
+	var _filegrid = __webpack_require__(668);
+
+	var _filegrid2 = _interopRequireDefault(_filegrid);
+
+	var _alertbox = __webpack_require__(575);
+
+	var _alertbox2 = _interopRequireDefault(_alertbox);
+
+	var _fileActions = __webpack_require__(661);
+
+	__webpack_require__(671);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70508,16 +70520,31 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        items: state.files.items,
+	        index: state.files.index,
+	        error: state.files.error
+	    };
+	};
+
 	var FileAdmin = function (_React$Component) {
 	    _inherits(FileAdmin, _React$Component);
 
-	    function FileAdmin() {
+	    function FileAdmin(props) {
 	        _classCallCheck(this, FileAdmin);
 
-	        return _possibleConstructorReturn(this, (FileAdmin.__proto__ || Object.getPrototypeOf(FileAdmin)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (FileAdmin.__proto__ || Object.getPrototypeOf(FileAdmin)).call(this, props));
 	    }
 
 	    _createClass(FileAdmin, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _fileActions.doFileFetch)());
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -70531,7 +70558,8 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'file-list' },
-	                    'liste de fichiers...'
+	                    _react2.default.createElement(_alertbox2.default, { message: this.props.error }),
+	                    _react2.default.createElement(_filegrid2.default, { items: this.props.items, index: this.props.index })
 	                )
 	            );
 	        }
@@ -70540,7 +70568,7 @@
 	    return FileAdmin;
 	}(_react2.default.Component);
 
-	exports.default = FileAdmin;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileAdmin);
 
 /***/ },
 /* 660 */
@@ -70681,9 +70709,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_DELETE = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
+	exports.doFileRequestError = exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_REQUESTERROR = exports.FILE_DELETE = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
 	exports.doFileUploadOneFile = doFileUploadOneFile;
 	exports.doFileUploadPostAll = doFileUploadPostAll;
+	exports.doFileFetch = doFileFetch;
 
 	__webpack_require__(564);
 
@@ -70708,6 +70737,7 @@
 	var FILE_FETCH = exports.FILE_FETCH = 'FILE_FETCH';
 	var FILE_RECEIVED = exports.FILE_RECEIVED = 'FILE_RECEIVED';
 	var FILE_DELETE = exports.FILE_DELETE = 'FILE_DELETE';
+	var FILE_REQUESTERROR = exports.FILE_REQUESTERROR = 'FILE_REQUESTERROR';
 
 	var FILE_URL = "/api/files";
 
@@ -70715,6 +70745,7 @@
 	var doFileUploadSuccess = exports.doFileUploadSuccess = (0, _actionCreator2.default)(FILE_UPLOAD_SUCCESS, 'file');
 	var doFileUploadProgress = exports.doFileUploadProgress = (0, _actionCreator2.default)(FILE_UPLOAD_PROGRESS, 'progress');
 	var doFileReceived = exports.doFileReceived = (0, _actionCreator2.default)(FILE_RECEIVED, 'files', 'page');
+	var doFileRequestError = exports.doFileRequestError = (0, _actionCreator2.default)(FILE_REQUESTERROR, 'error');
 
 	function doFileUploadOneFile(file) {
 	    return function (dispatch) {
@@ -70761,6 +70792,26 @@
 	                }
 	            }
 	        }
+	    };
+	}
+
+	function doFileFetch(page) {
+	    return function (dispatch) {
+	        dispatch((0, _navigationActions.doStartLoading)());
+
+	        return fetch(FILE_URL, { credentials: 'include' }).then(function (fs) {
+	            console.log('1');
+	            return fs.json();
+	        }).then(function (files) {
+	            console.log(files);
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            dispatch(doFileReceived(files, page));
+	            console.log('2');
+	        }).catch(function (e) {
+	            console.log(e);
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            dispatch(doFileRequestError(e));
+	        });
 	    };
 	}
 
@@ -71077,6 +71128,139 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _filegriditem = __webpack_require__(669);
+
+	var _filegriditem2 = _interopRequireDefault(_filegriditem);
+
+	__webpack_require__(670);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FileGrid = function FileGrid(_ref) {
+	    var items = _ref.items;
+	    var index = _ref.index;
+	    var prevPageCallback = _ref.prevPageCallback;
+	    var nextPageCallback = _ref.nextPageCallback;
+
+
+	    var fs = null;
+	    if (items) {
+	        fs = index.map(function (i) {
+	            var f = items[i];
+	            return _react2.default.createElement(_filegriditem2.default, { key: 'fgi-' + f._id, file: f });
+	        });
+	    }
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'grid-list clear-float' },
+	        _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Fichiers'
+	        ),
+	        fs
+	    );
+	};
+
+	exports.default = FileGrid;
+
+/***/ },
+/* 669 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FileGridItem = function FileGridItem(_ref) {
+	    var file = _ref.file;
+
+
+	    var inner = null;
+
+	    if (file.contentType.indexOf('image/') != -1) {
+	        inner = _react2.default.createElement('img', { className: 'grid-item-file-img', src: file.path, alt: file.name });
+	    } else {
+	        inner = _react2.default.createElement(
+	            'div',
+	            { className: 'grid-item-file-other' },
+	            file.contentType
+	        );
+	    }
+
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'grid-item' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'grid-item-preview' },
+	            inner
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'grid-item-details' },
+	            _react2.default.createElement(
+	                'span',
+	                { className: 'grid-item-name' },
+	                file.name
+	            ),
+	            _react2.default.createElement(
+	                'span',
+	                { className: 'grid-item-info' },
+	                file.contentType
+	            )
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'grid-item-mark' },
+	            '- ',
+	            _react2.default.createElement(
+	                'span',
+	                null,
+	                '☑'
+	            ),
+	            ' -'
+	        )
+	    );
+	};
+
+	exports.default = FileGridItem;
+
+/***/ },
+/* 670 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 671 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 672 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -71084,15 +71268,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(669);
+	var _reduxThunk = __webpack_require__(673);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(670);
+	var _rootreducers = __webpack_require__(674);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(676);
+	var _ActionsLogger = __webpack_require__(681);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -71107,7 +71291,7 @@
 	exports.default = store;
 
 /***/ },
-/* 669 */
+/* 673 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71135,7 +71319,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 670 */
+/* 674 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71148,15 +71332,15 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(671);
+	var _messageReducers = __webpack_require__(675);
 
-	var _categoryReducers = __webpack_require__(672);
+	var _categoryReducers = __webpack_require__(676);
 
-	var _navigationReducers = __webpack_require__(673);
+	var _navigationReducers = __webpack_require__(677);
 
-	var _userReducers = __webpack_require__(674);
+	var _userReducers = __webpack_require__(678);
 
-	var _fileReducers = __webpack_require__(675);
+	var _fileReducers = __webpack_require__(679);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -71170,7 +71354,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 671 */
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71310,7 +71494,7 @@
 	}
 
 /***/ },
-/* 672 */
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71385,7 +71569,7 @@
 	}
 
 /***/ },
-/* 673 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71414,7 +71598,7 @@
 	}
 
 /***/ },
-/* 674 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71447,7 +71631,7 @@
 	}
 
 /***/ },
-/* 675 */
+/* 679 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71459,6 +71643,8 @@
 
 	var _fileActions = __webpack_require__(661);
 
+	var _IndexReducer = __webpack_require__(680);
+
 	function fileReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
 	    var action = arguments[1];
@@ -71467,13 +71653,51 @@
 	    switch (action.type) {
 	        case _fileActions.FILE_UPLOAD_ONCHANGE:
 	            return Object.assign({}, state, { uploadfiles: action.files });
+
+	        case _fileActions.FILE_RECEIVED:
+	            var receivedItems = (0, _IndexReducer.indexes)(action.files);
+	            receivedItems['page'] = action.page;
+	            return Object.assign({}, state, receivedItems);
+
+	        case _fileActions.FILE_REQUESTERROR:
+	            return Object.assign({}, state, { error: action.error });
+
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ },
-/* 676 */
+/* 680 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.indexes = indexes;
+	function indexes(response) {
+
+	    var list = {};
+	    var idx = [];
+
+	    if (response && Array.isArray(response)) {
+	        response.forEach(function (i) {
+	            var id = i._id;
+	            list[id] = i;
+	            idx.push(id);
+	        });
+	    }
+
+	    return {
+	        items: list,
+	        index: idx
+	    };
+	}
+
+/***/ },
+/* 681 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71495,7 +71719,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 677 */
+/* 682 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -162,6 +162,41 @@ div.login {
 
 .file-upload .upload-list {
   padding: 5px 0; }
+.grid-list {
+  vertical-align: top; }
+  .grid-list .grid-item {
+    float: left;
+    margin: 3px 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    position: relative; }
+    .grid-list .grid-item .grid-item-preview {
+      width: 280px;
+      height: 280px; }
+      .grid-list .grid-item .grid-item-preview .grid-item-file-img {
+        width: 260px;
+        max-height: 260px; }
+      .grid-list .grid-item .grid-item-preview .grid-item-file-other {
+        width: 260px;
+        height: 260px; }
+    .grid-list .grid-item .grid-item-details {
+      border-top: 1px solid #ddd;
+      max-width: 280px; }
+      .grid-list .grid-item .grid-item-details span {
+        display: block;
+        word-break: break-all; }
+      .grid-list .grid-item .grid-item-details .grid-item-name {
+        font-size: 0.9em; }
+      .grid-list .grid-item .grid-item-details .grid-item-info {
+        font-size: 0.8em; }
+    .grid-list .grid-item .grid-item-mark {
+      position: absolute;
+      right: 0;
+      bottom: 0; }
+.fileadmin .file-list {
+  margin: 10px 0;
+  border-bottom: 1px solid #ddd; }
 html, body {
   min-height: 100%;
   margin: 0;

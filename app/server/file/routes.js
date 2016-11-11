@@ -9,8 +9,25 @@ var FileUtils = require('../utils/FileUtils.js');
 
 const router = express.Router();
 
+
+const DEFAULT_PAGE_SIZE = 18;
+const DEFAULT_MAX_PAGE_SIZE = 36;
+
 router.get('/', function(req, res, next) {
-    res.json('OK');
+
+    let size = Math.min(req.query.size || DEFAULT_PAGE_SIZE, DEFAULT_MAX_PAGE_SIZE);
+    let dir = req.query.dir || '-1';
+
+    File.find()
+            .sort({createdAt: dir})
+            .limit(size)
+            .select('-ownerId')
+            .exec(function (err, files) {
+                if (err) next(err);
+
+                res.json(files);
+            });
+
 });
 
 router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
@@ -25,11 +42,12 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
 
 
         var path = isPublicFile ? publicFolder + '/' + publicFileFolderName + '/' + filename : config.file.privateFolder + '/' + filename;
+        var url = isPublicFile ? '/' + publicFileFolderName + '/' + filename : '/api/files/stream/' + filename;
         console.log("Uploading: ", filename, encoding, mimetype);
         console.log(path);
 
         var newFile = new File({name: filename,
-                                path: path,
+                                path: url,
                                 contentType: mimetype,
                                 ownerId: user._id,
                                 ownerName: user.username,
