@@ -26,13 +26,14 @@ export function doFileUploadOneFile(file) {
     return dispatch => {
         let opts = {
             progressCallback: (progress) => {
-                console.log('progressCallback', progress);
+                //doFileUploadProgress()
+                console.log(file.name, progress);
             },
             errorCallback: (request) => {
                 console.log('errorCallback', request);
             },
             completeCallback: (request) => {
-                console.log('completeCallback', request);
+                doFileUploadSuccess(request[0]);
             }
         };
 
