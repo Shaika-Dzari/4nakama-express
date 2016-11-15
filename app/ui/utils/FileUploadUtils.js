@@ -27,14 +27,16 @@ class FileUploaderUtils {
 
     _onComplete(request, event) {
         if (this.options['completeCallback']) {
-            let ret = this._processResponse(request) || [];
-            ret.push(request.status);
+            let ret = [request.status, this._processResponse(request)];
+
             this.options['completeCallback'].apply(null, ret);
         }
     }
 
     _processResponse(xhr) {
     	if (xhr) {
+            return JSON.parse(xhr.responseText);
+            /*
     		if (!xhr.responseType || xhr.responseType === "text") {
     			return [xhr.responseText];
     		} else if (xhr.responseType === "document") {
@@ -42,6 +44,7 @@ class FileUploaderUtils {
     		} else {
     			return [xhr.response];
     		}
+            */
     	}
     	return null;
     }

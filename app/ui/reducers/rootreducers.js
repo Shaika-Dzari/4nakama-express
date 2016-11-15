@@ -5,7 +5,7 @@ import { messageReducers } from './messageReducers.js';
 import { categoryReducers } from './categoryReducers.js';
 import { navigationReducers } from './navigationReducers.js';
 import { userReducers } from './userReducers.js';
-import { fileReducers } from './fileReducers.js';
+import { fileReducers, fileUploadReducers } from './fileReducers.js';
 
 const RootReducers = combineReducers({
     navigation: navigationReducers,
@@ -13,7 +13,8 @@ const RootReducers = combineReducers({
     categories: categoryReducers,
     user: userReducers,
     routing: routerReducer,
-    files: fileReducers
+    files: fileReducers,
+    uploadfiles: fileUploadReducers
 });
 
 export default RootReducers;

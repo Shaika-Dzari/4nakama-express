@@ -70610,7 +70610,7 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	    return {
-	        files: state.files.uploadfiles
+	        files: state.uploadfiles
 	    };
 	};
 
@@ -70624,6 +70624,7 @@
 
 	        _this.onFileChange = _this.onFileChange.bind(_this);
 	        _this.upload = _this.upload.bind(_this);
+	        _this.cancelUpload = _this.cancelUpload.bind(_this);
 	        return _this;
 	    }
 
@@ -70644,20 +70645,50 @@
 	            dispatch((0, _fileActions.doFileUploadOnChange)(files));
 	        }
 	    }, {
+	        key: 'cancelUpload',
+	        value: function cancelUpload(id) {
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _fileActions.doFileUploadRemove)(id));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var toUpload = null;
 
 	            if (this.props.files) {
-	                toUpload = this.props.files.map(function (f) {
+	                toUpload = [];
+	                console.log(this.props.files);
+
+	                for (var fk in this.props.files) {
+	                    var managedFile = this.props.files[fk];
+	                    var f = managedFile.file;
+	                    var progress = managedFile.progress;
+	                    var completed = managedFile.completed;
 	                    var refid = 'li-' + f.name;
-	                    return _react2.default.createElement(_onefile2.default, { key: refid,
+	                    console.log(f, progress, completed);
+
+	                    var fileJsx = _react2.default.createElement(_onefile2.default, { key: refid,
 	                        reffileid: refid,
 	                        name: f.name,
 	                        type: f.type,
-	                        size: f.size });
-	                });
+	                        size: f.size,
+	                        progress: progress,
+	                        completed: completed,
+	                        cancelUpload: this.cancelUpload });
+
+	                    toUpload.push(fileJsx);
+	                }
+	                /*
+	                toUpload = this.props.files.map(f => {
+	                    let refid = 'li-' + f.name;
+	                    return <OneFile key={refid}
+	                                    reffileid={refid}
+	                                    name={f.name}
+	                                    type={f.type}
+	                                    size={f.size} />
+	                });*/
 	            }
 
 	            return _react2.default.createElement(
@@ -70709,7 +70740,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doFileRequestError = exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_REQUESTERROR = exports.FILE_DELETE = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
+	exports.doFileAdded = exports.doFileRequestError = exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadRemove = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_REQUESTERROR = exports.FILE_DELETE = exports.FILE_ADDED = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
 	exports.doFileUploadOneFile = doFileUploadOneFile;
 	exports.doFileUploadPostAll = doFileUploadPostAll;
 	exports.doFileFetch = doFileFetch;
@@ -70736,6 +70767,7 @@
 	var FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_REMOVE = 'FILE_UPLOAD_REMOVE';
 	var FILE_FETCH = exports.FILE_FETCH = 'FILE_FETCH';
 	var FILE_RECEIVED = exports.FILE_RECEIVED = 'FILE_RECEIVED';
+	var FILE_ADDED = exports.FILE_ADDED = 'FILE_ADDED';
 	var FILE_DELETE = exports.FILE_DELETE = 'FILE_DELETE';
 	var FILE_REQUESTERROR = exports.FILE_REQUESTERROR = 'FILE_REQUESTERROR';
 
@@ -70743,21 +70775,26 @@
 
 	var doFileUploadOnChange = exports.doFileUploadOnChange = (0, _actionCreator2.default)(FILE_UPLOAD_ONCHANGE, 'files');
 	var doFileUploadSuccess = exports.doFileUploadSuccess = (0, _actionCreator2.default)(FILE_UPLOAD_SUCCESS, 'file');
+	var doFileUploadRemove = exports.doFileUploadRemove = (0, _actionCreator2.default)(FILE_UPLOAD_REMOVE, 'id');
 	var doFileUploadProgress = exports.doFileUploadProgress = (0, _actionCreator2.default)(FILE_UPLOAD_PROGRESS, 'progress');
 	var doFileReceived = exports.doFileReceived = (0, _actionCreator2.default)(FILE_RECEIVED, 'files', 'page');
 	var doFileRequestError = exports.doFileRequestError = (0, _actionCreator2.default)(FILE_REQUESTERROR, 'error');
+	var doFileAdded = exports.doFileAdded = (0, _actionCreator2.default)(FILE_ADDED, 'file');
 
 	function doFileUploadOneFile(file) {
 	    return function (dispatch) {
 	        var opts = {
 	            progressCallback: function progressCallback(progress) {
-	                console.log('progressCallback', progress);
+	                //doFileUploadProgress()
+	                console.log(file, progress);
 	            },
 	            errorCallback: function errorCallback(request) {
 	                console.log('errorCallback', request);
 	            },
-	            completeCallback: function completeCallback(request) {
-	                console.log('completeCallback', request);
+	            completeCallback: function completeCallback(status, request) {
+	                console.log('console', request);
+	                dispatch(doFileUploadSuccess(request));
+	                dispatch(doFileAdded(request));
 	            }
 	        };
 
@@ -70768,29 +70805,9 @@
 
 	function doFileUploadPostAll() {
 	    return function (dispatch, getState) {
-	        var _iteratorNormalCompletion = true;
-	        var _didIteratorError = false;
-	        var _iteratorError = undefined;
-
-	        try {
-	            for (var _iterator = getState().files.uploadfiles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                var file = _step.value;
-
-	                dispatch(doFileUploadOneFile(file));
-	            }
-	        } catch (err) {
-	            _didIteratorError = true;
-	            _iteratorError = err;
-	        } finally {
-	            try {
-	                if (!_iteratorNormalCompletion && _iterator.return) {
-	                    _iterator.return();
-	                }
-	            } finally {
-	                if (_didIteratorError) {
-	                    throw _iteratorError;
-	                }
-	            }
+	        for (var fileObj in getState().uploadfiles) {
+	            var file = getState().uploadfiles[fileObj].file;
+	            dispatch(doFileUploadOneFile(file));
 	        }
 	    };
 	}
@@ -70891,8 +70908,8 @@
 	        key: '_onComplete',
 	        value: function _onComplete(request, event) {
 	            if (this.options['completeCallback']) {
-	                var ret = this._processResponse(request) || [];
-	                ret.push(request.status);
+	                var ret = [request.status, this._processResponse(request)];
+
 	                this.options['completeCallback'].apply(null, ret);
 	            }
 	        }
@@ -70900,13 +70917,16 @@
 	        key: '_processResponse',
 	        value: function _processResponse(xhr) {
 	            if (xhr) {
+	                return JSON.parse(xhr.responseText);
+	                /*
 	                if (!xhr.responseType || xhr.responseType === "text") {
-	                    return [xhr.responseText];
+	                return [xhr.responseText];
 	                } else if (xhr.responseType === "document") {
-	                    return [xhr.responseXML];
+	                return [xhr.responseXML];
 	                } else {
-	                    return [xhr.response];
+	                return [xhr.response];
 	                }
+	                */
 	            }
 	            return null;
 	        }
@@ -70966,9 +70986,12 @@
 	    var type = _ref.type;
 	    var size = _ref.size;
 	    var progress = _ref.progress;
+	    var completed = _ref.completed;
+	    var cancelUpload = _ref.cancelUpload;
 
 
-	    var progressScore = progress ? progress + '%' : null;
+	    var progressScore = progress != null ? progress + '%' : null;
+	    var completedStatus = completed ? 'Done!' : '-';
 	    return _react2.default.createElement(
 	        'div',
 	        { key: reffileid, className: 'onefile' },
@@ -71003,9 +71026,17 @@
 	                    null,
 	                    progressScore
 	                ),
+	                ' ',
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    completedStatus
+	                ),
 	                _react2.default.createElement(
 	                    'a',
-	                    { className: 'link-close' },
+	                    { className: 'link-close', onclick: function onclick() {
+	                            cancelUpload(name);
+	                        } },
 	                    'X'
 	                )
 	            )
@@ -71018,7 +71049,9 @@
 	    name: _react.PropTypes.string.isRequired,
 	    type: _react.PropTypes.string,
 	    size: _react.PropTypes.number,
-	    progress: _react.PropTypes.number
+	    progress: _react.PropTypes.number,
+	    completed: _react.PropTypes.bool,
+	    cancelUpload: _react.PropTypes.func.isRequired
 	};
 
 	exports.default = OneFile;
@@ -71348,7 +71381,8 @@
 	    categories: _categoryReducers.categoryReducers,
 	    user: _userReducers.userReducers,
 	    routing: _reactRouterRedux.routerReducer,
-	    files: _fileReducers.fileReducers
+	    files: _fileReducers.fileReducers,
+	    uploadfiles: _fileReducers.fileUploadReducers
 	});
 
 	exports.default = RootReducers;
@@ -71639,11 +71673,19 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	exports.fileReducers = fileReducers;
+	exports.fileUploadReducers = fileUploadReducers;
 
 	var _fileActions = __webpack_require__(661);
 
 	var _IndexReducer = __webpack_require__(680);
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function fileReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
@@ -71651,8 +71693,6 @@
 
 
 	    switch (action.type) {
-	        case _fileActions.FILE_UPLOAD_ONCHANGE:
-	            return Object.assign({}, state, { uploadfiles: action.files });
 
 	        case _fileActions.FILE_RECEIVED:
 	            var receivedItems = (0, _IndexReducer.indexes)(action.files);
@@ -71662,9 +71702,51 @@
 	        case _fileActions.FILE_REQUESTERROR:
 	            return Object.assign({}, state, { error: action.error });
 
+	        case _fileActions.FILE_ADDED:
+	            var currentindex = [].concat(_toConsumableArray(state.index));
+	            currentindex.splice(0, 0, action.file._id);
+	            var currentfiles = Object.assign({}, state.items);
+	            currentfiles[action.file._id] = action.file;
+	            return Object.assign({}, state, { items: currentfiles, index: currentindex });
+
 	        default:
 	            return state;
 	    }
+	}
+
+	function fileUploadReducers() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var action = arguments[1];
+
+	    var _ret = function () {
+
+	        switch (action.type) {
+	            case _fileActions.FILE_UPLOAD_ONCHANGE:
+	                var uploadedFiles = {};
+	                action.files.forEach(function (f) {
+	                    uploadedFiles[f.name] = { file: f, progress: 0, completed: false };
+	                });
+
+	                return {
+	                    v: Object.assign({}, state, uploadedFiles)
+	                };
+
+	            case _fileActions.FILE_UPLOAD_SUCCESS:
+	                var file = Object.assign({}, state[action.file.name]);
+	                file.progress = 100;
+	                file.completed = true;
+	                return {
+	                    v: Object.assign({}, state, _defineProperty({}, action.file.name, file))
+	                };
+
+	            default:
+	                return {
+	                    v: state
+	                };
+	        }
+	    }();
+
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	}
 
 /***/ },

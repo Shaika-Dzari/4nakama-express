@@ -194,6 +194,8 @@ div.login {
       position: absolute;
       right: 0;
       bottom: 0; }
+      .grid-list .grid-item .grid-item-mark span {
+        font-size: 1.2em; }
 .fileadmin .file-list {
   margin: 10px 0;
   border-bottom: 1px solid #ddd; }

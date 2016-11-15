@@ -11,6 +11,7 @@ export const FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
 export const FILE_UPLOAD_REMOVE = 'FILE_UPLOAD_REMOVE';
 export const FILE_FETCH = 'FILE_FETCH';
 export const FILE_RECEIVED = 'FILE_RECEIVED';
+export const FILE_ADDED = 'FILE_ADDED';
 export const FILE_DELETE = 'FILE_DELETE';
 export const FILE_REQUESTERROR = 'FILE_REQUESTERROR';
 
@@ -18,22 +19,26 @@ const FILE_URL = "/api/files";
 
 export const doFileUploadOnChange = makeActionCreator(FILE_UPLOAD_ONCHANGE, 'files');
 export const doFileUploadSuccess = makeActionCreator(FILE_UPLOAD_SUCCESS, 'file');
+export const doFileUploadRemove = makeActionCreator(FILE_UPLOAD_REMOVE, 'id');
 export const doFileUploadProgress = makeActionCreator(FILE_UPLOAD_PROGRESS, 'progress');
 export const doFileReceived = makeActionCreator(FILE_RECEIVED, 'files', 'page');
 export const doFileRequestError = makeActionCreator(FILE_REQUESTERROR, 'error');
+export const doFileAdded = makeActionCreator(FILE_ADDED, 'file');
 
 export function doFileUploadOneFile(file) {
     return dispatch => {
         let opts = {
             progressCallback: (progress) => {
                 //doFileUploadProgress()
-                console.log(file.name, progress);
+                console.log(file, progress);
             },
             errorCallback: (request) => {
                 console.log('errorCallback', request);
             },
-            completeCallback: (request) => {
-                doFileUploadSuccess(request[0]);
+            completeCallback: (status, request) => {
+                console.log('console', request);
+                dispatch(doFileUploadSuccess(request));
+                dispatch(doFileAdded(request));
             }
         };
 
@@ -44,7 +49,8 @@ export function doFileUploadOneFile(file) {
 
 export function doFileUploadPostAll() {
     return (dispatch, getState) => {
-        for (let file of getState().files.uploadfiles) {
+        for (let fileObj in getState().uploadfiles) {
+            let file = getState().uploadfiles[fileObj].file;
             dispatch(doFileUploadOneFile(file));
         }
     }
