@@ -38515,37 +38515,30 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var PAGE_SIZE = 5;
-
 	var Pager = function Pager(_ref) {
-	    var startdate = _ref.startdate;
-	    var enddate = _ref.enddate;
+	    var onPrevious = _ref.onPrevious;
+	    var onNext = _ref.onNext;
 
-
-	    // <Link to="/ecriture" activeClassName="active" key="link_2">Écriture</Link>
-
-	    var precLink = 'to=' + encodeURIComponent(startdate) + '&size=' + PAGE_SIZE;
-	    var nextLink = 'from=' + encodeURIComponent(enddate) + '&size=' + PAGE_SIZE;
 
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'pager' },
-	        _react2.default.createElement(
+	        onPrevious ? _react2.default.createElement(
 	            'a',
-	            { href: '#' },
+	            { href: '#', onClick: onPrevious },
 	            '< Précédent'
-	        ),
-	        _react2.default.createElement(
+	        ) : null,
+	        onNext ? _react2.default.createElement(
 	            'a',
-	            { href: '#' },
+	            { href: '#', onClick: onNext },
 	            'Suivant >'
-	        )
+	        ) : null
 	    );
 	};
 
 	Pager.propTypes = {
-	    startdate: _react.PropTypes.string,
-	    enddate: _react.PropTypes.string
+	    onPrevious: _react.PropTypes.func,
+	    onNext: _react.PropTypes.func
 	};
 
 	exports.default = Pager;
@@ -70508,6 +70501,10 @@
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
+	var _pager = __webpack_require__(577);
+
+	var _pager2 = _interopRequireDefault(_pager);
+
 	var _fileActions = __webpack_require__(661);
 
 	__webpack_require__(671);
@@ -70534,7 +70531,13 @@
 	    function FileAdmin(props) {
 	        _classCallCheck(this, FileAdmin);
 
-	        return _possibleConstructorReturn(this, (FileAdmin.__proto__ || Object.getPrototypeOf(FileAdmin)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (FileAdmin.__proto__ || Object.getPrototypeOf(FileAdmin)).call(this, props));
+
+	        _this.onRemove = _this.onRemove.bind(_this);
+	        _this.onCopyToStore = _this.onCopyToStore.bind(_this);
+	        _this.onPreviousPage = _this.onPreviousPage.bind(_this);
+	        _this.onNextPage = _this.onNextPage.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(FileAdmin, [{
@@ -70545,8 +70548,53 @@
 	            dispatch((0, _fileActions.doFileFetch)());
 	        }
 	    }, {
+	        key: 'onRemove',
+	        value: function onRemove(event) {
+	            event.preventDefault();
+	            var fileid = event.target.getAttribute('data-4n-id');
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _fileActions.doFileDelete)(fileid));
+	        }
+	    }, {
+	        key: 'onCopyToStore',
+	        value: function onCopyToStore(event) {
+	            event.preventDefault();
+	            var fileid = event.target.getAttribute('data-4n-id');
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _fileActions.doFileCopyToStore)(fileid));
+	        }
+	    }, {
+	        key: 'onPreviousPage',
+	        value: function onPreviousPage(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            var date = null;
+
+	            if (this.props.index && this.props.index.length > 0) {
+	                date = this.props.items[this.props.index[0]].createdAt;
+	                dispatch((0, _fileActions.doFileFetch)({ fromdate: date, dir: 'prev' }));
+	            }
+	        }
+	    }, {
+	        key: 'onNextPage',
+	        value: function onNextPage(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            var date = null;
+
+	            if (this.props.index && this.props.index.length > 0) {
+	                date = this.props.items[this.props.index[this.props.index.length - 1]].createdAt;
+	                dispatch((0, _fileActions.doFileFetch)({ fromdate: date }));
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'fileadmin' },
@@ -70559,8 +70607,9 @@
 	                    'div',
 	                    { className: 'file-list' },
 	                    _react2.default.createElement(_alertbox2.default, { message: this.props.error }),
-	                    _react2.default.createElement(_filegrid2.default, { items: this.props.items, index: this.props.index })
-	                )
+	                    _react2.default.createElement(_filegrid2.default, { items: this.props.items, index: this.props.index, onRemove: this.onRemove, onCopyToStore: this.onCopyToStore })
+	                ),
+	                _react2.default.createElement(_pager2.default, { onPrevious: this.onPreviousPage, onNext: this.onNextPage })
 	            );
 	        }
 	    }]);
@@ -70646,10 +70695,10 @@
 	        }
 	    }, {
 	        key: 'cancelUpload',
-	        value: function cancelUpload(id) {
+	        value: function cancelUpload(name) {
 	            var dispatch = this.props.dispatch;
 
-	            dispatch((0, _fileActions.doFileUploadRemove)(id));
+	            dispatch((0, _fileActions.doFileUploadRemove)(name));
 	        }
 	    }, {
 	        key: 'render',
@@ -70740,10 +70789,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doFileAdded = exports.doFileRequestError = exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadRemove = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_REQUESTERROR = exports.FILE_DELETE = exports.FILE_ADDED = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
+	exports.doFileCopyToStore = exports.doFileAdded = exports.doFileRequestError = exports.doFileReceived = exports.doFileUploadProgress = exports.doFileUploadRemove = exports.doFileUploadError = exports.doFileUploadSuccess = exports.doFileUploadOnChange = exports.FILE_COPYTOSTORE = exports.FILE_REQUESTERROR = exports.FILE_DELETE = exports.FILE_ADDED = exports.FILE_RECEIVED = exports.FILE_FETCH = exports.FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_ERROR = exports.FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_ONCHANGE = undefined;
 	exports.doFileUploadOneFile = doFileUploadOneFile;
 	exports.doFileUploadPostAll = doFileUploadPostAll;
 	exports.doFileFetch = doFileFetch;
+	exports.doFileDelete = doFileDelete;
 
 	__webpack_require__(564);
 
@@ -70763,6 +70813,7 @@
 	var FILE_UPLOAD_POSTALL = exports.FILE_UPLOAD_POSTALL = 'FILE_UPLOAD_POSTALL';
 	var FILE_UPLOAD_ONEFILE = exports.FILE_UPLOAD_ONEFILE = 'FILE_UPLOAD_ONEFILE';
 	var FILE_UPLOAD_SUCCESS = exports.FILE_UPLOAD_SUCCESS = 'FILE_UPLOAD_SUCCESS';
+	var FILE_UPLOAD_ERROR = exports.FILE_UPLOAD_ERROR = 'FILE_UPLOAD_ERROR';
 	var FILE_UPLOAD_PROGRESS = exports.FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
 	var FILE_UPLOAD_REMOVE = exports.FILE_UPLOAD_REMOVE = 'FILE_UPLOAD_REMOVE';
 	var FILE_FETCH = exports.FILE_FETCH = 'FILE_FETCH';
@@ -70770,29 +70821,30 @@
 	var FILE_ADDED = exports.FILE_ADDED = 'FILE_ADDED';
 	var FILE_DELETE = exports.FILE_DELETE = 'FILE_DELETE';
 	var FILE_REQUESTERROR = exports.FILE_REQUESTERROR = 'FILE_REQUESTERROR';
+	var FILE_COPYTOSTORE = exports.FILE_COPYTOSTORE = 'FILE_COPYTOSTORE';
 
 	var FILE_URL = "/api/files";
 
 	var doFileUploadOnChange = exports.doFileUploadOnChange = (0, _actionCreator2.default)(FILE_UPLOAD_ONCHANGE, 'files');
 	var doFileUploadSuccess = exports.doFileUploadSuccess = (0, _actionCreator2.default)(FILE_UPLOAD_SUCCESS, 'file');
-	var doFileUploadRemove = exports.doFileUploadRemove = (0, _actionCreator2.default)(FILE_UPLOAD_REMOVE, 'id');
-	var doFileUploadProgress = exports.doFileUploadProgress = (0, _actionCreator2.default)(FILE_UPLOAD_PROGRESS, 'progress');
+	var doFileUploadError = exports.doFileUploadError = (0, _actionCreator2.default)(FILE_UPLOAD_ERROR, 'name', 'error');
+	var doFileUploadRemove = exports.doFileUploadRemove = (0, _actionCreator2.default)(FILE_UPLOAD_REMOVE, 'name');
+	var doFileUploadProgress = exports.doFileUploadProgress = (0, _actionCreator2.default)(FILE_UPLOAD_PROGRESS, 'name', 'progress');
 	var doFileReceived = exports.doFileReceived = (0, _actionCreator2.default)(FILE_RECEIVED, 'files', 'page');
 	var doFileRequestError = exports.doFileRequestError = (0, _actionCreator2.default)(FILE_REQUESTERROR, 'error');
 	var doFileAdded = exports.doFileAdded = (0, _actionCreator2.default)(FILE_ADDED, 'file');
+	var doFileCopyToStore = exports.doFileCopyToStore = (0, _actionCreator2.default)(FILE_COPYTOSTORE, 'id');
 
 	function doFileUploadOneFile(file) {
 	    return function (dispatch) {
 	        var opts = {
 	            progressCallback: function progressCallback(progress) {
-	                //doFileUploadProgress()
-	                console.log(file, progress);
+	                dispatch(doFileUploadProgress(file.name, progress));
 	            },
 	            errorCallback: function errorCallback(request) {
-	                console.log('errorCallback', request);
+	                dispatch(doFileUploadError(file.name, request));
 	            },
 	            completeCallback: function completeCallback(status, request) {
-	                console.log('console', request);
 	                dispatch(doFileUploadSuccess(request));
 	                dispatch(doFileAdded(request));
 	            }
@@ -70816,20 +70868,36 @@
 	    return function (dispatch) {
 	        dispatch((0, _navigationActions.doStartLoading)());
 
-	        return fetch(FILE_URL, { credentials: 'include' }).then(function (fs) {
-	            console.log('1');
+	        var body = [];
+	        var urlParams = '';
+
+	        if (page) {
+
+	            if (page.fromdate) body.push('fromdate=' + encodeURIComponent(page.fromdate));
+
+	            if (page.sort) body.push('sort=' + encodeURIComponent(page.sort || '-1'));
+
+	            if (page.dir) body.push('dir=' + encodeURIComponent(page.dir || 'next'));
+
+	            urlParams = '?' + body.join('&');
+	        }
+
+	        console.log(urlParams);
+
+	        return fetch(FILE_URL + urlParams, { credentials: 'include' }).then(function (fs) {
 	            return fs.json();
 	        }).then(function (files) {
-	            console.log(files);
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            dispatch(doFileReceived(files, page));
-	            console.log('2');
 	        }).catch(function (e) {
-	            console.log(e);
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            dispatch(doFileRequestError(e));
 	        });
 	    };
+	}
+
+	function doFileDelete(fileid) {
+	    //TODO
 	}
 
 /***/ },
@@ -70990,8 +71058,10 @@
 	    var cancelUpload = _ref.cancelUpload;
 
 
-	    var progressScore = progress != null ? progress + '%' : null;
-	    var completedStatus = completed ? 'Done!' : '-';
+	    var progressScore = progress != null ? progress : 0;
+	    var progressStyle = { width: progressScore + '%' };
+	    var completedStatus = completed ? 'Effectué!' : '-';
+
 	    return _react2.default.createElement(
 	        'div',
 	        { key: reffileid, className: 'onefile' },
@@ -71024,22 +71094,21 @@
 	                _react2.default.createElement(
 	                    'span',
 	                    null,
-	                    progressScore
-	                ),
-	                ' ',
-	                _react2.default.createElement(
-	                    'span',
-	                    null,
 	                    completedStatus
 	                ),
 	                _react2.default.createElement(
 	                    'a',
-	                    { className: 'link-close', onclick: function onclick() {
+	                    { className: 'link-close', onClick: function onClick() {
 	                            cancelUpload(name);
 	                        } },
 	                    'X'
 	                )
 	            )
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'onefile-progress' },
+	            _react2.default.createElement('div', { style: progressStyle })
 	        )
 	    );
 	};
@@ -71179,15 +71248,18 @@
 	var FileGrid = function FileGrid(_ref) {
 	    var items = _ref.items;
 	    var index = _ref.index;
-	    var prevPageCallback = _ref.prevPageCallback;
-	    var nextPageCallback = _ref.nextPageCallback;
+	    var onRemove = _ref.onRemove;
+	    var onCopyToStore = _ref.onCopyToStore;
 
 
 	    var fs = null;
-	    if (items) {
+	    var startDate = null;
+	    var endDate = null;
+
+	    if (items && index) {
 	        fs = index.map(function (i) {
 	            var f = items[i];
-	            return _react2.default.createElement(_filegriditem2.default, { key: 'fgi-' + f._id, file: f });
+	            return _react2.default.createElement(_filegriditem2.default, { key: 'fgi-' + f._id, file: f, onRemove: onRemove, onCopyToStore: onCopyToStore });
 	        });
 	    }
 
@@ -71223,6 +71295,8 @@
 
 	var FileGridItem = function FileGridItem(_ref) {
 	    var file = _ref.file;
+	    var onRemove = _ref.onRemove;
+	    var onCopyToStore = _ref.onCopyToStore;
 
 
 	    var inner = null;
@@ -71261,14 +71335,22 @@
 	        ),
 	        _react2.default.createElement(
 	            'div',
-	            { className: 'grid-item-mark' },
-	            '- ',
+	            { className: 'grid-item-menu' },
 	            _react2.default.createElement(
-	                'span',
-	                null,
-	                '☑'
+	                'a',
+	                { href: file.path, target: '_blank' },
+	                'Ouvrir'
 	            ),
-	            ' -'
+	            _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: onCopyToStore, 'data-4n-id': file._id },
+	                'Copier'
+	            ),
+	            _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: onRemove, 'data-4n-id': file._id },
+	                'Supprimer'
+	            )
 	        )
 	    );
 	};
@@ -71688,7 +71770,7 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	function fileReducers() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [], buffer: [] } : arguments[0];
 	    var action = arguments[1];
 
 
@@ -71708,6 +71790,11 @@
 	            var currentfiles = Object.assign({}, state.items);
 	            currentfiles[action.file._id] = action.file;
 	            return Object.assign({}, state, { items: currentfiles, index: currentindex });
+
+	        case _fileActions.FILE_COPYTOSTORE:
+	            var currentBuffer = [].concat(_toConsumableArray(state.buffer));
+	            currentBuffer.push(action.id);
+	            return Object.assign({}, state, { buffer: currentBuffer });
 
 	        default:
 	            return state;
@@ -71737,6 +71824,27 @@
 	                file.completed = true;
 	                return {
 	                    v: Object.assign({}, state, _defineProperty({}, action.file.name, file))
+	                };
+
+	            case _fileActions.FILE_UPLOAD_REMOVE:
+	                var fs = Object.assign({}, state);
+	                delete fs[action.name];
+	                return {
+	                    v: fs
+	                };
+
+	            case _fileActions.FILE_UPLOAD_PROGRESS:
+	                var fileinprogress = Object.assign({}, state[action.name]);
+	                fileinprogress.progress = 100;
+	                return {
+	                    v: Object.assign({}, state, _defineProperty({}, action.name, fileinprogress))
+	                };
+
+	            case _fileActions.FILE_UPLOAD_ERROR:
+	                var fileinerror = Object.assign({}, state[action.name]);
+	                fileinerror.error = action.error;
+	                return {
+	                    v: Object.assign({}, state, _defineProperty({}, action.name, fileinerror))
 	                };
 
 	            default:

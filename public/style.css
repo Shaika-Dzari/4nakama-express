@@ -54,7 +54,7 @@
       margin: 3px 0; }
     .blog-message header .category {
       display: inline-block;
-      border: 1px solid #ddd;
+      border: 1px solid #dedede;
       padding: 4px 5px 2px 5px;
       margin: 0 3px;
       font-size: 0.8em;
@@ -76,9 +76,14 @@ div.pager {
   text-align: center; }
   div.pager a {
     display: inline-block;
-    margin: 5px 20px;
-    color: #444;
-    font-weight: bold; }
+    border: 1px solid #dedede;
+    padding: 3px 5px 2px 5px;
+    margin: 0 3px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase; }
+  div.pager a:hover {
+    background-color: #cddddd; }
 div.list-ctn {
   margin: 10px; }
   div.list-ctn .info-element {
@@ -116,10 +121,9 @@ div.login {
 .onefile {
   border: 1px solid #ddd;
   background-color: #fbfbfb;
-  display: table;
   width: 100%; }
   .onefile .onefile-row {
-    display: table-row;
+    display: table;
     width: 100%; }
     .onefile .onefile-row div {
       display: table-cell;
@@ -133,6 +137,16 @@ div.login {
     .onefile .onefile-row div:last-child {
       text-align: right;
       vertical-align: middle; }
+      .onefile .onefile-row div:last-child span {
+        margin: 3px 10px;
+        font-weight: bold; }
+  .onefile .onefile-progress {
+    height: 4px;
+    width: 100%; }
+    .onefile .onefile-progress div {
+      width: 0;
+      height: 4px;
+      background-color: cornflowerblue; }
 .file-upload .button-section {
   display: table;
   width: 100%; }
@@ -151,8 +165,8 @@ div.login {
       padding: 2px 8px;
       background-color: #1872ab;
       color: #fff;
-      border: 1px solid #ccc;
-      border-bottom: 1px solid #0d5f94;
+      border: 1px solid #dedede;
+      border-bottom: 1px solid #1872ab;
       font-size: 16px; }
   .file-upload .button-section .upload-section {
     display: table-cell;
@@ -163,12 +177,14 @@ div.login {
 .file-upload .upload-list {
   padding: 5px 0; }
 .grid-list {
-  vertical-align: top; }
+  vertical-align: top;
+  font-size: 0.9em; }
   .grid-list .grid-item {
     float: left;
     margin: 3px 10px;
     padding: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #dedede;
+    width: 280px;
     text-align: center;
     position: relative; }
     .grid-list .grid-item .grid-item-preview {
@@ -181,24 +197,37 @@ div.login {
         width: 260px;
         height: 260px; }
     .grid-list .grid-item .grid-item-details {
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #dedede;
       max-width: 280px; }
       .grid-list .grid-item .grid-item-details span {
         display: block;
-        word-break: break-all; }
-      .grid-list .grid-item .grid-item-details .grid-item-name {
-        font-size: 0.9em; }
+        word-break: break-all;
+        width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
       .grid-list .grid-item .grid-item-details .grid-item-info {
         font-size: 0.8em; }
-    .grid-list .grid-item .grid-item-mark {
-      position: absolute;
-      right: 0;
-      bottom: 0; }
-      .grid-list .grid-item .grid-item-mark span {
-        font-size: 1.2em; }
+    .grid-list .grid-item .grid-item-menu {
+      display: table;
+      width: 100%;
+      border-top: 1px solid #dedede;
+      background-color: #1872ab;
+      color: #fafafa; }
+      .grid-list .grid-item .grid-item-menu a {
+        text-align: center;
+        display: table-cell;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px;
+        border-top: 1px solid #176ba1;
+        border-bottom: 1px solid #176ba1;
+        color: #fafafa;
+        width: 33%; }
+      .grid-list .grid-item .grid-item-menu a:hover {
+        background-color: #1f95e0; }
 .fileadmin .file-list {
-  margin: 10px 0;
-  border-bottom: 1px solid #ddd; }
+  margin: 10px 0; }
 html, body {
   min-height: 100%;
   margin: 0;

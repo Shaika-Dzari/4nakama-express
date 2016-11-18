@@ -1,11 +1,10 @@
 .onefile {
     border: 1px solid #ddd;
     background-color: #fbfbfb;
-    display: table;
     width: 100%;
 
     .onefile-row {
-        display: table-row;
+        display: table;
         width: 100%;
 
         div {
@@ -26,6 +25,21 @@
         div:last-child {
             text-align: right;
             vertical-align: middle;
+
+            span {
+                margin: 3px 10px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .onefile-progress {
+        height: 4px;
+        width: 100%;
+        div {
+            width: 0;
+            height: 4px;
+            background-color: cornflowerblue;
         }
     }
 }

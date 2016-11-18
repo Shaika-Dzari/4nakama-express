@@ -3,15 +3,20 @@ import React from 'react';
 import FileGridItem from './filegriditem.jsx';
 import './filegrid.scss';
 
-const FileGrid = ({items, index, prevPageCallback, nextPageCallback}) => {
+const FileGrid = ({items, index, onRemove, onCopyToStore}) => {
 
     let fs = null;
-    if (items) {
+    let startDate = null;
+    let endDate = null;
+
+    if (items && index) {
         fs = index.map(i => {
             let f = items[i];
-            return <FileGridItem key={'fgi-' + f._id} file={f} />
+            return <FileGridItem key={'fgi-' + f._id} file={f} onRemove={onRemove} onCopyToStore={onCopyToStore} />
         });
     }
+
+
 
     return (
         <div className="grid-list clear-float">

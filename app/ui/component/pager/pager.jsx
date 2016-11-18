@@ -3,26 +3,19 @@ import {Link} from 'react-router';
 
 import './pager.scss';
 
-const PAGE_SIZE = 5;
-
-const Pager = ({startdate, enddate}) => {
-
-    // <Link to="/ecriture" activeClassName="active" key="link_2">Écriture</Link>
-
-    var precLink = 'to=' + encodeURIComponent(startdate) + '&size=' + PAGE_SIZE;
-    var nextLink = 'from=' + encodeURIComponent(enddate) + '&size=' + PAGE_SIZE;
+const Pager = ({onPrevious, onNext}) => {
 
     return (
         <div className="pager">
-            <a href="#">&lt; Précédent</a>
-            <a href="#">Suivant &gt;</a>
+            {onPrevious ? <a href="#" onClick={onPrevious}>&lt; Précédent</a> : null}
+            {onNext ? <a href="#" onClick={onNext}>Suivant &gt;</a> : null}
         </div>
     );
 }
 
 Pager.propTypes = {
-    startdate: PropTypes.string,
-    enddate: PropTypes.string
+    onPrevious: PropTypes.func,
+    onNext: PropTypes.func
 };
 
 export default Pager;

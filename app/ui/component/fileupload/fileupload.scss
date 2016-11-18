@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .file-upload {
 
     .button-section {
@@ -20,10 +22,10 @@
                 display: inline-block;
                 cursor: pointer;
                 padding: 2px 8px;
-                background-color: #1872ab;
+                background-color: $color-back-dark;
                 color: #fff;
-                border: 1px solid #ccc;
-                border-bottom: 1px solid #0d5f94;
+                border: 1px solid $color-border-1;
+                border-bottom: 1px solid $color-back-dark;
                 font-size: 16px;
             }
         }

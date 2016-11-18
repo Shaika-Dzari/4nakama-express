@@ -34,9 +34,9 @@ class FileUpload extends React.Component {
         dispatch(doFileUploadOnChange(files));
     }
 
-    cancelUpload(id) {
+    cancelUpload(name) {
         const { dispatch } = this.props;
-        dispatch(doFileUploadRemove(id));
+        dispatch(doFileUploadRemove(name));
     }
 
     render() {

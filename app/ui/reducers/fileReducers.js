@@ -1,7 +1,8 @@
-import {FILE_UPLOAD_ONCHANGE, FILE_RECEIVED, FILE_REQUESTERROR, FILE_UPLOAD_SUCCESS, FILE_ADDED} from '../actions/fileActions.js';
+import {FILE_UPLOAD_ONCHANGE, FILE_UPLOAD_REMOVE, FILE_UPLOAD_ERROR, FILE_UPLOAD_SUCCESS, FILE_UPLOAD_PROGRESS,
+        FILE_RECEIVED, FILE_REQUESTERROR, FILE_ADDED, FILE_COPYTOSTORE} from '../actions/fileActions.js';
 import {indexes} from '../utils/IndexReducer.js';
 
-export function fileReducers(state = {items: {}, index: []}, action) {
+export function fileReducers(state = {items: {}, index: [], buffer: []}, action) {
 
     switch (action.type) {
 
@@ -20,6 +21,11 @@ export function fileReducers(state = {items: {}, index: []}, action) {
             currentfiles[action.file._id] = action.file;
             return Object.assign({}, state, {items: currentfiles, index: currentindex});
 
+        case FILE_COPYTOSTORE:
+            let currentBuffer = [...state.buffer];
+            currentBuffer.push(action.id);
+            return Object.assign({}, state, {buffer: currentBuffer});
+
         default: return state;
     }
 }
@@ -35,12 +41,26 @@ export function fileUploadReducers(state = {}, action) {
 
             return Object.assign({}, state, uploadedFiles);
 
-
         case FILE_UPLOAD_SUCCESS:
             let file = Object.assign({}, state[action.file.name]);
             file.progress = 100;
             file.completed = true;
             return Object.assign({}, state, {[action.file.name]: file});
+
+        case FILE_UPLOAD_REMOVE:
+            let fs = Object.assign({}, state);
+            delete fs[action.name];
+            return fs;
+
+        case FILE_UPLOAD_PROGRESS:
+            let fileinprogress = Object.assign({}, state[action.name]);
+            fileinprogress.progress = 100;
+            return Object.assign({}, state, {[action.name]: fileinprogress});
+
+        case FILE_UPLOAD_ERROR:
+            let fileinerror = Object.assign({}, state[action.name]);
+            fileinerror.error = action.error;
+            return Object.assign({}, state, {[action.name]: fileinerror});
 
 
         default:

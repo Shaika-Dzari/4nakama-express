@@ -3,8 +3,10 @@ import './onefile.scss';
 
 const OneFile = ({reffileid, name, type, size, progress, completed, cancelUpload}) => {
 
-    let progressScore = progress != null ? progress + '%' : null;
-    let completedStatus = completed ? 'Done!' : '-';
+    let progressScore = progress != null ? progress : 0;
+    let progressStyle = {width: progressScore + '%'};
+    let completedStatus = completed ? 'Effectué!' : '-';
+
     return (
         <div key={reffileid} className="onefile">
             <div className="onefile-row">
@@ -13,9 +15,12 @@ const OneFile = ({reffileid, name, type, size, progress, completed, cancelUpload
                     <span>{type}</span> - <span>{size}</span>
                 </div>
                 <div>
-                    <span>{progressScore}</span> <span>{completedStatus}</span>
-                    <a className="link-close" onclick={() => { cancelUpload(name); }}>X</a>
+                    <span>{completedStatus}</span>
+                    <a className="link-close" onClick={() => { cancelUpload(name); }}>X</a>
                 </div>
+            </div>
+            <div className="onefile-progress">
+                <div style={progressStyle}></div>
             </div>
         </div>
     );

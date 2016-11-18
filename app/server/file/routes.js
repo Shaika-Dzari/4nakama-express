@@ -9,17 +9,23 @@ var FileUtils = require('../utils/FileUtils.js');
 
 const router = express.Router();
 
-
-const DEFAULT_PAGE_SIZE = 18;
-const DEFAULT_MAX_PAGE_SIZE = 36;
+const DEFAULT_PAGE_SIZE = 15;
+const DEFAULT_MAX_PAGE_SIZE = 30;
 
 router.get('/', function(req, res, next) {
 
+    var fromDate = req.query.fromdate;
+    var dir = req.query.dir || 'next';
     let size = Math.min(req.query.size || DEFAULT_PAGE_SIZE, DEFAULT_MAX_PAGE_SIZE);
-    let dir = req.query.dir || '-1';
+    let sort = req.query.sort || '-1';
+    let params = {};
 
-    File.find()
-            .sort({createdAt: dir})
+    if (fromDate) {
+        params.createdAt = dir == 'next' ? {$lt: new Date(fromDate)} : {$gt: new Date(fromDate)};
+    }
+
+    File.find(params)
+            .sort({createdAt: sort})
             .limit(size)
             .select('-ownerId')
             .exec(function (err, files) {
@@ -41,19 +47,20 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
     req.busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 
 
-        var path = isPublicFile ? publicFolder + '/' + publicFileFolderName + '/' + filename : config.file.privateFolder + '/' + filename;
-        var url = isPublicFile ? '/' + publicFileFolderName + '/' + filename : '/api/files/stream/' + filename;
+        var path = isPublicFile ? publicFolder + '/' + publicFileFolderName + '/' + filename : config.file.privateFolder;
+        var url = isPublicFile ? '/' + publicFileFolderName + '/' + filename : '/api/files/stream';
         console.log("Uploading: ", filename, encoding, mimetype);
         console.log(path);
 
-        var newFile = new File({name: filename,
-                                path: url,
-                                contentType: mimetype,
-                                ownerId: user._id,
-                                ownerName: user.username,
-                                isPublic: isPublicFile});
 
-        FileUtils.uploadTo(file, path, () => {
+        FileUtils.uploadTo(file, path, filename, (finalFileName, finalFilePath) => {
+
+            var newFile = new File({name: filename,
+                                    path: url + '/' + finalFileName,
+                                    contentType: mimetype,
+                                    ownerId: user._id,
+                                    ownerName: user.username,
+                                    isPublic: isPublicFile});
 
             // Save virtual file.
             newFile.save(function(serr, savedFile) {
