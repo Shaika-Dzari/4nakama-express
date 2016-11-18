@@ -6,6 +6,7 @@ var htmlutils = require('../htmlutils');
 var File = require('./file');
 var config = require('../config/config.js');
 var FileUtils = require('../utils/FileUtils.js');
+var PagingParser = require('../utils/PagingParser.js');
 
 const router = express.Router();
 
@@ -14,19 +15,11 @@ const DEFAULT_MAX_PAGE_SIZE = 30;
 
 router.get('/', function(req, res, next) {
 
-    var fromDate = req.query.fromdate;
-    var dir = req.query.dir || 'next';
-    let size = Math.min(req.query.size || DEFAULT_PAGE_SIZE, DEFAULT_MAX_PAGE_SIZE);
-    let sort = req.query.sort || '-1';
-    let params = {};
+    var pageParam = new PagingParser(req);
 
-    if (fromDate) {
-        params.createdAt = dir == 'next' ? {$lt: new Date(fromDate)} : {$gt: new Date(fromDate)};
-    }
-
-    File.find(params)
-            .sort({createdAt: sort})
-            .limit(size)
+    File.find(pageParam.params())
+            .sort({createdAt: pageParam.sort()})
+            .limit(pageParam.size())
             .select('-ownerId')
             .exec(function (err, files) {
                 if (err) next(err);

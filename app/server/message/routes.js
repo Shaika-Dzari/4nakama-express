@@ -4,32 +4,27 @@ var passport = require('passport');
 var Message = require('./message');
 var authUtils = require('../authutils');
 var htmlutils = require('../htmlutils');
+var PagingParser = require('../utils/PagingParser');
 
 var DEFAULT_PAGE_SIZE = 5;
-var DEFAULT_MAX_PAGE_SIZE = 20;
 
 // GET messages (blog post)
 
 router.get('/', function(req, res, next) {
 
     // Paging Params
-    var fromDate = req.query.fromdate;
-    var size = Math.min(req.query.size || DEFAULT_PAGE_SIZE, DEFAULT_MAX_PAGE_SIZE);
-    var dir = req.query.dir || '-1';
-
+    var pagingParam = new PagingParser(req, DEFAULT_PAGE_SIZE);
     var params = {};
 
     if (!authUtils.isLoggedIn(req)) {
         params.published = 1;
     }
 
-    if (fromDate) {
-        params.createdAt = {$gt: fromDate};
-    }
+    params = pagingParam.merge(params);
 
     Message.find(params)
-            .sort({createdAt: dir})
-            .limit(size)
+            .sort({createdAt: pagingParam.sort()})
+            .limit(pagingParam.size())
             .select('-authorId')
             .exec(function (err, mgs) {
                 if (err) next(err);

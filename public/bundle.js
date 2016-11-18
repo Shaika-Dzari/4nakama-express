@@ -49363,7 +49363,7 @@
 	                { className: 'login' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'box darkbox' },
+	                    { className: 'box' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'body' },
@@ -49380,7 +49380,7 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'passwd' },
-	                                'Nom d\'utilisateur'
+	                                'Mot de passe'
 	                            ),
 	                            _react2.default.createElement('input', { type: 'password', id: 'passwd', name: 'password', onChange: this.props.onPasswordChange }),
 	                            _react2.default.createElement(
@@ -70881,8 +70881,6 @@
 
 	            urlParams = '?' + body.join('&');
 	        }
-
-	        console.log(urlParams);
 
 	        return fetch(FILE_URL + urlParams, { credentials: 'include' }).then(function (fs) {
 	            return fs.json();

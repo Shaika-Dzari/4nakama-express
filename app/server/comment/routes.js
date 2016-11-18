@@ -3,19 +3,30 @@ var router = express.Router();
 var passport = require('passport');
 var Comment = require('./comment');
 var authUtils = require('../authutils');
+var PagingParser = require('../utils/PagingParser');
 
 router.get('/', (req, res, next) => {
-    var mid = req.params.messageid;
-    var params = {
-        messageId: mid
-    };
+    var mid = req.query.messageid;
+    var params = {};
+    var isLoggedIn = authUtils.isLoggedIn(req);
 
-    if (!authUtils.isLoggedIn(req)) {
-        params.approved = 1;
+    var pageParam = new PagingParser(req);
+
+    if (!mid && !isLoggedIn) {
+        next(new Error('unauthorized'));
     }
 
+    if (mid)
+        params.messageId = mid;
+
+    if (isLoggedIn)
+        params.approved = 1;
+
+    params = pageParam.merge(params);
+
     Comment.find(params)
-            .sort({createdAt: -1})
+            .sort({createdAt: pageParam.sort()})
+            .limit(pageParam.size())
             .select('-authorId')
             .exec(function (err, mgs) {
                 if (err) next(err);
@@ -26,7 +37,6 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
     var user = req.user;
     var commentBody = req.body;
-    var mid = req.params.messageid;
 
     var authorId = null;
     var authorName = null;
@@ -44,7 +54,7 @@ router.post('/', (req, res, next) => {
         text: commentBody.text,
         authorId: authorId,
         authorName: authorName,
-        messageId: mid,
+        messageId: commentBody.messageId,
         approved: user ? 1 : 0
     });
 

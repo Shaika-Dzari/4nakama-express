@@ -35,13 +35,13 @@ class LoginPage extends Component {
 
         return (
             <div className="login">
-                <div className="box darkbox">
+                <div className="box">
                     <div className="body">
                         {alertBox}
                         <form className="frm">
                             <label htmlFor="username">Nom d'utilisateur</label>
                             <input type="text" id="username" name="username" onChange={this.props.onUsernameChange} />
-                            <label htmlFor="passwd">Nom d'utilisateur</label>
+                            <label htmlFor="passwd">Mot de passe</label>
                             <input type="password" id="passwd" name="password" onChange={this.props.onPasswordChange} />
                             <button className="btn btnblue" onClick={this.props.onLoginClick}>Connexion</button>
                         </form>

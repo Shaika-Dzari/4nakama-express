@@ -109,9 +109,8 @@ div.dashboard div.dashboard-menu {
 div.dashboard div.dashboard-content {
   padding: 20px; }
 div.login {
-  margin: 0 auto;
-  width: 400px;
-  padding: 10px; }
+  margin: 40px auto;
+  width: 500px; }
 .message-editor-ctn {
   background-color: #fff; }
   .message-editor-ctn .message-settings .message-settings-selection {
