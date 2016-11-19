@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
+import { getUrlParamsString } from '../utils/UrlParamUtils.js';
 import Remarkable from 'remarkable';
 
 export const MSG_CACHE_HIT  = 'MSG_CACHE_HIT';
@@ -34,24 +35,18 @@ function makeActionCreator(type, ...argNames) {
 export function doMessageFetch(page) {
 
     return (dispatch, getState) => {
+        dispatch(doStartLoading());
+        let urlParam = getUrlParamsString(page);
 
-        if (getState() .messages && getState().messages.index && getState().messages.index.length > 0) {
-            dispatch({type: MSG_CACHE_HIT});
-
-        } else {
-
-            dispatch(doStartLoading());
-
-            return fetch(MSG_URL, {credentials: 'include'})
-                    .then(r => r.json())
-                    .then(msgs => {
-                        dispatch(doStopLoading());
-                        if (msgs) {
-                            msgs.forEach(m => m.texthtml = remarkable.render(m.text));
-                        }
-                        dispatch(doMessagesReceive(msgs, page));
-                    });
-        }
+        return fetch(MSG_URL + urlParam, {credentials: 'include'})
+                .then(r => r.json())
+                .then(msgs => {
+                    dispatch(doStopLoading());
+                    if (msgs) {
+                        msgs.forEach(m => m.texthtml = remarkable.render(m.text));
+                    }
+                    dispatch(doMessagesReceive(msgs, page));
+                });
     }
 }
 

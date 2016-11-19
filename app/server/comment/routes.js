@@ -28,9 +28,10 @@ router.get('/', (req, res, next) => {
             .sort({createdAt: pageParam.sort()})
             .limit(pageParam.size())
             .select('-authorId')
-            .exec(function (err, mgs) {
+            .exec(function (err, comments) {
                 if (err) next(err);
-                res.json(mgs);
+
+                res.json(comments);
             });
 });
 

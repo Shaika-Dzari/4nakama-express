@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
+import Pager from '../../component/pager/pager.jsx';
+import PagingParam from '../../utils/PagingParam.js';
 import Remarkable from 'remarkable';
 
 import {doMessageFetch} from '../../actions/messageActions.js';
@@ -25,6 +27,8 @@ class BlogPage extends React.Component {
 
     constructor(props) {
         super(props);
+        this.onPreviousPage = this.onPreviousPage.bind(this);
+        this.onNextPage = this.onNextPage.bind(this);
     }
 
     componentDidMount() {
@@ -33,12 +37,37 @@ class BlogPage extends React.Component {
         dispatch(doCategoryFetch());
     }
 
+    onPreviousPage(event) {
+        event.preventDefault();
+        const { dispatch } = this.props;
+        let date = null;
+
+        if (this.props.messagesindex && this.props.messagesindex.length > 0) {
+            date = this.props.messages[this.props.messagesindex[0]].createdAt;
+            dispatch(doMessageFetch(new PagingParam(date, 'prev')));
+        }
+    }
+
+    onNextPage(event) {
+        event.preventDefault();
+        const { dispatch } = this.props;
+        let date = null;
+
+        if (this.props.messagesindex && this.props.messagesindex.length > 0) {
+            date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length -1]].createdAt;
+            dispatch(doMessageFetch(new PagingParam(date)));
+        }
+    }
+
     render() {
         return (
                 <div className="row">
                     <div className="col-10">
                         <div className="list-ctn">
                             <MessageList messages={this.props.messages} index={this.props.messagesindex} />
+                        </div>
+                        <div className="list-ctn">
+                            <Pager onPrevious={this.onPreviousPage} onNext={this.onNextPage} />
                         </div>
                     </div>
                     <div className="col-2">

@@ -6,10 +6,12 @@ import { categoryReducers } from './categoryReducers.js';
 import { navigationReducers } from './navigationReducers.js';
 import { userReducers } from './userReducers.js';
 import { fileReducers, fileUploadReducers } from './fileReducers.js';
+import { commentReducers } from './commentReducers.js';
 
 const RootReducers = combineReducers({
     navigation: navigationReducers,
     messages: messageReducers,
+    comments: commentReducers,
     categories: categoryReducers,
     user: userReducers,
     routing: routerReducer,
