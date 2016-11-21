@@ -1,14 +1,15 @@
+var config = require('./app/server/config/config.js');
 // ----------------------------------------------------------------------------
 // MongoDB config
 // ----------------------------------------------------------------------------
 var mongoose   = require('mongoose');
-var config = require('./app/server/config/config.js');
 
 mongoose.connect(config.mongodb.url); // connect to the database
 mongoose.Promise = global.Promise;
 
 // Create initial account
 config.mongodb.init();
+
 
 // ----------------------------------------------------------------------------
 // Express config
