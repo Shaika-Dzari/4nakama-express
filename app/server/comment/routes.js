@@ -4,8 +4,22 @@ var passport = require('passport');
 var Comment = require('./comment');
 var authUtils = require('../authutils');
 var PagingParser = require('../utils/PagingParser');
+var db = require('../database/db.js');
 
 router.get('/', (req, res, next) => {
+    var mid = req.query.messageid;
+    if (!mid) {
+        res.status(400).json({message: "Missing message's id"});
+        return;
+    }
+
+    db.any(Comment.ALL_BY_MESSAGEID, {messageid: mid}, (err, comments) => {
+        if (err) next(err);
+
+        res.json(comments);
+    });
+
+    /*
     var mid = req.query.messageid;
     var params = {};
     var isLoggedIn = authUtils.isLoggedIn(req);
@@ -33,9 +47,46 @@ router.get('/', (req, res, next) => {
 
                 res.json(comments);
             });
+    */
 });
 
 router.post('/', (req, res, next) => {
+
+    var user = req.user;
+    var commentBody = req.body;
+
+    var authorId = null;
+    var authorName = null;
+
+    if (user) {
+        authorId = user.id;
+        authorName = user.username;
+    } else if (commentBody.name) {
+        authorName = commentBody.name;
+    } else {
+        next(new Error("Missing name"));
+    }
+
+    if (!commentBody.messageId) {
+        next(new Error("Missing message's id"));
+    }
+
+    var comment = {
+        body: commentBody,
+        authorname: authorName,
+        authorid: authorId,
+        messageid: commentBody.messageId,
+        approved: user ? 1 : 0
+    };
+
+    db.one(Comment.CREATE, comment, (err, commentId) => {
+        if (err) next(err);
+
+        comment.id = commentId;
+        res.status(201).json(comment);
+    });
+
+    /*
     var user = req.user;
     var commentBody = req.body;
 
@@ -64,6 +115,7 @@ router.post('/', (req, res, next) => {
 
         res.json(savedComment);
     });
+    */
 });
 
 router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
@@ -77,6 +129,27 @@ router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
     let op = req.query.op;
     let cid = req.params.commentId;
 
+    if (!op || !cid) {
+        next(new Error("Missing operation or comment's Id"));
+    }
+
+    if (op == 'approve') {
+        db.none(Comment.APPROVED_BY_ID, {id: cid}, (err) => {
+            if (err) next(err);
+
+            res.sendStatus(204).end();
+        });
+    } else if (op == 'delete') {
+        db.none(Comment.DELETE_BY_ID, {id: cid}, (err) => {
+            if (err) next(err);
+
+            res.sendStatus(204).end();
+        });
+    } else {
+        res.status(400).json({message: 'Invalid operation'});
+    }
+
+    /*
     Comment.findById(cid, (err, comment) => {
         if (err) next(err);
 
@@ -99,49 +172,9 @@ router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
             });
         }
     });
-
+    */
 
 });
-
-
-// router.delete('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
-
-// });
-
-/*
-
-
-var CommentSchema = new Schema({
-    text: {type: String, required: true},
-    createdAt: { type: Date, default: Date.now, required: true},
-    authorId: {type: String},
-    authorName: {type: String, required: true},
-    messageId: {type: String, required: true},
-    approved: { type: Number, default: 0, required: true}
-});
-
-router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
-
-    var user = req.user;
-    var msgreq = req.body;
-
-    var m = new Message({
-        title: msgreq.title,
-        text: msgreq.text,
-        authorId: user._id,
-        authorName: user.username,
-        published: msgreq.published || 0,
-        prettyUrl: urlUtils.sanitizeUrl(msgreq.prettyUrl),
-        categories: msgreq.categories
-    });
-
-    m.save(function(serr, savedMsg) {
-        if (serr) next(serr);
-
-        res.json(savedMsg);
-    });
-});
- */
 
 
 module.exports = router;

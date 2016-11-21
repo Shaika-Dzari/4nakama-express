@@ -27,8 +27,6 @@ class MessagePage extends React.Component {
     }
 
     render() {
-        console.log(this.props.message);
-        console.log(this.props.comments);
 
         return (
             <div className="row">

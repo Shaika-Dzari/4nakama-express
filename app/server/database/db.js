@@ -1,5 +1,19 @@
 var config = require('./app/server/config/config.js');
 var pgp = require('pg-promise')();
-var database = pgp(config.postgresql.url);
+var db = pgp(config.postgresql.url);
 
-module.exports = database;
+function one(query, params, done) {
+    db.one(query, params)
+      .then(data => done(null, data))
+      .catch(error => done(error));
+}
+
+function any(query, done, params) {
+    db.any(query, params)
+      .then(data => done(null, data))
+      .catch(error => done(error));
+}
+
+
+exports.one = one;
+exports.any = any;

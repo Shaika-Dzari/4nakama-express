@@ -1,12 +1,12 @@
 var passport require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var Account = require('../model/account/account.js');
+var Account = require('../account/account.js');
 var db = require('../database/db.js');
 var HashUtils = require('../utils/HashUtils.js');
 
 passport.use(new LocalStrategy(function(username, passport, done) {
 
-    Account.getOneAccountByUsername(db, username, (err, user) => {
+    db.one(Account.ONE_BY_USERNAME, {username: username}, (err, user) => {
 
         if (err) { return done(err); }
 
@@ -20,6 +20,7 @@ passport.use(new LocalStrategy(function(username, passport, done) {
 
         return done(null, user);
     });
+
 }));
 
 passport.serializeUser((user, done) => {
