@@ -1,3 +1,4 @@
+/*
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -12,3 +13,10 @@ var FileSchema = new Schema({
 });
 
 module.exports = mongoose.model('File', FileSchema);
+*/
+
+const ALL_BY_PAGE = "select * from file where createat < ${createat} order by createat ${orderby} limit ${size}";
+
+module.exports = {
+    ALL_BY_PAGE: ALL_BY_PAGE
+};

@@ -1,10 +1,10 @@
-var passport require('passport');
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Account = require('../account/account.js');
 var db = require('../database/db.js');
 var HashUtils = require('../utils/HashUtils.js');
 
-passport.use(new LocalStrategy(function(username, passport, done) {
+passport.use(new LocalStrategy(function(username, password, done) {
 
     db.one(Account.ONE_BY_USERNAME, {username: username}, (err, user) => {
 
@@ -30,7 +30,7 @@ passport.serializeUser((user, done) => {
         role: user.role
     };
     done(null, partialUser);
-);
+});
 
 passport.deserializeUser((user, done) => {
     done(err, user);

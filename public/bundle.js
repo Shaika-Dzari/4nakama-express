@@ -70558,8 +70558,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log(this.props.message);
-	            console.log(this.props.comments);
 
 	            return _react2.default.createElement(
 	                'div',

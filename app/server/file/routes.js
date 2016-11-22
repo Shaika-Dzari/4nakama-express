@@ -7,6 +7,7 @@ var File = require('./file');
 var config = require('../config/config.js');
 var FileUtils = require('../utils/FileUtils.js');
 var PagingParser = require('../utils/PagingParser.js');
+var db = require('../database/db.js');
 
 const router = express.Router();
 
@@ -17,6 +18,22 @@ router.get('/', function(req, res, next) {
 
     var pageParam = new PagingParser(req);
 
+    // "select * from file where createat > ${createat} order by createat ${orderby} limit ${size}";
+    var params = {
+        createat: new Date(),
+        sort: 'desc'
+    };
+
+    params = pageParam.merge(params, true);
+
+    db.any(File.ALL_BY_PAGE, params, (err, files) => {
+        if (err) next(err);
+
+        res.json(files);
+    });
+
+    /*
+
     File.find(pageParam.params())
             .sort({createdAt: pageParam.sort()})
             .limit(pageParam.size())
@@ -26,7 +43,7 @@ router.get('/', function(req, res, next) {
 
                 res.json(files);
             });
-
+*/
 });
 
 router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {

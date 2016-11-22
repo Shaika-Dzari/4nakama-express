@@ -18,10 +18,10 @@ PagingParser.prototype.params = function() {
     return this._queryparams;
 }
 
-PagingParser.prototype.merge = function(routeParams) {
+PagingParser.prototype.merge = function(routeParams, override) {
 
     for(var k in this._queryparams) {
-        if (!routeParams[k])
+        if (override || !routeParams[k])
             routeParams[k] = this._queryparams[k];
     }
 

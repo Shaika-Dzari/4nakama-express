@@ -1,7 +1,10 @@
 var config = require('./app/server/config/config.js');
+var db = require('./app/server/database/db.js');
+
 // ----------------------------------------------------------------------------
 // MongoDB config
 // ----------------------------------------------------------------------------
+/*
 var mongoose   = require('mongoose');
 
 mongoose.connect(config.mongodb.url); // connect to the database
@@ -9,7 +12,7 @@ mongoose.Promise = global.Promise;
 
 // Create initial account
 config.mongodb.init();
-
+*/
 
 // ----------------------------------------------------------------------------
 // Express config
@@ -20,9 +23,12 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+//var LocalStrategy = require('passport-local').Strategy;
 var busboy = require('connect-busboy');
 var fs = require('fs');
+
+// Passport config
+require('./app/server/auth/authentication.js');
 
 var publicFolder = path.join(__dirname, 'public');
 
@@ -43,11 +49,12 @@ app.use(express.static(publicFolder));
 
 
 // passport config
+/*
 var Account = require('./app/server/account/account.js');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-
+*/
 
 // ----------------------------------------------------------------------------
 // Express Routes
@@ -92,7 +99,8 @@ var mkdir = (path) => {
 mkdir(privateFileFolderPath + '/' + privateFileFolderName);
 mkdir(publicFolder + '/' + publicFileFolderName);
 
-
+// Init db
+config.postgresql.init(db);
 
 // ----------------------------------------------------------------------------
 // Start server
