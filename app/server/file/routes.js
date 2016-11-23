@@ -18,14 +18,6 @@ router.get('/', function(req, res, next) {
 
     var pageParam = new PagingParser(req);
 
-    // "select * from file where createat > ${createat} order by createat ${orderby} limit ${size}";
-    var params = {
-        createat: new Date(),
-        sort: 'desc'
-    };
-
-    params = pageParam.merge(params, true);
-
     db.any(File.ALL_BY_PAGE, params, (err, files) => {
         if (err) next(err);
 

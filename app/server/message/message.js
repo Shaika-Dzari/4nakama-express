@@ -1,3 +1,4 @@
+/*
 var mongoose = require('mongoose');
 //var Tag = require('../tag/tag');
 //var Category = require('../category/category');
@@ -16,3 +17,7 @@ var MessageSchema = new Schema({
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
+*/
+
+
+const ALL_BY_PAGE = "select * from message where createat < ${createat} order by ${createat} ${direction^} limit ${size^}";

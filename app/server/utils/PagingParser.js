@@ -3,42 +3,50 @@ const DEFAULT_MAX_PAGE_SIZE = 30;
 
 function PagingParser(req, pageSize) {
     var defaultSize = pageSize || DEFAULT_PAGE_SIZE;
-    this._fromDate = req.query.fromdate;
-    this._dir = req.query.dir || 'next';
-    this._size = Math.min(req.query.size || defaultSize, DEFAULT_MAX_PAGE_SIZE);
-    this._sort = req.query.sort || '-1';
-    this._queryparams = {};
+    var size = req.query.size || DEFAULT_PAGE_SIZE;
+    var sort = req.query.sort || 'desc';
 
-    if (this._fromDate) {
-        this._queryparams.createdAt = this._dir == 'next' ? {$lt: new Date(this._fromDate)} : {$gt: new Date(this._fromDate)};
+    if (!(size > 0)) {
+        size = defaultSize
     }
+
+    if (sort != 'asc' && sort != 'desc') {
+        sort = 'desc';
+    }
+
+    this._params = {
+        createdat: req.query.fromdate ? new Date(req.query.fromdate) : new Date(),
+        direction: !req.query.dir || req.query.dir == 'next' ? 'next' : 'prev',
+        size: Math.min(size || defaultSize, DEFAULT_MAX_PAGE_SIZE),
+        sort: sort
+    };
 }
 
 PagingParser.prototype.params = function() {
-    return this._queryparams;
+    return this._params;
 }
 
 PagingParser.prototype.merge = function(routeParams, override) {
 
-    for(var k in this._queryparams) {
+    for(var k in this._params) {
         if (override || !routeParams[k])
-            routeParams[k] = this._queryparams[k];
+            routeParams[k] = this._params[k];
     }
 
     return routeParams;
 }
 
 PagingParser.prototype.size = function() {
-    return this._size;
+    return this._params.size;
 }
 
 
 PagingParser.prototype.sort = function() {
-    return this._sort;
+    return this._params.sort;
 }
 
 PagingParser.prototype.direction = function() {
-    return this.dir;
+    return this.params.direction;
 }
 
 module.exports = PagingParser;

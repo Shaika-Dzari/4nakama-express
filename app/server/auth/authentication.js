@@ -33,5 +33,5 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-    done(err, user);
+    done(null, user);
 });
