@@ -16,9 +16,9 @@ export function fileReducers(state = {items: {}, index: [], buffer: []}, action)
 
         case FILE_ADDED:
             let currentindex = [...state.index];
-            currentindex.splice(0, 0, action.file._id);
+            currentindex.splice(0, 0, action.file.id);
             let currentfiles = Object.assign({}, state.items);
-            currentfiles[action.file._id] = action.file;
+            currentfiles[action.file.id] = action.file;
             return Object.assign({}, state, {items: currentfiles, index: currentindex});
 
         case FILE_COPYTOSTORE:

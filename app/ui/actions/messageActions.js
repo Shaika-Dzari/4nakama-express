@@ -43,7 +43,7 @@ export function doMessageFetch(page) {
                 .then(msgs => {
                     dispatch(doStopLoading());
                     if (msgs) {
-                        msgs.forEach(m => m.texthtml = remarkable.render(m.text));
+                        msgs.forEach(m => m.texthtml = remarkable.render(m.body));
                     }
                     dispatch(doMessagesReceive(msgs, page));
                 });
@@ -91,7 +91,7 @@ export function doMessageEditorSave(messageId) {
                 dispatch(doStopLoading());
 
                 if (m) {
-                    m.texthtml = remarkable.render(m.text);
+                    m.texthtml = remarkable.render(m.body);
                 }
 
                 dispatch(doMessageUpdateReceive(m))
@@ -110,7 +110,7 @@ export function doMessageUpdateReceive(message) {
 export function doMessageEditAndNavigate(message) {
     return dispatch => {
         dispatch(doMessageEdit(message));
-        dispatch(push('/dashboard/messages/' + message._id));
+        dispatch(push('/dashboard/messages/' + message.id));
     }
 }
 

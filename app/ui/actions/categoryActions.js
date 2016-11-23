@@ -46,7 +46,7 @@ export function doCategoryError(error) {
 export function doCategorySave(category) {
     return dispatch => {
         dispatch(doStartLoading());
-        let cid = category._id;
+        let cid = category.id;
         let url = CATEGORY_URL + (cid === 'new' ? '' : '/' + cid);
         let protocol = cid === 'new' ? 'POST' : 'PUT';
 

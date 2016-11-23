@@ -23,7 +23,7 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
     if (!name)
         next(new Error('Missing name'));
 
-    db.one(SAVE, {name: name}, (err, data) => {
+    db.tx(Category.CREATE_ONE, {name: name}, (err, data) => {
         if (err) next(err);
 
         res.status(201).json({id: data.id, name: name});

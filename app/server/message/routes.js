@@ -75,7 +75,7 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
 
     var m = {
         title: msgreq.title,
-        body: msgreq.text,
+        body: msgreq.body,
         authorid: user._id,
         authorname: user.name,
         published: !!msgreq.published,

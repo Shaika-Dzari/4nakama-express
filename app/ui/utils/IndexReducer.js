@@ -5,7 +5,7 @@ export function indexes(response) {
 
     if (response && Array.isArray(response)) {
         response.forEach(i => {
-            let id = i._id;
+            let id = i.id;
             list[id] = i;
             idx.push(id);
         });

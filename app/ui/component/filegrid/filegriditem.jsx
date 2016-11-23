@@ -5,7 +5,7 @@ const FileGridItem = ({file, onRemove, onCopyToStore}) => {
     let inner = null;
 
     if (file.contentType.indexOf('image/') != -1) {
-        inner = <img className="grid-item-file-img" src={file.path} alt={file.name} />;
+        inner = <img className="grid-item-file-img" src={file.filepath} alt={file.name} />;
     } else {
         inner = <div className="grid-item-file-other">{file.contentType}</div>;
     }
@@ -20,9 +20,9 @@ const FileGridItem = ({file, onRemove, onCopyToStore}) => {
                 <span className="grid-item-info">{file.contentType}</span>
             </div>
             <div className="grid-item-menu">
-                <a href={file.path} target="_blank">Ouvrir</a>
-                <a href="#" onClick={onCopyToStore} data-4n-id={file._id}>Copier</a>
-                <a href="#" onClick={onRemove} data-4n-id={file._id}>Supprimer</a>
+                <a href={file.filepath} target="_blank">Ouvrir</a>
+                <a href="#" onClick={onCopyToStore} data-4n-id={file.id}>Copier</a>
+                <a href="#" onClick={onRemove} data-4n-id={file.id}>Supprimer</a>
             </div>
         </div>
     );

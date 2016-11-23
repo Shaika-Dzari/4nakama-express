@@ -3,19 +3,19 @@ import {Link} from 'react-router';
 
 import './message.scss';
 
-const Message = ({_id, title, text, texthtml, authorName, createdAt, categories, prettyUrl, withLink}) => {
+const Message = ({id, title, text, texthtml, authorName, createdAt, categories, prettyUrl, withLink}) => {
 
     let cats = null;
     let innerTitle = null;
 
     if (categories) {
         cats = categories.map((v, i) => {
-            return <span key={v._id} className="category">{v.name}</span> ;
+            return <span key={v.id} className="category">{v.name}</span> ;
         });
     }
 
     if (withLink) {
-        innerTitle = <Link to={'/blog/' + _id}>{title}</Link>;
+        innerTitle = <Link to={'/blog/' + id}>{title}</Link>;
     } else {
         innerTitle = title;
     }
@@ -43,7 +43,7 @@ const Message = ({_id, title, text, texthtml, authorName, createdAt, categories,
 }
 
 Message.propTypes = {
-    _id: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     authorName: PropTypes.string.isRequired,

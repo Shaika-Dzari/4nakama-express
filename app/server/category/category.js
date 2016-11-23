@@ -10,12 +10,12 @@ var CategorySchema = new Schema({
 module.exports = mongoose.model('Category', CategorySchema);
 */
 
-const ALL = 'select * from nakama.category';
+const ALL = 'select * from nakama.category order by name';
 const ONE_BY_ID = 'select * from category where id = ${id}';
-const SAVE = 'insert into category(name) values(${name}) returning id';
+const CREATE_ONE = 'insert into category(name) values(${name}) returning id';
 
 module.exports = {
     ALL: ALL,
     ONE_BY_ID: ONE_BY_ID,
-    SAVE: SAVE
+    CREATE_ONE: CREATE_ONE
 };

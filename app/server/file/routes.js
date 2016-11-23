@@ -60,7 +60,7 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
             var newFile = { name: filename,
                             filepath: url + '/' + finalFileName,
                             contenttype: mimetype,
-                            ownerid: user._id,
+                            ownerid: user.id,
                             ownername: user.username,
                             ispublic: isPublicFile};
 

@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
         messageId: id,
         title: msg.title,
         prettyUrl: msg.prettyUrl,
-        text: msg.text,
+        text: msg.body,
         published: msg.published,
         categories: msg.categories,
         error: state.messages.error

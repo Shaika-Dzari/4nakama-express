@@ -31,7 +31,7 @@ export function messageReducers(state = {items: {}, index: []}, action) {
 
             if (action.messages) {
                 action.messages.forEach(m => {
-                    let id = m._id;
+                    let id = m.id;
                     msgList[id] = m;
                     msgIdx.push(id);
                 });
@@ -43,7 +43,7 @@ export function messageReducers(state = {items: {}, index: []}, action) {
             return Object.assign({}, state, {selectedid: action.messageid});
 
         case MSG_EDIT:
-            return Object.assign({}, state, {items: Object.assign({}, state.items, {[action.message._id]: action.message})});
+            return Object.assign({}, state, {items: Object.assign({}, state.items, {[action.message.id]: action.message})});
 
         case MSG_UPDATE_SAVEERROR:
             return Object.assign({}, state, {error: action.error});
@@ -51,13 +51,13 @@ export function messageReducers(state = {items: {}, index: []}, action) {
         case MSG_UPDATE_RECEIVE:
             let index;
 
-            if (state.index.indexOf(action.message._id) != -1) {
+            if (state.index.indexOf(action.message.id) != -1) {
                 index = state.index;
             } else {
                 index = [...state.index];
-                index.push(action.message._id);
+                index.push(action.message.id);
             }
-            let msgUpdateList = Object.assign({}, state.items, {[action.message._id]: action.message});
+            let msgUpdateList = Object.assign({}, state.items, {[action.message.id]: action.message});
             return Object.assign({}, state, {items: msgUpdateList, index: index});
 
 
@@ -81,7 +81,7 @@ export function messageReducers(state = {items: {}, index: []}, action) {
             let cs = state.items[action.messageId].categories;
 
             if (cs && action.category) {
-                let newCs = cs.filter(c => c._id != action.category._id);
+                let newCs = cs.filter(c => c.id != action.category.id);
                 return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'categories': newCs})});
             }
 

@@ -10,7 +10,7 @@ export function categoryReducers(state = {items: {}, index: []}, action) {
 
             if (action.categories) {
                 action.categories.forEach(c => {
-                    let id = c._id;
+                    let id = c.id;
                     catList[id] = c;
                     catIdx.push(id);
                 });
@@ -21,13 +21,13 @@ export function categoryReducers(state = {items: {}, index: []}, action) {
         case CATEGORY_UPDATED:
             let index;
 
-            if (state.index.indexOf(action.category._id) != -1) {
+            if (state.index.indexOf(action.category.id) != -1) {
                 index = state.index;
             } else {
                 index = [...state.index];
-                index.push(action.category._id);
+                index.push(action.category.id);
             }
-            let catList = Object.assign({}, state.items, {[action.category._id]: action.category});
+            let catList = Object.assign({}, state.items, {[action.category.id]: action.category});
             return Object.assign({}, state, {items: catList, index: index});
 
         case CATEGORY_ERROR:

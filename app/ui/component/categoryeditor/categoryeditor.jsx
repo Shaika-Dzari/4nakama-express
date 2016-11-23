@@ -58,7 +58,7 @@ class CategoryEditor extends React.Component {
     isSelected(cId) {
         if (this.props.selectedItems) {
             for (let c in this.props.selectedItems) {
-                if (this.props.selectedItems[c]._id == cId) {
+                if (this.props.selectedItems[c].id == cId) {
                     return true;
                 }
             }
