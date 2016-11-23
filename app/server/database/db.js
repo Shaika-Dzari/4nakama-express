@@ -26,6 +26,14 @@ function none(query, params, done) {
       .catch(error => done(error));
 }
 
+function tx(query, params, done) {
+    db.tx(t => {
+        return t.one(query, params);
+    })
+    .then(data => done(null, data))
+    .catch(error => done(error));
+}
+
 module.exports = {
   one: one,
   any: any,

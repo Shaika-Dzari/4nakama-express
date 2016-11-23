@@ -79,10 +79,10 @@ router.post('/', (req, res, next) => {
         approved: user ? 1 : 0
     };
 
-    db.one(Comment.CREATE, comment, (err, commentId) => {
+    db.tx(Comment.CREATE, comment, (err, data) => {
         if (err) next(err);
 
-        comment.id = commentId;
+        comment.id = data.id;
         res.status(201).json(comment);
     });
 

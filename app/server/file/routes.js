@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
-    var isPublicFile = req.query.public || 1;
+    var isPublicFile = !req.query.public || req.query.public == 1 ? true : false;
     var fstream;
     var user = req.user;
     var publicFolder = req.publicFolder;
@@ -57,19 +57,27 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
 
         FileUtils.uploadTo(file, path, filename, (finalFileName, finalFilePath) => {
 
-            var newFile = new File({name: filename,
-                                    path: url + '/' + finalFileName,
-                                    contentType: mimetype,
-                                    ownerId: user._id,
-                                    ownerName: user.username,
-                                    isPublic: isPublicFile});
+            var newFile = { name: filename,
+                            filepath: url + '/' + finalFileName,
+                            contenttype: mimetype,
+                            ownerid: user._id,
+                            ownername: user.username,
+                            ispublic: isPublicFile};
 
             // Save virtual file.
+            db.tx(File.CREATE, newFile, (serr, data) => {
+                if (serr) next(serr);
+
+                res.json(data);
+            });
+
+            /*
             newFile.save(function(serr, savedFile) {
                 if (serr) next(serr);
 
                 res.json(savedFile);
             });
+            */
         });
 
 

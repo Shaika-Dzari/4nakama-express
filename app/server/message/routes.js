@@ -5,6 +5,7 @@ var Message = require('./message');
 var authUtils = require('../authutils');
 var htmlutils = require('../htmlutils');
 var PagingParser = require('../utils/PagingParser');
+var db = require('../database/db.js');
 
 var DEFAULT_PAGE_SIZE = 5;
 
@@ -14,13 +15,21 @@ router.get('/', function(req, res, next) {
 
     // Paging Params
     var pagingParam = new PagingParser(req, DEFAULT_PAGE_SIZE);
-    var params = {};
+    var query;
 
     if (!authUtils.isLoggedIn(req)) {
-        params.published = 1;
+        query = Message.ALL_PUBLISHED_BY_PAGE;
+    } else {
+        query = Message.ALL_BY_PAGE;
     }
 
-    params = pagingParam.merge(params);
+    db.any(query, pagingParam.params(), (err, msgs) => {
+        if (err) next(err);
+
+        res.json(mgs);
+    });
+
+    /*
 
     Message.find(params)
             .sort({createdAt: pagingParam.sort()})
@@ -30,7 +39,7 @@ router.get('/', function(req, res, next) {
                 if (err) next(err);
                 res.json(mgs);
             });
-
+            */
 });
 
 router.get('/:messageid', function(req, res, next) {
@@ -40,10 +49,20 @@ router.get('/:messageid', function(req, res, next) {
         params.published = 1;
     }
 
+    // TODO: published flag
+
+    db.one(Message.ONE_BY_ID, {id: id}, (err, msg) => {
+        if (err) next(err);
+
+        res.json(msg);
+    });
+
+    /*
     Message.findOne(params, '-authorId', function (err, msg) {
         if (err) next(err);
         res.json(msg);
     });
+    */
 });
 
 /**
@@ -54,21 +73,29 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
     var user = req.user;
     var msgreq = req.body;
 
-    var m = new Message({
+    var m = {
         title: msgreq.title,
-        text: msgreq.text,
-        authorId: user._id,
-        authorName: user.name,
-        published: msgreq.published || 0,
-        prettyUrl: htmlutils.sanitizeUrl(msgreq.prettyUrl),
-        categories: msgreq.categories
+        body: msgreq.text,
+        authorid: user._id,
+        authorname: user.name,
+        published: !!msgreq.published,
+        prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl)
+    };
+
+    db.tx(Message.CREATE_ONE, m, (err, data) => {
+        if (err) next(err);
+
+        m.id = data.id;
+        res.json(m);
     });
 
+    /*
     m.save(function(serr, savedMsg) {
         if (serr) next(serr);
 
         res.json(savedMsg);
     });
+    */
 });
 
 
@@ -79,6 +106,17 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
     var id = req.params.messageid;
     var requestMessage = req.body;
 
+    requestMessage.prettyurl = htmlutils.sanitizeUrl(requestMessage.prettyurl);
+    requestMessage.published = !!requestMessage.published;
+
+
+    db.tx(Message.UPDATE_ONE, requestMessage, (err, data) => {
+        if (serr) next(serr);
+
+        res.json(requestMessage);
+    })
+
+    /*
     Message.findOne({_id: id}, function (err, msg) {
         if (err) next(err);
 
@@ -94,6 +132,7 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
             res.json(savedMsg);
         });
     });
+     */
 });
 
 module.exports = router;
