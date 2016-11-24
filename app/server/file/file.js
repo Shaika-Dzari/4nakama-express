@@ -13,10 +13,18 @@ var FileSchema = new Schema({
 });
 
 module.exports = mongoose.model('File', FileSchema);
+
+name text not null,
+    filepath text not null,
+    contentype text not null default 'application/octet-stream',
+    ownerid integer not null,
+    ownername text not null,
+    ispublic boolean not null default TRUE,
+${name},${filepath},${contentype},${ownerid},${ownername},${ispublic}
 */
 
 const ALL_BY_PAGE = "select * from file where createat < ${createat} order by createat ${orderby} limit ${size}";
-const CREATE = "";
+const CREATE = "insert into file(name, filepath, contentype, ownerid, ownername, ispublic) values(${name}, ${filepath}, ${contentype}, ${ownerid}, ${ownername}, ${ispublic}) returning id";
 
 module.exports = {
     ALL_BY_PAGE: ALL_BY_PAGE,

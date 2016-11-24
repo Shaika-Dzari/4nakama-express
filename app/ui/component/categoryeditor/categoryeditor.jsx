@@ -35,7 +35,7 @@ class CategoryEditor extends React.Component {
         this.setState({showAddInput: false});
         this.setState({newcategory: ''});
 
-        let c = { _id: 'new', name: this.state.newcategory };
+        let c = { id: 'new', name: this.state.newcategory };
         const { dispatch } = this.props;
         dispatch(doCategorySave(c));
     }

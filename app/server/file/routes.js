@@ -65,7 +65,7 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
                             ispublic: isPublicFile};
 
             // Save virtual file.
-            db.tx(File.CREATE, newFile, (serr, data) => {
+            db.insert(File.CREATE, newFile, (serr, data) => {
                 if (serr) next(serr);
 
                 res.json(data);

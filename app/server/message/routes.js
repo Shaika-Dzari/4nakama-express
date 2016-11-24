@@ -24,9 +24,12 @@ router.get('/', function(req, res, next) {
     }
 
     db.any(query, pagingParam.params(), (err, msgs) => {
-        if (err) next(err);
+        if (err) {
+            console.log('error', err);
+            next(err);
+        }
 
-        res.json(mgs);
+        res.json(msgs);
     });
 
     /*
@@ -44,7 +47,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/:messageid', function(req, res, next) {
     var id = req.params.messageid;
-    var params = {_id: id};
+    var params = {id: id};
     if (!authUtils.isLoggedIn(req)) {
         params.published = 1;
     }
@@ -76,16 +79,17 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
     var m = {
         title: msgreq.title,
         body: msgreq.body,
-        authorid: user._id,
-        authorname: user.name,
+        authorid: user.id,
+        authorname: user.username,
         published: !!msgreq.published,
         prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl)
     };
 
-    db.tx(Message.CREATE_ONE, m, (err, data) => {
+    db.insert(Message.CREATE_ONE, m, (err, data) => {
         if (err) next(err);
 
         m.id = data.id;
+        console.log('Message saved', m);
         res.json(m);
     });
 
@@ -108,9 +112,9 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
 
     requestMessage.prettyurl = htmlutils.sanitizeUrl(requestMessage.prettyurl);
     requestMessage.published = !!requestMessage.published;
+    requestMessage.id = id;
 
-
-    db.tx(Message.UPDATE_ONE, requestMessage, (err, data) => {
+    db.update(Message.UPDATE_ONE, requestMessage, (serr) => {
         if (serr) next(serr);
 
         res.json(requestMessage);

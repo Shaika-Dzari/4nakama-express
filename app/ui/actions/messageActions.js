@@ -43,7 +43,7 @@ export function doMessageFetch(page) {
                 .then(msgs => {
                     dispatch(doStopLoading());
                     if (msgs) {
-                        msgs.forEach(m => m.texthtml = remarkable.render(m.body));
+                        msgs.forEach(m => m.bodyhtml = remarkable.render(m.body));
                     }
                     dispatch(doMessagesReceive(msgs, page));
                 });
@@ -91,7 +91,7 @@ export function doMessageEditorSave(messageId) {
                 dispatch(doStopLoading());
 
                 if (m) {
-                    m.texthtml = remarkable.render(m.body);
+                    m.bodyhtml = remarkable.render(m.body);
                 }
 
                 dispatch(doMessageUpdateReceive(m))
@@ -119,7 +119,7 @@ export function doMessageEditAndNavigate(message) {
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
 export const doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
-export const doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'text');
+export const doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
 export const doMessageEditorTitleChange = makeActionCreator(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
 export const doMessageEditorTitleBlur = makeActionCreator(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');
 export const doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyUrl');

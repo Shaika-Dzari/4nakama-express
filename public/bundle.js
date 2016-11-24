@@ -38400,14 +38400,14 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Message = function Message(_ref) {
-	    var _id = _ref._id;
+	    var id = _ref.id;
 	    var title = _ref.title;
-	    var text = _ref.text;
-	    var texthtml = _ref.texthtml;
-	    var authorName = _ref.authorName;
-	    var createdAt = _ref.createdAt;
+	    var body = _ref.body;
+	    var bodyhtml = _ref.bodyhtml;
+	    var authorname = _ref.authorname;
+	    var createdat = _ref.createdat;
 	    var categories = _ref.categories;
-	    var prettyUrl = _ref.prettyUrl;
+	    var prettyurl = _ref.prettyurl;
 	    var withLink = _ref.withLink;
 
 
@@ -38418,7 +38418,7 @@
 	        cats = categories.map(function (v, i) {
 	            return _react2.default.createElement(
 	                'span',
-	                { key: v._id, className: 'category' },
+	                { key: v.id, className: 'category' },
 	                v.name
 	            );
 	        });
@@ -38427,7 +38427,7 @@
 	    if (withLink) {
 	        innerTitle = _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: '/blog/' + _id },
+	            { to: '/blog/' + id },
 	            title
 	        );
 	    } else {
@@ -38454,9 +38454,9 @@
 	                    _react2.default.createElement(
 	                        'p',
 	                        null,
-	                        authorName,
+	                        authorname,
 	                        ' - ',
-	                        createdAt
+	                        createdat
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -38469,19 +38469,19 @@
 	        _react2.default.createElement(
 	            'div',
 	            { className: 'blog-message-body' },
-	            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: texthtml } })
+	            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: bodyhtml } })
 	        )
 	    );
 	};
 
 	Message.propTypes = {
-	    _id: _react.PropTypes.string.isRequired,
+	    id: _react.PropTypes.number.isRequired,
 	    title: _react.PropTypes.string.isRequired,
-	    text: _react.PropTypes.string.isRequired,
-	    authorName: _react.PropTypes.string.isRequired,
-	    createdAt: _react.PropTypes.string.isRequired,
+	    body: _react.PropTypes.string.isRequired,
+	    authorname: _react.PropTypes.string.isRequired,
+	    createdat: _react.PropTypes.string.isRequired,
 	    categories: _react.PropTypes.array,
-	    prettyUrl: _react.PropTypes.string.isRequired,
+	    prettyurl: _react.PropTypes.string.isRequired,
 	    withLink: _react.PropTypes.bool
 	};
 
@@ -49063,7 +49063,7 @@
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            if (msgs) {
 	                msgs.forEach(function (m) {
-	                    return m.texthtml = remarkable.render(m.text);
+	                    return m.bodyhtml = remarkable.render(m.body);
 	                });
 	            }
 	            dispatch(doMessagesReceive(msgs, page));
@@ -49111,7 +49111,7 @@
 	            dispatch((0, _navigationActions.doStopLoading)());
 
 	            if (m) {
-	                m.texthtml = remarkable.render(m.text);
+	                m.bodyhtml = remarkable.render(m.body);
 	            }
 
 	            dispatch(doMessageUpdateReceive(m));
@@ -49131,7 +49131,7 @@
 	function doMessageEditAndNavigate(message) {
 	    return function (dispatch) {
 	        dispatch(doMessageEdit(message));
-	        dispatch((0, _reactRouterRedux.push)('/dashboard/messages/' + message._id));
+	        dispatch((0, _reactRouterRedux.push)('/dashboard/messages/' + message.id));
 	    };
 	}
 
@@ -49140,7 +49140,7 @@
 	var doMessageEdit = exports.doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 	var doMessageOpen = exports.doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
 	var doMessagesReceive = exports.doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
-	var doMessageEditorTextChange = exports.doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'text');
+	var doMessageEditorTextChange = exports.doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
 	var doMessageEditorTitleChange = exports.doMessageEditorTitleChange = makeActionCreator(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
 	var doMessageEditorTitleBlur = exports.doMessageEditorTitleBlur = makeActionCreator(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');
 	var doMessageEditorPrettyUrlChange = exports.doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyUrl');
@@ -49248,7 +49248,7 @@
 	function doCategorySave(category) {
 	    return function (dispatch) {
 	        dispatch((0, _navigationActions.doStartLoading)());
-	        var cid = category._id;
+	        var cid = category.id;
 	        var url = CATEGORY_URL + (cid === 'new' ? '' : '/' + cid);
 	        var protocol = cid === 'new' ? 'POST' : 'PUT';
 
@@ -49545,7 +49545,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var MESSAGE_TABLE_DEF = {
-	    id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
+	    id: 'id', name: 'title', rowdate: 'createdAt', link: 'link'
 	};
 
 	var mapStateToProps = function mapStateToProps(state) {
@@ -49581,7 +49581,7 @@
 	        value: function onNewMessage() {
 	            var dispatch = this.props.dispatch;
 
-	            dispatch((0, _messageActions.doMessageEditAndNavigate)({ _id: 'new' }));
+	            dispatch((0, _messageActions.doMessageEditAndNavigate)({ id: 'new' }));
 	            //this.props.router.push('/dashboard/messages/new');
 	        }
 	    }, {
@@ -49810,7 +49810,7 @@
 	        messageId: id,
 	        title: msg.title,
 	        prettyUrl: msg.prettyUrl,
-	        text: msg.text,
+	        text: msg.body,
 	        published: msg.published,
 	        categories: msg.categories,
 	        error: state.messages.error
@@ -70369,7 +70369,7 @@
 	            this.setState({ showAddInput: false });
 	            this.setState({ newcategory: '' });
 
-	            var c = { _id: 'new', name: this.state.newcategory };
+	            var c = { id: 'new', name: this.state.newcategory };
 	            var dispatch = this.props.dispatch;
 
 	            dispatch((0, _categoryActions.doCategorySave)(c));
@@ -70396,7 +70396,7 @@
 	        value: function isSelected(cId) {
 	            if (this.props.selectedItems) {
 	                for (var c in this.props.selectedItems) {
-	                    if (this.props.selectedItems[c]._id == cId) {
+	                    if (this.props.selectedItems[c].id == cId) {
 	                        return true;
 	                    }
 	                }
@@ -71483,7 +71483,7 @@
 	    if (items && index) {
 	        fs = index.map(function (i) {
 	            var f = items[i];
-	            return _react2.default.createElement(_filegriditem2.default, { key: 'fgi-' + f._id, file: f, onRemove: onRemove, onCopyToStore: onCopyToStore });
+	            return _react2.default.createElement(_filegriditem2.default, { key: 'fgi-' + f.id, file: f, onRemove: onRemove, onCopyToStore: onCopyToStore });
 	        });
 	    }
 
@@ -71526,7 +71526,7 @@
 	    var inner = null;
 
 	    if (file.contentType.indexOf('image/') != -1) {
-	        inner = _react2.default.createElement('img', { className: 'grid-item-file-img', src: file.path, alt: file.name });
+	        inner = _react2.default.createElement('img', { className: 'grid-item-file-img', src: file.filepath, alt: file.name });
 	    } else {
 	        inner = _react2.default.createElement(
 	            'div',
@@ -71562,17 +71562,17 @@
 	            { className: 'grid-item-menu' },
 	            _react2.default.createElement(
 	                'a',
-	                { href: file.path, target: '_blank' },
+	                { href: file.filepath, target: '_blank' },
 	                'Ouvrir'
 	            ),
 	            _react2.default.createElement(
 	                'a',
-	                { href: '#', onClick: onCopyToStore, 'data-4n-id': file._id },
+	                { href: '#', onClick: onCopyToStore, 'data-4n-id': file.id },
 	                'Copier'
 	            ),
 	            _react2.default.createElement(
 	                'a',
-	                { href: '#', onClick: onRemove, 'data-4n-id': file._id },
+	                { href: '#', onClick: onRemove, 'data-4n-id': file.id },
 	                'Supprimer'
 	            )
 	        )
@@ -71732,7 +71732,7 @@
 	    var p = title.replace(/[!$?*&#\\]/g, '');
 	    p = p.replace(/[^a-z0-9_\-]/gi, '_');
 
-	    return p;
+	    return p.toLowerCase();
 	}
 
 	function messageReducers() {
@@ -71749,7 +71749,7 @@
 
 	                if (action.messages) {
 	                    action.messages.forEach(function (m) {
-	                        var id = m._id;
+	                        var id = m.id;
 	                        msgList[id] = m;
 	                        msgIdx.push(id);
 	                    });
@@ -71766,7 +71766,7 @@
 
 	            case _messageActions.MSG_EDIT:
 	                return {
-	                    v: Object.assign({}, state, { items: Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message)) })
+	                    v: Object.assign({}, state, { items: Object.assign({}, state.items, _defineProperty({}, action.message.id, action.message)) })
 	                };
 
 	            case _messageActions.MSG_UPDATE_SAVEERROR:
@@ -71777,13 +71777,13 @@
 	            case _messageActions.MSG_UPDATE_RECEIVE:
 	                var index = void 0;
 
-	                if (state.index.indexOf(action.message._id) != -1) {
+	                if (state.index.indexOf(action.message.id) != -1) {
 	                    index = state.index;
 	                } else {
 	                    index = [].concat(_toConsumableArray(state.index));
-	                    index.push(action.message._id);
+	                    index.push(action.message.id);
 	                }
-	                var msgUpdateList = Object.assign({}, state.items, _defineProperty({}, action.message._id, action.message));
+	                var msgUpdateList = Object.assign({}, state.items, _defineProperty({}, action.message.id, action.message));
 	                return {
 	                    v: Object.assign({}, state, { items: msgUpdateList, index: index })
 	                };
@@ -71815,7 +71815,7 @@
 
 	                if (cs && action.category) {
 	                    var newCs = cs.filter(function (c) {
-	                        return c._id != action.category._id;
+	                        return c.id != action.category.id;
 	                    });
 	                    return {
 	                        v: Object.assign({}, state, { items: updateMessage(state.items, action.messageId, { 'categories': newCs }) })
@@ -71871,7 +71871,7 @@
 
 	                if (action.categories) {
 	                    action.categories.forEach(function (c) {
-	                        var id = c._id;
+	                        var id = c.id;
 	                        catList[id] = c;
 	                        catIdx.push(id);
 	                    });
@@ -71884,13 +71884,13 @@
 	            case _categoryActions.CATEGORY_UPDATED:
 	                var index = void 0;
 
-	                if (state.index.indexOf(action.category._id) != -1) {
+	                if (state.index.indexOf(action.category.id) != -1) {
 	                    index = state.index;
 	                } else {
 	                    index = [].concat(_toConsumableArray(state.index));
-	                    index.push(action.category._id);
+	                    index.push(action.category.id);
 	                }
-	                var catList = Object.assign({}, state.items, _defineProperty({}, action.category._id, action.category));
+	                var catList = Object.assign({}, state.items, _defineProperty({}, action.category.id, action.category));
 	                return {
 	                    v: Object.assign({}, state, { items: catList, index: index })
 	                };
@@ -72013,9 +72013,9 @@
 
 	        case _fileActions.FILE_ADDED:
 	            var currentindex = [].concat(_toConsumableArray(state.index));
-	            currentindex.splice(0, 0, action.file._id);
+	            currentindex.splice(0, 0, action.file.id);
 	            var currentfiles = Object.assign({}, state.items);
-	            currentfiles[action.file._id] = action.file;
+	            currentfiles[action.file.id] = action.file;
 	            return Object.assign({}, state, { items: currentfiles, index: currentindex });
 
 	        case _fileActions.FILE_COPYTOSTORE:
@@ -72101,7 +72101,7 @@
 
 	    if (response && Array.isArray(response)) {
 	        response.forEach(function (i) {
-	            var id = i._id;
+	            var id = i.id;
 	            list[id] = i;
 	            idx.push(id);
 	        });

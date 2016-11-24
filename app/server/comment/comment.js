@@ -15,7 +15,7 @@ module.exports = mongoose.model('Comment', CommentSchema);
 */
 
 const ALL_BY_PAGE = 'select * from comment order by createdat desc';
-const ALL_BY_MESSAGEID = 'select * from comment where messageid = ${messageid} and approved = 1 order by createdat desc';
+const ALL_BY_MESSAGEID = 'select * from comment where messageid = ${messageid} and approved = true order by createdat desc';
 const ONE_BY_ID = 'select * from comment where id = ${id}';
 const CREATE_ONE = 'insert into comment(body, authorname, authorid, messageid, approved) values(${body}, ${authorname}, ${authorid}, ${messageid}, ${approved}) returning id';
 const APPROVED_BY_ID = 'update comment set approved = TRUE where id = ${id}';

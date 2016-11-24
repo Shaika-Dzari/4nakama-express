@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 
 import './message.scss';
 
-const Message = ({id, title, text, texthtml, authorName, createdAt, categories, prettyUrl, withLink}) => {
+const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, prettyurl, withLink}) => {
 
     let cats = null;
     let innerTitle = null;
@@ -26,7 +26,7 @@ const Message = ({id, title, text, texthtml, authorName, createdAt, categories, 
                 <h1>{innerTitle}</h1>
                 <div className="row">
                     <div className="col-6">
-                        <p>{authorName} - {createdAt}</p>
+                        <p>{authorname} - {createdat}</p>
                     </div>
                     <div className="col-6 right">
                         {cats}
@@ -35,7 +35,7 @@ const Message = ({id, title, text, texthtml, authorName, createdAt, categories, 
             </header>
 
             <div className="blog-message-body">
-                <div dangerouslySetInnerHTML={{__html: texthtml}}></div>
+                <div dangerouslySetInnerHTML={{__html: bodyhtml}}></div>
             </div>
 
         </article>
@@ -43,13 +43,13 @@ const Message = ({id, title, text, texthtml, authorName, createdAt, categories, 
 }
 
 Message.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    authorName: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    authorname: PropTypes.string.isRequired,
+    createdat: PropTypes.string.isRequired,
     categories: PropTypes.array,
-    prettyUrl: PropTypes.string.isRequired,
+    prettyurl: PropTypes.string.isRequired,
     withLink: PropTypes.bool
 };
 

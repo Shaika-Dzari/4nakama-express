@@ -79,7 +79,7 @@ router.post('/', (req, res, next) => {
         approved: user ? 1 : 0
     };
 
-    db.tx(Comment.CREATE_ONE, comment, (err, data) => {
+    db.insert(Comment.CREATE_ONE, comment, (err, data) => {
         if (err) next(err);
 
         comment.id = data.id;

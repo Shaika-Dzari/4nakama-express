@@ -15,6 +15,7 @@ function one(query, params, done) {
 }
 
 function any(query, params, done) {
+
     db.any(query, params)
       .then(data => done(null, data))
       .catch(error => done(error));
@@ -26,9 +27,17 @@ function none(query, params, done) {
       .catch(error => done(error));
 }
 
-function tx(query, params, done) {
+function insert(query, params, done) {
     db.tx(t => {
         return t.one(query, params);
+    })
+    .then(data => done(null, data))
+    .catch(error => done(error));
+}
+
+function update(query, params, done) {
+    db.tx(t => {
+        return t.none(query, params);
     })
     .then(data => done(null, data))
     .catch(error => done(error));
@@ -37,5 +46,7 @@ function tx(query, params, done) {
 module.exports = {
   one: one,
   any: any,
-  none: none
+  none: none,
+  insert: insert,
+  update: update
 };

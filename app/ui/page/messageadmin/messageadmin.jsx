@@ -5,7 +5,7 @@ import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate} from '.
 import Table from '../../component/table/table.jsx';
 
 const MESSAGE_TABLE_DEF = {
-    id: '_id', name: 'title', rowdate: 'createdAt', link: 'link'
+    id: 'id', name: 'title', rowdate: 'createdAt', link: 'link'
 };
 
 
@@ -32,7 +32,7 @@ class MessageAdmin extends React.Component {
 
     onNewMessage() {
         const { dispatch } = this.props;
-        dispatch(doMessageEditAndNavigate({_id: 'new'}));
+        dispatch(doMessageEditAndNavigate({id: 'new'}));
         //this.props.router.push('/dashboard/messages/new');
     }
 

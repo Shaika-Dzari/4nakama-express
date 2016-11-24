@@ -18,7 +18,7 @@ function computePrettyUrl(title) {
     let p = title.replace(/[!$?*&#\\]/g, '');
     p = p.replace(/[^a-z0-9_\-]/gi, '_');
 
-    return p;
+    return p.toLowerCase();
 }
 
 export function messageReducers(state = {items: {}, index: []}, action) {
