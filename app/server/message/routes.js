@@ -82,7 +82,8 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         authorid: user.id,
         authorname: user.username,
         published: !!msgreq.published,
-        prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl)
+        prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl),
+        categories: msgreq.categories
     };
 
     db.insert(Message.CREATE_ONE, m, (err, data) => {
@@ -113,6 +114,10 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
     requestMessage.prettyurl = htmlutils.sanitizeUrl(requestMessage.prettyurl);
     requestMessage.published = !!requestMessage.published;
     requestMessage.id = id;
+
+    console.log(requestMessage);
+
+    //let cs = requestMessage;
 
     db.update(Message.UPDATE_ONE, requestMessage, (serr) => {
         if (serr) next(serr);
