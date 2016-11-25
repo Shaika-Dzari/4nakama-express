@@ -5,6 +5,7 @@ var Comment = require('./comment');
 var authUtils = require('../authutils');
 var PagingParser = require('../utils/PagingParser');
 var db = require('../database/db.js');
+var config = require('../config/config.js');
 
 router.get('/', (req, res, next) => {
     var mid = req.query.messageid;
@@ -57,6 +58,14 @@ router.post('/', (req, res, next) => {
 
     var authorId = null;
     var authorName = null;
+
+    // Check offensive words
+    // Bad, use another function.
+    let idx = config.comment.rejected.indexOf(commentBody);
+    if (idx != -1) {
+        res.status(400).json({'message': 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'});
+        return;
+    }
 
     if (user) {
         authorId = user.id;

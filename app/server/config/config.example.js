@@ -9,6 +9,12 @@ var config = {
         url: 'mongodb://username:password@host:port/database?options...',
         init: function() { console.log('Initialize mongodb'); }
     },
+    // Postgresql
+    postgresql: {
+        url: 'postgres://username:password@host:port/database?options...',
+        schema: 'this_blog_schema',
+        init: function(db) { console.log('Initialize PostgreSQL'); }
+    },
     // Comment filter
     comment: {
         rejected: ['offensive', 'words']

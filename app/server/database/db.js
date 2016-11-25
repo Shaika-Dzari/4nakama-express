@@ -2,7 +2,8 @@ var config = require('../config/config.js');
 var pgp = require('pg-promise')({
   connect: function (client, dc, isFresh) {
         if (isFresh) {
-            client.query('SET search_path = nakama');
+            console.log('setting search_path to ' + config.postgresql.schema);
+            client.query('SET search_path = ' + config.postgresql.schema);
         }
     }
 });

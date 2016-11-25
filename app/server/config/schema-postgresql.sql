@@ -26,6 +26,7 @@ create table nakama.message (
     prettyurl text not null,
     createdat timestamp with time zone not null default now(),
     updatedat timestamp with time zone,
+    categories jsonb,
     constraint fk_message_accountid foreign key (authorid) references account (id)
 );
 
