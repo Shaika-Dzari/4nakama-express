@@ -8,10 +8,12 @@ export function getUrlParamsString(pagingParam, additionalParams) {
             body.push('fromdate=' + encodeURIComponent(pagingParam.getFromDate()));
 
         if (pagingParam.getSize())
-            body.push('size=' + encodeURIComponent(pagingParam.getgetSize()));
+            body.push('size=' + encodeURIComponent(pagingParam.getSize()));
 
         if (pagingParam.getDirection())
             body.push('dir=' + encodeURIComponent(pagingParam.getDirection()));
+
+        needtoJoin = true;
     }
 
     if (additionalParams) {
@@ -22,6 +24,8 @@ export function getUrlParamsString(pagingParam, additionalParams) {
     if (needtoJoin) {
         urlParams = '?' + body.join('&');
     }
+
+    //console.log(body);
 
     return urlParams;
 }

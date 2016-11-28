@@ -2,7 +2,7 @@ import { COMMENT_RECEIVE, COMMENT_SAVED, COMMENT_SAVEDERROR } from '../actions/c
 import {indexes} from '../utils/IndexReducer.js';
 
 const sortComment = (c0, c1) => {
-    return c0.createdAt.getTime() - c1.createdAt.getTime();
+    return c0.createdat.getTime() - c1.createdat.getTime();
 };
 
 export function commentReducers(state = {items: {}, index: []}, action) {

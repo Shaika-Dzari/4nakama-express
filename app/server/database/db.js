@@ -16,6 +16,7 @@ function one(query, params, done) {
 }
 
 function any(query, params, done) {
+    // console.log(pgp.as.format(query, params));
 
     db.any(query, params)
       .then(data => done(null, data))

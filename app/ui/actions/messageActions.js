@@ -38,6 +38,8 @@ export function doMessageFetch(page) {
         dispatch(doStartLoading());
         let urlParam = getUrlParamsString(page);
 
+        // console.log(MSG_URL + urlParam, page);
+
         return fetch(MSG_URL + urlParam, {credentials: 'include'})
                 .then(r => r.json())
                 .then(msgs => {

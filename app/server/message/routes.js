@@ -7,7 +7,7 @@ var htmlutils = require('../htmlutils');
 var PagingParser = require('../utils/PagingParser');
 var db = require('../database/db.js');
 
-var DEFAULT_PAGE_SIZE = 5;
+var DEFAULT_PAGE_SIZE = 3;
 
 // GET messages (blog post)
 
@@ -18,16 +18,18 @@ router.get('/', function(req, res, next) {
     var query;
 
     if (!authUtils.isLoggedIn(req)) {
-        query = Message.ALL_PUBLISHED_BY_PAGE;
+        if (pagingParam.direction() == 'prev') {
+            query = Message.ALL_PUBLISHED_BY_PREVPAGE;
+        } else {
+            query = Message.ALL_PUBLISHED_BY_NEXTPAGE;
+        }
+
     } else {
         query = Message.ALL_BY_PAGE;
     }
 
     db.any(query, pagingParam.params(), (err, msgs) => {
-        if (err) {
-            console.log('error', err);
-            next(err);
-        }
+        if (err) next(err);
 
         res.json(msgs);
     });

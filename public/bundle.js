@@ -38177,8 +38177,8 @@
 	            var date = null;
 
 	            if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-	                date = this.props.messages[this.props.messagesindex[0]].createdAt;
-	                dispatch((0, _messageActions.doMessageFetch)(new _PagingParam2.default(date, 'prev')));
+	                date = this.props.messages[this.props.messagesindex[0]].createdat;
+	                dispatch((0, _messageActions.doMessageFetch)(new _PagingParam2.default(date, 'next')));
 	            }
 	        }
 	    }, {
@@ -38190,7 +38190,7 @@
 	            var date = null;
 
 	            if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-	                date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length - 1]].createdAt;
+	                date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length - 1]].createdat;
 	                dispatch((0, _messageActions.doMessageFetch)(new _PagingParam2.default(date)));
 	            }
 	        }
@@ -38347,15 +38347,11 @@
 
 	    // Change that!
 	    var fromDate = new Date();
+	    // onPrevious={this.onPreviousPage} onNext={this.onNextPage}
 	    return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(
-	            'div',
-	            null,
-	            msgs
-	        ),
-	        _react2.default.createElement(_pager2.default, { fromdate: fromDate })
+	        msgs
 	    );
 	};
 
@@ -38372,7 +38368,7 @@
 	        title: PropTypes.string.isRequired,
 	        text: PropTypes.string.isRequired,
 	        authorName: PropTypes.string.isRequired,
-	        createdAt: PropTypes.string.isRequired,
+	        createdat: PropTypes.string.isRequired,
 	        categories: PropTypes.array
 	    }).isRequired).isRequired,
 	 */
@@ -49057,6 +49053,8 @@
 	        dispatch((0, _navigationActions.doStartLoading)());
 	        var urlParam = (0, _UrlParamUtils.getUrlParamsString)(page);
 
+	        // console.log(MSG_URL + urlParam, page);
+
 	        return fetch(MSG_URL + urlParam, { credentials: 'include' }).then(function (r) {
 	            return r.json();
 	        }).then(function (msgs) {
@@ -49167,9 +49165,11 @@
 
 	        if (pagingParam.getFromDate()) body.push('fromdate=' + encodeURIComponent(pagingParam.getFromDate()));
 
-	        if (pagingParam.getSize()) body.push('size=' + encodeURIComponent(pagingParam.getgetSize()));
+	        if (pagingParam.getSize()) body.push('size=' + encodeURIComponent(pagingParam.getSize()));
 
 	        if (pagingParam.getDirection()) body.push('dir=' + encodeURIComponent(pagingParam.getDirection()));
+
+	        needtoJoin = true;
 	    }
 
 	    if (additionalParams) {
@@ -49180,6 +49180,8 @@
 	    if (needtoJoin) {
 	        urlParams = '?' + body.join('&');
 	    }
+
+	    //console.log(body);
 
 	    return urlParams;
 	}
@@ -49536,6 +49538,10 @@
 
 	var _table2 = _interopRequireDefault(_table);
 
+	var _PagingParam = __webpack_require__(579);
+
+	var _PagingParam2 = _interopRequireDefault(_PagingParam);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49545,7 +49551,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var MESSAGE_TABLE_DEF = {
-	    id: 'id', name: 'title', rowdate: 'createdAt', link: 'link'
+	    id: 'id', name: 'title', rowdate: 'createdat', link: 'link'
 	};
 
 	var mapStateToProps = function mapStateToProps(state) {
@@ -49574,7 +49580,7 @@
 	        value: function componentDidMount() {
 	            var dispatch = this.props.dispatch;
 
-	            dispatch((0, _messageActions.doMessageFetch)());
+	            dispatch((0, _messageActions.doMessageFetch)(new _PagingParam2.default(null, null, 10)));
 	        }
 	    }, {
 	        key: 'onNewMessage',
@@ -70828,7 +70834,7 @@
 	            var date = null;
 
 	            if (this.props.index && this.props.index.length > 0) {
-	                date = this.props.items[this.props.index[0]].createdAt;
+	                date = this.props.items[this.props.index[0]].createdat;
 	                dispatch((0, _fileActions.doFileFetch)({ fromdate: date, dir: 'prev' }));
 	            }
 	        }
@@ -70841,7 +70847,7 @@
 	            var date = null;
 
 	            if (this.props.index && this.props.index.length > 0) {
-	                date = this.props.items[this.props.index[this.props.index.length - 1]].createdAt;
+	                date = this.props.items[this.props.index[this.props.index.length - 1]].createdat;
 	                dispatch((0, _fileActions.doFileFetch)({ fromdate: date }));
 	            }
 	        }
@@ -72129,7 +72135,7 @@
 	var _IndexReducer = __webpack_require__(683);
 
 	var sortComment = function sortComment(c0, c1) {
-	    return c0.createdAt.getTime() - c1.createdAt.getTime();
+	    return c0.createdat.getTime() - c1.createdat.getTime();
 	};
 
 	function commentReducers() {

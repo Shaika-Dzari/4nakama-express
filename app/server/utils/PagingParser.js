@@ -3,7 +3,7 @@ const DEFAULT_MAX_PAGE_SIZE = 30;
 
 function PagingParser(req, pageSize) {
     var defaultSize = pageSize || DEFAULT_PAGE_SIZE;
-    var size = req.query.size || DEFAULT_PAGE_SIZE;
+    var size = req.query.size || defaultSize;
     var sort = req.query.sort || 'desc';
 
     if (!(size > 0)) {
@@ -16,7 +16,7 @@ function PagingParser(req, pageSize) {
 
     this._params = {
         createdat: req.query.fromdate ? new Date(req.query.fromdate) : new Date(),
-        direction: !req.query.dir || req.query.dir == 'next' ? 'next' : 'prev',
+        direction: !req.query.dir || req.query.dir == 'prev' ? 'prev': 'next',
         size: Math.min(size || defaultSize, DEFAULT_MAX_PAGE_SIZE),
         sort: sort
     };
@@ -46,7 +46,7 @@ PagingParser.prototype.sort = function() {
 }
 
 PagingParser.prototype.direction = function() {
-    return this.params.direction;
+    return this._params.direction;
 }
 
 module.exports = PagingParser;

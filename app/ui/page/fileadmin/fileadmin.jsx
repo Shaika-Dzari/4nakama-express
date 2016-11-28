@@ -54,7 +54,7 @@ class FileAdmin extends React.Component {
         let date = null;
 
         if (this.props.index && this.props.index.length > 0) {
-            date = this.props.items[this.props.index[0]].createdAt;
+            date = this.props.items[this.props.index[0]].createdat;
             dispatch(doFileFetch({fromdate: date, dir: 'prev'}));
         }
     }
@@ -65,7 +65,7 @@ class FileAdmin extends React.Component {
         let date = null;
 
         if (this.props.index && this.props.index.length > 0) {
-            date = this.props.items[this.props.index[this.props.index.length -1]].createdAt;
+            date = this.props.items[this.props.index[this.props.index.length -1]].createdat;
             dispatch(doFileFetch({fromdate: date}));
         }
     }

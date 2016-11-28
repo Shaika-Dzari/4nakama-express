@@ -3,9 +3,10 @@ import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
 import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
+import PagingParam from '../../utils/PagingParam.js';
 
 const MESSAGE_TABLE_DEF = {
-    id: 'id', name: 'title', rowdate: 'createdAt', link: 'link'
+    id: 'id', name: 'title', rowdate: 'createdat', link: 'link'
 };
 
 
@@ -27,7 +28,7 @@ class MessageAdmin extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(doMessageFetch());
+        dispatch(doMessageFetch(new PagingParam(null, null, 10)));
     }
 
     onNewMessage() {

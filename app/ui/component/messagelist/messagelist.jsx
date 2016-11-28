@@ -16,11 +16,9 @@ const MessageList = ({messages, index, openMessage}) => {
 
     // Change that!
     var fromDate = new Date();
+    // onPrevious={this.onPreviousPage} onNext={this.onNextPage}
     return (
-        <div>
-            <div>{msgs}</div>
-            <Pager fromdate={fromDate} />
-        </div>
+        <div>{msgs}</div>
     )
 }
 
@@ -37,7 +35,7 @@ messages: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         authorName: PropTypes.string.isRequired,
-        createdAt: PropTypes.string.isRequired,
+        createdat: PropTypes.string.isRequired,
         categories: PropTypes.array
     }).isRequired).isRequired,
  */

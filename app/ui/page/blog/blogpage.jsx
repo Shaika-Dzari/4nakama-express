@@ -43,8 +43,8 @@ class BlogPage extends React.Component {
         let date = null;
 
         if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-            date = this.props.messages[this.props.messagesindex[0]].createdAt;
-            dispatch(doMessageFetch(new PagingParam(date, 'prev')));
+            date = this.props.messages[this.props.messagesindex[0]].createdat;
+            dispatch(doMessageFetch(new PagingParam(date, 'next')));
         }
     }
 
@@ -54,7 +54,7 @@ class BlogPage extends React.Component {
         let date = null;
 
         if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-            date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length -1]].createdAt;
+            date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length -1]].createdat;
             dispatch(doMessageFetch(new PagingParam(date)));
         }
     }
