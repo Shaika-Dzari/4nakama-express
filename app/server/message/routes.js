@@ -18,10 +18,10 @@ router.get('/', function(req, res, next) {
     var query;
 
     if (!authUtils.isLoggedIn(req)) {
-        if (pagingParam.direction() == 'prev') {
-            query = Message.ALL_PUBLISHED_BY_PREVPAGE;
-        } else {
+        if (pagingParam.direction() == 'next') {
             query = Message.ALL_PUBLISHED_BY_NEXTPAGE;
+        } else {
+            query = Message.ALL_PUBLISHED_BY_PREVPAGE;
         }
 
     } else {
@@ -92,7 +92,6 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         if (err) next(err);
 
         m.id = data.id;
-        console.log('Message saved', m);
         res.json(m);
     });
 
@@ -110,20 +109,20 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
  * Update new Message.
  */
 router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
-    var id = req.params.messageid;
-    var requestMessage = req.body;
+    let id = req.params.messageid;
+    let requestMessage = req.body;
+    let originalCategories = requestMessage.categories
 
     requestMessage.prettyurl = htmlutils.sanitizeUrl(requestMessage.prettyurl);
     requestMessage.published = !!requestMessage.published;
-    requestMessage.id = id;
-
-    console.log(requestMessage);
-
-    //let cs = requestMessage;
+    requestMessage.id = parseInt(id, 10);
+    requestMessage.categories = JSON.stringify(requestMessage.categories);
 
     db.update(Message.UPDATE_ONE, requestMessage, (serr) => {
         if (serr) next(serr);
 
+        // Put cats back
+        requestMessage.categories = originalCategories;
         res.json(requestMessage);
     })
 

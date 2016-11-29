@@ -4,10 +4,10 @@ const FileGridItem = ({file, onRemove, onCopyToStore}) => {
 
     let inner = null;
 
-    if (file.contentType.indexOf('image/') != -1) {
+    if (file.contenttype.indexOf('image/') != -1) {
         inner = <img className="grid-item-file-img" src={file.filepath} alt={file.name} />;
     } else {
-        inner = <div className="grid-item-file-other">{file.contentType}</div>;
+        inner = <div className="grid-item-file-other">{file.contenttype}</div>;
     }
 
     return (
@@ -17,7 +17,7 @@ const FileGridItem = ({file, onRemove, onCopyToStore}) => {
             </div>
             <div className="grid-item-details">
                 <span className="grid-item-name">{file.name}</span>
-                <span className="grid-item-info">{file.contentType}</span>
+                <span className="grid-item-info">{file.contenttype}</span>
             </div>
             <div className="grid-item-menu">
                 <a href={file.filepath} target="_blank">Ouvrir</a>

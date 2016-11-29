@@ -20,7 +20,6 @@ const FileGrid = ({items, index, onRemove, onCopyToStore}) => {
 
     return (
         <div className="grid-list clear-float">
-            <h4>Fichiers</h4>
             {fs}
         </div>
     );

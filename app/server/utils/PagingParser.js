@@ -16,7 +16,7 @@ function PagingParser(req, pageSize) {
 
     this._params = {
         createdat: req.query.fromdate ? new Date(req.query.fromdate) : new Date(),
-        direction: !req.query.dir || req.query.dir == 'prev' ? 'prev': 'next',
+        direction: !req.query.dir || req.query.dir == 'next' ? 'next' : 'prev',
         size: Math.min(size || defaultSize, DEFAULT_MAX_PAGE_SIZE),
         sort: sort
     };

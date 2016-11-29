@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
     return {
         items: state.files.items,
         index: state.files.index,
-        error: state.files.error
+        error: state.files.error || null
     }
 };
 
@@ -82,7 +82,7 @@ class FileAdmin extends React.Component {
                 </ToggleBox>
 
                 <div className="file-list">
-                    <AlertBox message={this.props.error} />
+                    {this.props.error ? <AlertBox message={this.props.error} /> : false }
                     <FileGrid items={this.props.items} index={this.props.index} onRemove={this.onRemove} onCopyToStore={this.onCopyToStore} />
                 </div>
 

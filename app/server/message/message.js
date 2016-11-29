@@ -22,9 +22,9 @@ module.exports = mongoose.model('Message', MessageSchema);
 
 const ALL_BY_PAGE = "select * from message where createdat < ${createdat} order by createdat desc limit ${size^}";
 
-const ALL_PUBLISHED_BY_PREVPAGE = "select * from message where createdat < ${createdat} and published = true order by createdat desc limit ${size^}";
+const ALL_PUBLISHED_BY_NEXTPAGE = "select * from message where createdat < ${createdat} and published = true order by createdat desc limit ${size^}";
 
-const ALL_PUBLISHED_BY_NEXTPAGE = "with previous_page as ( " +
+const ALL_PUBLISHED_BY_PREVPAGE = "with previous_page as ( " +
                                   "    select * " +
                                   "    from message " +
                                   "    where createdat > ${createdat} " +
@@ -34,8 +34,10 @@ const ALL_PUBLISHED_BY_NEXTPAGE = "with previous_page as ( " +
                                   ") " +
                                   "select * from previous_page order by createdat desc;";
 const ONE_BY_ID = "select * from message where id = ${id}";
-const CREATE_ONE = "insert into message(title, body, published, authorname, authorid, prettyurl, categories) values(${title}, ${body}, ${published}, ${authorname}, ${authorid}, ${prettyurl}, ${categories}) returning id";
-const UPDATE_ONE = "update message set title = ${title}, body = ${body}, prettyurl = ${prettyurl}, published = ${published}, categories = jsonb_object(${categories}) where id = ${id}";
+const CREATE_ONE = "insert into message(title, body, published, authorname, authorid, prettyurl, categories) " +
+                   "values(${title}, ${body}, ${published}, ${authorname}, ${authorid}, ${prettyurl}, ${categories}) " +
+                   "returning id, createdat ";
+const UPDATE_ONE = "update message set title = ${title}, body = ${body}, prettyurl = ${prettyurl}, published = ${published}, categories = ${categories} where id = ${id}";
 const UPDATE_ONE_PUBLICATION = "update message set published = ${published} where id = ${id}";
 
 module.exports = {

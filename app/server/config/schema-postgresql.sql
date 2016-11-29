@@ -54,7 +54,7 @@ create table nakama.file (
     id serial primary key,
     name text not null,
     filepath text not null,
-    contentype text not null default 'application/octet-stream',
+    contenttype text not null default 'application/octet-stream',
     ownerid integer not null,
     ownername text not null,
     ispublic boolean not null default TRUE,

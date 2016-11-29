@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
 
     var pageParam = new PagingParser(req);
 
-    db.any(File.ALL_BY_PAGE, params, (err, files) => {
+    db.any(File.ALL_BY_PAGE, pageParam.params(), (err, files) => {
         if (err) next(err);
 
         res.json(files);
@@ -48,9 +48,8 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
     req.pipe(req.busboy);
     req.busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 
-
-        var path = isPublicFile ? publicFolder + '/' + publicFileFolderName + '/' + filename : config.file.privateFolder;
-        var url = isPublicFile ? '/' + publicFileFolderName + '/' + filename : '/api/files/stream';
+        var path = isPublicFile ? publicFolder + '/' + publicFileFolderName : config.file.privateFolder;
+        var url = isPublicFile ? '/' + publicFileFolderName : '/api/files/stream';
         console.log("Uploading: ", filename, encoding, mimetype);
         console.log(path);
 
@@ -68,7 +67,9 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
             db.insert(File.CREATE, newFile, (serr, data) => {
                 if (serr) next(serr);
 
-                res.json(data);
+                newFile.id = data.id;
+                newFile.createdat = data.createdat;
+                res.json(newFile);
             });
 
             /*

@@ -32,13 +32,13 @@ function makeActionCreator(type, ...argNames) {
     }
 }
 
-export function doMessageFetch(page) {
+export function doMessageFetch(pageParams) {
 
     return (dispatch, getState) => {
         dispatch(doStartLoading());
-        let urlParam = getUrlParamsString(page);
+        let urlParam = getUrlParamsString(pageParams);
 
-        // console.log(MSG_URL + urlParam, page);
+        // console.log(MSG_URL + urlParam, pageParams);
 
         return fetch(MSG_URL + urlParam, {credentials: 'include'})
                 .then(r => r.json())
@@ -47,7 +47,7 @@ export function doMessageFetch(page) {
                     if (msgs) {
                         msgs.forEach(m => m.bodyhtml = remarkable.render(m.body));
                     }
-                    dispatch(doMessagesReceive(msgs, page));
+                    dispatch(doMessagesReceive(msgs, pageParams));
                 });
     }
 }

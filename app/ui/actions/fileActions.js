@@ -2,6 +2,7 @@ import 'whatwg-fetch';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import makeActionCreator from './actionCreator.js';
 import FileUploadUtils from '../utils/FileUploadUtils.js';
+import { getUrlParamsString } from '../utils/UrlParamUtils.js';
 
 export const FILE_UPLOAD_ONCHANGE = 'FILE_UPLOAD_ONCHANGE';
 export const FILE_UPLOAD_POSTALL = 'FILE_UPLOAD_POSTALL';
@@ -58,32 +59,17 @@ export function doFileUploadPostAll() {
     }
 }
 
-export function doFileFetch(page) {
+export function doFileFetch(pageParams) {
     return dispatch => {
             dispatch(doStartLoading());
 
-            let body = [];
-            let urlParams = '';
-
-            if (page) {
-
-                if (page.fromdate)
-                    body.push('fromdate=' + encodeURIComponent(page.fromdate));
-
-                if (page.sort)
-                    body.push('sort=' + encodeURIComponent(page.sort || '-1'));
-
-                if (page.dir)
-                    body.push('dir=' + encodeURIComponent(page.dir || 'next'));
-
-                urlParams = '?' + body.join('&');
-            }
+            let urlParams = getUrlParamsString(pageParams);
 
             return fetch(FILE_URL + urlParams, {credentials: 'include'})
                     .then(fs => fs.json())
                     .then(files => {
                         dispatch(doStopLoading());
-                        dispatch(doFileReceived(files, page));
+                        dispatch(doFileReceived(files, pageParams));
                     })
                     .catch(e => {
                         dispatch(doStopLoading());

@@ -49,6 +49,7 @@ class CategoryEditor extends React.Component {
         let value = event.target.value;
         let cat = this.props.categories[value];
         if (cat) {
+            console.log(checked, cat, this.props);
             checked ? this.props.onComponentSelect(cat) : this.props.onComponentUnSelect(cat);
         } else {
             console.log('Unable to find category #' + value);

@@ -38,6 +38,7 @@ function insert(query, params, done) {
 }
 
 function update(query, params, done) {
+    //console.log(pgp.as.format(query, params));
     db.tx(t => {
         return t.none(query, params);
     })

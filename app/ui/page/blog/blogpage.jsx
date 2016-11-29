@@ -5,6 +5,7 @@ import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
 import Pager from '../../component/pager/pager.jsx';
 import PagingParam from '../../utils/PagingParam.js';
+import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
 import Remarkable from 'remarkable';
 
 import {doMessageFetch} from '../../actions/messageActions.js';
@@ -44,7 +45,8 @@ class BlogPage extends React.Component {
 
         if (this.props.messagesindex && this.props.messagesindex.length > 0) {
             date = this.props.messages[this.props.messagesindex[0]].createdat;
-            dispatch(doMessageFetch(new PagingParam(date, 'next')));
+            scrollToTopPage();
+            dispatch(doMessageFetch(new PagingParam(date, 'prev')));
         }
     }
 
@@ -55,7 +57,8 @@ class BlogPage extends React.Component {
 
         if (this.props.messagesindex && this.props.messagesindex.length > 0) {
             date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length -1]].createdat;
-            dispatch(doMessageFetch(new PagingParam(date)));
+            scrollToTopPage();
+            dispatch(doMessageFetch(new PagingParam(date, 'next')));
         }
     }
 

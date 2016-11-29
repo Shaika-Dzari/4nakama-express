@@ -23,8 +23,10 @@ name text not null,
 ${name},${filepath},${contentype},${ownerid},${ownername},${ispublic}
 */
 
-const ALL_BY_PAGE = "select * from file where createat < ${createat} order by createat ${orderby} limit ${size}";
-const CREATE = "insert into file(name, filepath, contentype, ownerid, ownername, ispublic) values(${name}, ${filepath}, ${contentype}, ${ownerid}, ${ownername}, ${ispublic}) returning id";
+const ALL_BY_PAGE = "select * from file where createdat < ${createdat} order by createdat desc limit ${size^}";
+const CREATE = "insert into file(name, filepath, contenttype, ownerid, ownername, ispublic) " +
+               "values(${name}, ${filepath}, ${contenttype}, ${ownerid}, ${ownername}, ${ispublic}) " +
+               "returning id, createdat";
 
 module.exports = {
     ALL_BY_PAGE: ALL_BY_PAGE,
