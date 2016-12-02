@@ -46,10 +46,24 @@ function update(query, params, done) {
     .catch(error => done(error));
 }
 
+function batch(queries, done) {
+    db.tx(function (t) {
+
+        let qs = queries.map(q => {
+            return t.none(q);
+        });
+
+        return t.batch(qs);
+    })
+    .then(data => done(null, data))
+    .catch(error => done(error));
+}
+
 module.exports = {
   one: one,
   any: any,
   none: none,
   insert: insert,
-  update: update
+  update: update,
+  batch: batch
 };

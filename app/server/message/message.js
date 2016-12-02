@@ -33,6 +33,7 @@ const ALL_PUBLISHED_BY_PREVPAGE = "with previous_page as ( " +
                                   "    limit ${size^}" +
                                   ") " +
                                   "select * from previous_page order by createdat desc;";
+
 const ONE_BY_ID = "select * from message where id = ${id}";
 const CREATE_ONE = "insert into message(title, body, published, authorname, authorid, prettyurl, categories) " +
                    "values(${title}, ${body}, ${published}, ${authorname}, ${authorid}, ${prettyurl}, ${categories}) " +

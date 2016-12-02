@@ -31,7 +31,6 @@ export function categoryReducers(state = {items: {}, index: []}, action) {
             return Object.assign({}, state, {items: catList, index: index});
 
         case CATEGORY_ERROR:
-            console.log('error', action.error);
             return Object.assign({}, state, {error: action.error});
 
         default:

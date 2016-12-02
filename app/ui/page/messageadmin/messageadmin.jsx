@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 import PagingParam from '../../utils/PagingParam.js';
+import DatePager from '../../component/pager/datepager.jsx';
 
 const MESSAGE_TABLE_DEF = {
     id: 'id', name: 'title', rowdate: 'createdat', link: 'link'
 };
-
 
 const mapStateToProps = (state) => {
     return {
@@ -49,20 +49,24 @@ class MessageAdmin extends React.Component {
         });
 
         return (
-            <div className="box bluebox">
-                <div className="heading">
-                    <div className="row">
-                        <div className="col-6">
-                            <h4>Messages</h4>
-                        </div>
-                        <div className="col-6 right">
-                            <button className="btn" onClick={this.onNewMessage}>Créer</button>
+            <div>
+                <div className="box bluebox">
+                    <div className="heading">
+                        <div className="row">
+                            <div className="col-6">
+                                <h4>Messages</h4>
+                            </div>
+                            <div className="col-6 right">
+                                <button className="btn" onClick={this.onNewMessage}>Nouveau Message</button>
+                            </div>
                         </div>
                     </div>
+                    <div className="body">
+                        <Table cdef={MESSAGE_TABLE_DEF} items={msgs} linkTo={this.onMessageClick} />
+                    </div>
                 </div>
-                <div className="body">
-                    <Table cdef={MESSAGE_TABLE_DEF} items={msgs} linkTo={this.onMessageClick} />
-                </div>
+
+                <DatePager items={this.props.messages} index={this.props.index} fetchFunction={doMessageFetch} />
             </div>
         );
     }

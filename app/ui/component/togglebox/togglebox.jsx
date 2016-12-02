@@ -11,7 +11,6 @@ class ToggleBox extends React.Component {
     }
 
     toggle() {
-        console.log('toggle');
         this.setState({showed: !this.state.showed});
     }
 

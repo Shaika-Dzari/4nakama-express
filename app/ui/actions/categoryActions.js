@@ -10,15 +10,21 @@ const CATEGORY_URL = '/api/categories';
 
 
 export function doCategoryFetch() {
-    return dispatch => {
-        dispatch(doStartLoading());
+    return (dispatch, getState) => {
+        let cs = getState().categories.index;
 
-        return fetch(CATEGORY_URL, {credentials: 'include'})
-                .then(r => r.json())
-                .then(cats => {
-                    dispatch(doStopLoading());
-                    dispatch(doCategoryReceive(cats))
-                });
+        if (!cs || cs.length == 0) {
+
+            dispatch(doStartLoading());
+
+            return fetch(CATEGORY_URL, {credentials: 'include'})
+                    .then(r => r.json())
+                    .then(cats => {
+                        dispatch(doStopLoading());
+                        dispatch(doCategoryReceive(cats))
+                    });
+
+        }
     };
 }
 

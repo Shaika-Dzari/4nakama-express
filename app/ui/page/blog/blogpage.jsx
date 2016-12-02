@@ -3,9 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
-import Pager from '../../component/pager/pager.jsx';
-import PagingParam from '../../utils/PagingParam.js';
-import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
+import DatePager from '../../component/pager/datepager.jsx';
 import Remarkable from 'remarkable';
 
 import {doMessageFetch} from '../../actions/messageActions.js';
@@ -28,38 +26,12 @@ class BlogPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onPreviousPage = this.onPreviousPage.bind(this);
-        this.onNextPage = this.onNextPage.bind(this);
     }
 
     componentDidMount() {
         const { dispatch } = this.props
         dispatch(doMessageFetch());
         dispatch(doCategoryFetch());
-    }
-
-    onPreviousPage(event) {
-        event.preventDefault();
-        const { dispatch } = this.props;
-        let date = null;
-
-        if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-            date = this.props.messages[this.props.messagesindex[0]].createdat;
-            scrollToTopPage();
-            dispatch(doMessageFetch(new PagingParam(date, 'prev')));
-        }
-    }
-
-    onNextPage(event) {
-        event.preventDefault();
-        const { dispatch } = this.props;
-        let date = null;
-
-        if (this.props.messagesindex && this.props.messagesindex.length > 0) {
-            date = this.props.messages[this.props.messagesindex[this.props.messagesindex.length -1]].createdat;
-            scrollToTopPage();
-            dispatch(doMessageFetch(new PagingParam(date, 'next')));
-        }
     }
 
     render() {
@@ -70,7 +42,7 @@ class BlogPage extends React.Component {
                             <MessageList messages={this.props.messages} index={this.props.messagesindex} />
                         </div>
                         <div className="list-ctn">
-                            <Pager onPrevious={this.onPreviousPage} onNext={this.onNextPage} />
+                            <DatePager items={this.props.messages} index={this.props.messagesindex} fetchFunction={doMessageFetch} size={3} scrollToTop={true} />
                         </div>
                     </div>
                     <div className="col-2">

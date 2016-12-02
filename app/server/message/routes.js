@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
 var Message = require('./message');
 var authUtils = require('../authutils');
 var htmlutils = require('../htmlutils');

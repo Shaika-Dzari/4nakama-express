@@ -45,7 +45,6 @@ class FileUpload extends React.Component {
 
         if (this.props.files) {
             toUpload = [];
-            console.log(this.props.files);
 
             for (let fk in this.props.files) {
                 let managedFile = this.props.files[fk];
@@ -53,7 +52,6 @@ class FileUpload extends React.Component {
                 let progress = managedFile.progress;
                 let completed = managedFile.completed;
                 let refid = 'li-' + f.name;
-                console.log(f, progress,completed);
 
                 let fileJsx = <OneFile key={refid}
                                 reffileid={refid}

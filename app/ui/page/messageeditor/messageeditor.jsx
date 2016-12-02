@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
 import Editor from '../../component/editor/editor.jsx';
 import CategoryEditor from '../../component/categoryeditor/categoryeditor.jsx';
+import Clipboard from '../../component/clipboard/clipboard.jsx';
+
 import {doMessageEditorTitleChange, doMessageEditorTitleBlur,
         doMessageEditorPrettyUrlChange, doMessageEditorTextChange,
         doMessageEditorPublishedCheck, doMessageEditorCategoryCheck,
@@ -17,15 +19,30 @@ const mapStateToProps = (state, ownProps) => {
 
     let id = ownProps.params.messageId;
     let msg = state.messages.items[id];
+    let clipboards = [];
+    let buffer = state.files.buffer;
+
+    if (buffer) {
+        clipboards = buffer.map(b => {
+            let el = state.files.items[b];
+            return {
+                id: b,
+                name: el.name,
+                value: el.filepath
+            };
+        });
+
+    }
 
     return {
         messageId: id,
         title: msg.title,
-        prettyUrl: msg.prettyUrl,
+        prettyUrl: msg.prettyurl,
         text: msg.body,
         published: msg.published,
         categories: msg.categories,
-        error: state.messages.error
+        error: state.messages.error,
+        clipboardElements: clipboards
     };
 };
 
@@ -67,9 +84,12 @@ class MessageEditor extends React.Component {
     }
 
     onPublishedClick(event) {
-        let published = event.target.checked;
+        let target = event.target;
+        event.preventDefault();
+        let pub = target.dataset.n4Value;
         const { dispatch } = this.props;
-        dispatch(doMessageEditorPublishedCheck(this.props.messageId, published));
+        // TODO : publish request instead
+        dispatch(doMessageEditorPublishedCheck(this.props.messageId, pub == 'true'));
     }
 
     onCategorySelect(category) {
@@ -89,6 +109,7 @@ class MessageEditor extends React.Component {
 
     render() {
 
+
         return (
             <div className="message-editor-ctn box bluebox">
                 <div className="heading">
@@ -97,7 +118,12 @@ class MessageEditor extends React.Component {
                             <h4>#{this.props.messageId}</h4>
                         </div>
                         <div className="col-6 right">
-                            <button className="btn" onClick={this.onSave}>Save</button>
+                            {this.props.published ? <button className="btn" onClick={this.onPublishedClick} data-n4-value="false">Retirer</button> :
+                                                    <button className="btn" onClick={this.onPublishedClick} data-n4-value="true">Publier</button>
+                            }
+
+
+                            <button className="btn" onClick={this.onSave}>Sauvegarder</button>
                         </div>
                     </div>
                 </div>
@@ -121,18 +147,12 @@ class MessageEditor extends React.Component {
                         <div className="col-3">
                             <div className="box">
                                 <div className="body">
-                                    <div className="box bluebox">
-                                        <div className="heading">
-                                            <h4>
-                                                <input type="checkbox"
-                                                       defaultChecked={this.props.published}
-                                                       onClick={this.onPublishedClick} /> Publié
-                                            </h4>
-                                        </div>
-                                    </div>
+
                                     <CategoryEditor onComponentSelect={this.onCategorySelect}
                                                     onComponentUnSelect={this.onCategoryUnSelect}
                                                     selectedItems={this.props.categories} />
+
+                                    <Clipboard elements={this.props.clipboardElements} />
                                 </div>
                             </div>
                         </div>

@@ -7,6 +7,7 @@ import { navigationReducers } from './navigationReducers.js';
 import { userReducers } from './userReducers.js';
 import { fileReducers, fileUploadReducers } from './fileReducers.js';
 import { commentReducers } from './commentReducers.js';
+import { statisticReducers } from './statisticReducers.js'
 
 const RootReducers = combineReducers({
     navigation: navigationReducers,
@@ -16,7 +17,8 @@ const RootReducers = combineReducers({
     user: userReducers,
     routing: routerReducer,
     files: fileReducers,
-    uploadfiles: fileUploadReducers
+    uploadfiles: fileUploadReducers,
+    statistics: statisticReducers
 });
 
 export default RootReducers;

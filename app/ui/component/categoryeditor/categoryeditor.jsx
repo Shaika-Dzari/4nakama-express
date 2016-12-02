@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AlertBox from '../alertbox/alertbox.jsx';
-import {doCategorySave} from '../../actions/categoryActions.js';
+import {doCategorySave, doCategoryFetch} from '../../actions/categoryActions.js';
 
 const CATEGORY_URL = '/api/categories';
 
@@ -27,6 +27,12 @@ class CategoryEditor extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const { dispatch } = this.props
+        dispatch(doCategoryFetch());
+    }
+
+
     onAddCategory() {
         this.setState({showAddInput: true});
     }
@@ -49,7 +55,6 @@ class CategoryEditor extends React.Component {
         let value = event.target.value;
         let cat = this.props.categories[value];
         if (cat) {
-            console.log(checked, cat, this.props);
             checked ? this.props.onComponentSelect(cat) : this.props.onComponentUnSelect(cat);
         } else {
             console.log('Unable to find category #' + value);

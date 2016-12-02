@@ -22,6 +22,7 @@ export const MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
 const MSG_URL = '/api/messages';
 const remarkable = new Remarkable();
 
+
 function makeActionCreator(type, ...argNames) {
     return function (...args) {
         let action = { type };

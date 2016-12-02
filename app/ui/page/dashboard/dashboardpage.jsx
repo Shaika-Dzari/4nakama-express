@@ -1,7 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import DashboardContent from './dashboardcontent.jsx';
 import './dashboardpage.scss';
+
 
 export default class DashboardPage extends React.Component {
 
@@ -11,6 +13,13 @@ export default class DashboardPage extends React.Component {
 
 
     render() {
+        let subview = null;
+
+        if (this.props.children) {
+            subview = this.props.children;
+        } else {
+            subview = <DashboardContent />;
+        }
 
         return (
             <div className="dashboard">
@@ -20,19 +29,19 @@ export default class DashboardPage extends React.Component {
                             <Link to="/dashboard/messages">Messages</Link>
                         </div>
                         <div className="col-3 menu-item">
-                            <a href="#">Histoires</a>
-                        </div>
-                        <div className="col-3 menu-item">
                             <Link to="/dashboard/files">Fichiers</Link>
                         </div>
                         <div className="col-3 menu-item">
                             <a href="#">Commentaires</a>
                         </div>
+                        <div className="col-3 menu-item">
+                            <a href="#">Histoires</a>
+                        </div>
                     </div>
                 </div>
 
                 <div className="dashboard-content">
-                    {this.props.children}
+                    {subview}
                 </div>
             </div>
         );
