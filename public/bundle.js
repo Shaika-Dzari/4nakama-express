@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(691);
+	__webpack_require__(693);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29423,27 +29423,27 @@
 
 	var _dashboardpage2 = _interopRequireDefault(_dashboardpage);
 
-	var _loginpage = __webpack_require__(650);
+	var _loginpage = __webpack_require__(652);
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
-	var _messageadmin = __webpack_require__(652);
+	var _messageadmin = __webpack_require__(654);
 
 	var _messageadmin2 = _interopRequireDefault(_messageadmin);
 
-	var _messageeditor = __webpack_require__(654);
+	var _messageeditor = __webpack_require__(656);
 
 	var _messageeditor2 = _interopRequireDefault(_messageeditor);
 
-	var _messagepage = __webpack_require__(665);
+	var _messagepage = __webpack_require__(667);
 
 	var _messagepage2 = _interopRequireDefault(_messagepage);
 
-	var _fileadmin = __webpack_require__(668);
+	var _fileadmin = __webpack_require__(669);
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _createstore = __webpack_require__(680);
+	var _createstore = __webpack_require__(681);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -49392,7 +49392,7 @@
 
 	var _dashboardcontent2 = _interopRequireDefault(_dashboardcontent);
 
-	__webpack_require__(649);
+	__webpack_require__(651);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49501,9 +49501,9 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _statisticActions = __webpack_require__(692);
+	var _statisticActions = __webpack_require__(648);
 
-	__webpack_require__(648);
+	__webpack_require__(650);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49635,18 +49635,94 @@
 
 /***/ },
 /* 648 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// removed by extract-text-webpack-plugin
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.doStatsReceived = exports.STATS_REFRESH = exports.STATS_RECEIVED = exports.STATS_FETCH = undefined;
+	exports.doStatsFetch = doStatsFetch;
+	exports.doStatsRefresh = doStatsRefresh;
+
+	__webpack_require__(564);
+
+	var _navigationActions = __webpack_require__(565);
+
+	var _actionCreator = __webpack_require__(649);
+
+	var _actionCreator2 = _interopRequireDefault(_actionCreator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STATS_URL = "/api/statistics";
+
+	var STATS_FETCH = exports.STATS_FETCH = 'STATS_FETCH';
+	var STATS_RECEIVED = exports.STATS_RECEIVED = 'STATS_RECEIVED';
+	var STATS_REFRESH = exports.STATS_REFRESH = 'STATS_REFRESH';
+
+	var doStatsReceived = exports.doStatsReceived = (0, _actionCreator2.default)(STATS_RECEIVED, 'stats');
+
+	function doStatsFetch() {
+	    return function (dispatch) {
+	        dispatch((0, _navigationActions.doStartLoading)());
+
+	        return fetch(STATS_URL, { credentials: 'include' }).then(function (s) {
+	            return s.json();
+	        }).then(function (stats) {
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            dispatch(doStatsReceived(stats));
+	        }).catch(function (e) {
+	            dispatch((0, _navigationActions.doStopLoading)());
+	            //dispatch(doFileRequestError(e));
+	        });
+	    };
+	}
+	function doStatsRefresh() {}
 
 /***/ },
 /* 649 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = makeActionCreator;
+	function makeActionCreator(type) {
+	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        argNames[_key - 1] = arguments[_key];
+	    }
+
+	    return function () {
+	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	            args[_key2] = arguments[_key2];
+	        }
+
+	        var action = { type: type };
+	        argNames.forEach(function (arg, index) {
+	            action[argNames[index]] = args[index];
+	        });
+	        return action;
+	    };
+	}
 
 /***/ },
 /* 650 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 651 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 652 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49671,7 +49747,7 @@
 
 	var _userActions = __webpack_require__(563);
 
-	__webpack_require__(651);
+	__webpack_require__(653);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49762,13 +49838,13 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 /***/ },
-/* 651 */
+/* 653 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 652 */
+/* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49789,7 +49865,7 @@
 
 	var _messageActions = __webpack_require__(643);
 
-	var _table = __webpack_require__(653);
+	var _table = __webpack_require__(655);
 
 	var _table2 = _interopRequireDefault(_table);
 
@@ -49914,7 +49990,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(MessageAdmin));
 
 /***/ },
-/* 653 */
+/* 655 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50028,7 +50104,7 @@
 	exports.default = Table;
 
 /***/ },
-/* 654 */
+/* 656 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50049,21 +50125,21 @@
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _editor = __webpack_require__(655);
+	var _editor = __webpack_require__(657);
 
 	var _editor2 = _interopRequireDefault(_editor);
 
-	var _categoryeditor = __webpack_require__(661);
+	var _categoryeditor = __webpack_require__(663);
 
 	var _categoryeditor2 = _interopRequireDefault(_categoryeditor);
 
-	var _clipboard = __webpack_require__(662);
+	var _clipboard = __webpack_require__(664);
 
 	var _clipboard2 = _interopRequireDefault(_clipboard);
 
 	var _messageActions = __webpack_require__(643);
 
-	__webpack_require__(664);
+	__webpack_require__(666);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50299,7 +50375,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(MessageEditor);
 
 /***/ },
-/* 655 */
+/* 657 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50312,11 +50388,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactSimplemdeEditor = __webpack_require__(656);
+	var _reactSimplemdeEditor = __webpack_require__(658);
 
 	var _reactSimplemdeEditor2 = _interopRequireDefault(_reactSimplemdeEditor);
 
-	__webpack_require__(657);
+	__webpack_require__(659);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50365,7 +50441,7 @@
 	exports.default = Editor;
 
 /***/ },
-/* 656 */
+/* 658 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -70255,16 +70331,16 @@
 	//# sourceMappingURL=react-simplemde-editor.js.map
 
 /***/ },
-/* 657 */
+/* 659 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(658);
+	var content = __webpack_require__(660);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(660)(content, {});
+	var update = __webpack_require__(662)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -70281,10 +70357,10 @@
 	}
 
 /***/ },
-/* 658 */
+/* 660 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(659)();
+	exports = module.exports = __webpack_require__(661)();
 	// imports
 
 
@@ -70295,7 +70371,7 @@
 
 
 /***/ },
-/* 659 */
+/* 661 */
 /***/ function(module, exports) {
 
 	/*
@@ -70351,7 +70427,7 @@
 
 
 /***/ },
-/* 660 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -70603,7 +70679,7 @@
 
 
 /***/ },
-/* 661 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70804,7 +70880,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CategoryEditor);
 
 /***/ },
-/* 662 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70819,7 +70895,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(663);
+	__webpack_require__(665);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70944,19 +71020,19 @@
 	exports.default = Clipboard;
 
 /***/ },
-/* 663 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 664 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 665 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 666 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 667 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70977,7 +71053,7 @@
 
 	var _message2 = _interopRequireDefault(_message);
 
-	var _commentActions = __webpack_require__(666);
+	var _commentActions = __webpack_require__(668);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71038,7 +71114,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(MessagePage);
 
 /***/ },
-/* 666 */
+/* 668 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71056,7 +71132,7 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _actionCreator = __webpack_require__(667);
+	var _actionCreator = __webpack_require__(649);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
@@ -71152,35 +71228,7 @@
 	}
 
 /***/ },
-/* 667 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = makeActionCreator;
-	function makeActionCreator(type) {
-	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        argNames[_key - 1] = arguments[_key];
-	    }
-
-	    return function () {
-	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	            args[_key2] = arguments[_key2];
-	        }
-
-	        var action = { type: type };
-	        argNames.forEach(function (arg, index) {
-	            action[argNames[index]] = args[index];
-	        });
-	        return action;
-	    };
-	}
-
-/***/ },
-/* 668 */
+/* 669 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71199,15 +71247,15 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileupload = __webpack_require__(669);
+	var _fileupload = __webpack_require__(670);
 
 	var _fileupload2 = _interopRequireDefault(_fileupload);
 
-	var _togglebox = __webpack_require__(675);
+	var _togglebox = __webpack_require__(676);
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
-	var _filegrid = __webpack_require__(676);
+	var _filegrid = __webpack_require__(677);
 
 	var _filegrid2 = _interopRequireDefault(_filegrid);
 
@@ -71223,9 +71271,9 @@
 
 	var _PagingParam2 = _interopRequireDefault(_PagingParam);
 
-	var _fileActions = __webpack_require__(670);
+	var _fileActions = __webpack_require__(671);
 
-	__webpack_require__(679);
+	__webpack_require__(680);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71310,7 +71358,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileAdmin);
 
 /***/ },
-/* 669 */
+/* 670 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71327,17 +71375,17 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileActions = __webpack_require__(670);
+	var _fileActions = __webpack_require__(671);
 
-	var _FileUploadUtils = __webpack_require__(671);
+	var _FileUploadUtils = __webpack_require__(672);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _onefile = __webpack_require__(672);
+	var _onefile = __webpack_require__(673);
 
 	var _onefile2 = _interopRequireDefault(_onefile);
 
-	__webpack_require__(674);
+	__webpack_require__(675);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71469,7 +71517,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileUpload);
 
 /***/ },
-/* 670 */
+/* 671 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71487,11 +71535,11 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _actionCreator = __webpack_require__(667);
+	var _actionCreator = __webpack_require__(649);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
-	var _FileUploadUtils = __webpack_require__(671);
+	var _FileUploadUtils = __webpack_require__(672);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
@@ -71577,7 +71625,7 @@
 	}
 
 /***/ },
-/* 671 */
+/* 672 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71679,7 +71727,7 @@
 	exports.default = FileUploaderUtils;
 
 /***/ },
-/* 672 */
+/* 673 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71692,7 +71740,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(673);
+	__webpack_require__(674);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71774,12 +71822,6 @@
 	exports.default = OneFile;
 
 /***/ },
-/* 673 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 674 */
 /***/ function(module, exports) {
 
@@ -71787,6 +71829,12 @@
 
 /***/ },
 /* 675 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71871,7 +71919,7 @@
 	exports.default = ToggleBox;
 
 /***/ },
-/* 676 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71884,11 +71932,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _filegriditem = __webpack_require__(677);
+	var _filegriditem = __webpack_require__(678);
 
 	var _filegriditem2 = _interopRequireDefault(_filegriditem);
 
-	__webpack_require__(678);
+	__webpack_require__(679);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71920,7 +71968,7 @@
 	exports.default = FileGrid;
 
 /***/ },
-/* 677 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72000,12 +72048,6 @@
 	exports.default = FileGridItem;
 
 /***/ },
-/* 678 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 679 */
 /***/ function(module, exports) {
 
@@ -72013,6 +72055,12 @@
 
 /***/ },
 /* 680 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 681 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72025,15 +72073,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(681);
+	var _reduxThunk = __webpack_require__(682);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(682);
+	var _rootreducers = __webpack_require__(683);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(690);
+	var _ActionsLogger = __webpack_require__(692);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -72048,7 +72096,7 @@
 	exports.default = store;
 
 /***/ },
-/* 681 */
+/* 682 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72076,7 +72124,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 682 */
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72089,19 +72137,19 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(683);
+	var _messageReducers = __webpack_require__(684);
 
-	var _categoryReducers = __webpack_require__(684);
+	var _categoryReducers = __webpack_require__(685);
 
-	var _navigationReducers = __webpack_require__(685);
+	var _navigationReducers = __webpack_require__(686);
 
-	var _userReducers = __webpack_require__(686);
+	var _userReducers = __webpack_require__(687);
 
-	var _fileReducers = __webpack_require__(687);
+	var _fileReducers = __webpack_require__(688);
 
-	var _commentReducers = __webpack_require__(689);
+	var _commentReducers = __webpack_require__(690);
 
-	var _statisticReducers = __webpack_require__(693);
+	var _statisticReducers = __webpack_require__(691);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -72118,7 +72166,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 683 */
+/* 684 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72258,7 +72306,7 @@
 	}
 
 /***/ },
-/* 684 */
+/* 685 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72332,7 +72380,7 @@
 	}
 
 /***/ },
-/* 685 */
+/* 686 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72361,7 +72409,7 @@
 	}
 
 /***/ },
-/* 686 */
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72394,7 +72442,7 @@
 	}
 
 /***/ },
-/* 687 */
+/* 688 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72408,9 +72456,9 @@
 	exports.fileReducers = fileReducers;
 	exports.fileUploadReducers = fileUploadReducers;
 
-	var _fileActions = __webpack_require__(670);
+	var _fileActions = __webpack_require__(671);
 
-	var _IndexReducer = __webpack_require__(688);
+	var _IndexReducer = __webpack_require__(689);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -72505,7 +72553,7 @@
 	}
 
 /***/ },
-/* 688 */
+/* 689 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72534,7 +72582,7 @@
 	}
 
 /***/ },
-/* 689 */
+/* 690 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72544,9 +72592,9 @@
 	});
 	exports.commentReducers = commentReducers;
 
-	var _commentActions = __webpack_require__(666);
+	var _commentActions = __webpack_require__(668);
 
-	var _IndexReducer = __webpack_require__(688);
+	var _IndexReducer = __webpack_require__(689);
 
 	var sortComment = function sortComment(c0, c1) {
 	    return c0.createdat.getTime() - c1.createdat.getTime();
@@ -72568,7 +72616,32 @@
 	}
 
 /***/ },
-/* 690 */
+/* 691 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.statisticReducers = statisticReducers;
+
+	var _statisticActions = __webpack_require__(648);
+
+	function statisticReducers() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: [] } : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _statisticActions.STATS_RECEIVED:
+	            return Object.assign({}, state, { items: action.stats });
+	        default:
+	            return state;
+	    }
+	}
+
+/***/ },
+/* 692 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72590,83 +72663,10 @@
 	exports.default = logger;
 
 /***/ },
-/* 691 */
+/* 693 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 692 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.doStatsReceived = exports.STATS_REFRESH = exports.STATS_RECEIVED = exports.STATS_FETCH = undefined;
-	exports.doStatsFetch = doStatsFetch;
-	exports.doStatsRefresh = doStatsRefresh;
-
-	__webpack_require__(564);
-
-	var _navigationActions = __webpack_require__(565);
-
-	var _actionCreator = __webpack_require__(667);
-
-	var _actionCreator2 = _interopRequireDefault(_actionCreator);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var STATS_URL = "/api/statistics";
-
-	var STATS_FETCH = exports.STATS_FETCH = 'STATS_FETCH';
-	var STATS_RECEIVED = exports.STATS_RECEIVED = 'STATS_RECEIVED';
-	var STATS_REFRESH = exports.STATS_REFRESH = 'STATS_REFRESH';
-
-	var doStatsReceived = exports.doStatsReceived = (0, _actionCreator2.default)(STATS_RECEIVED, 'stats');
-
-	function doStatsFetch() {
-	    return function (dispatch) {
-	        dispatch((0, _navigationActions.doStartLoading)());
-
-	        return fetch(STATS_URL, { credentials: 'include' }).then(function (s) {
-	            return s.json();
-	        }).then(function (stats) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doStatsReceived(stats));
-	        }).catch(function (e) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            //dispatch(doFileRequestError(e));
-	        });
-	    };
-	}
-	function doStatsRefresh() {}
-
-/***/ },
-/* 693 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.statisticReducers = statisticReducers;
-
-	var _statisticActions = __webpack_require__(692);
-
-	function statisticReducers() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: [] } : arguments[0];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case _statisticActions.STATS_RECEIVED:
-	            return Object.assign({}, state, { items: action.stats });
-	        default:
-	            return state;
-	    }
-	}
 
 /***/ }
 /******/ ]);

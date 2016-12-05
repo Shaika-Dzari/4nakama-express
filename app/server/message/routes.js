@@ -84,7 +84,7 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         authorname: user.username,
         published: !!msgreq.published,
         prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl),
-        categories: msgreq.categories
+        categories: JSON.stringify(msgreq.categories)
     };
 
     db.insert(Message.CREATE_ONE, m, (err, data) => {

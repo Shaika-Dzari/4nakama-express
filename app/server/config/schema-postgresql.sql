@@ -31,6 +31,8 @@ create table nakama.message (
     constraint fk_message_accountid foreign key (authorid) references account (id)
 );
 
+create index on nakama.message(createdat);
+
 create table nakama.comment (
     id serial primary key,
     body text not null,
@@ -42,6 +44,8 @@ create table nakama.comment (
     constraint fk_comment_messageid foreign key (messageid) references message (id),
     constraint fk_message_accountid foreign key (authorid) references account (id)
 );
+
+create index on nakama.comment(messageid);
 
 create table nakama.file (
     id serial primary key,
@@ -70,3 +74,41 @@ create table nakama.statistics (
 insert into nakama.statistics(tablename, statistic, value) values('file', 'total_count', '0');
 insert into nakama.statistics(tablename, statistic, value) values('message', 'total_count', '0');
 insert into nakama.statistics(tablename, statistic, value) values('comment', 'total_count', '0');
+
+-- Procedure to calculate stats
+create or replace function calculate_statistics_message() returns trigger as $$
+begin
+    update statistics set (value) = (select count(*) from message) where tablename = 'message' and statistic = 'total_count';
+    return NEW;
+end;
+$$
+LANGUAGE plpgsql
+SET search_path = nakama;
+
+create or replace function calculate_statistics_file() returns trigger as $$
+begin
+    update statistics set (value) = (select count(*) from file) where tablename = 'file' and statistic = 'total_count';
+    return NEW;
+end;
+$$
+LANGUAGE plpgsql
+SET search_path = nakama;
+
+create or replace function calculate_statistics_comment() returns trigger as $$
+begin
+    update statistics set (value) = (select count(*) from comment) where tablename = 'comment' and statistic = 'total_count';
+    return NEW;
+end;
+$$
+LANGUAGE plpgsql
+SET search_path = nakama;
+
+-- Triggers to calculate statistics automatically
+create trigger trg_message_insert_stats after insert on nakama.message execute Procedure calculate_statistics_message();
+create trigger trg_message_delete_stats after delete on nakama.message execute Procedure calculate_statistics_message();
+
+create trigger trg_file_insert_stats after insert on nakama.file execute Procedure calculate_statistics_file();
+create trigger trg_file_delete_stats after delete on nakama.file execute Procedure calculate_statistics_file();
+
+create trigger trg_comment_insert_stats after insert on nakama.comment execute Procedure calculate_statistics_comment();
+create trigger trg_comment_delete_stats after delete on nakama.comment execute Procedure calculate_statistics_comment();
