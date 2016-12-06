@@ -8,7 +8,7 @@ import Remarkable from 'remarkable';
 import PagingParam from '../../utils/PagingParam.js';
 import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
 
-import {doMessageFetch} from '../../actions/messageActions.js';
+import {doMessageFetchAndGo} from '../../actions/messageActions.js';
 import {doCategoryFetch} from '../../actions/categoryActions.js';
 
 import './blogpage.scss';
@@ -42,7 +42,7 @@ class BlogPage extends React.Component {
 
     onChangePage(pageParam) {
         const { dispatch } = this.props
-        dispatch(doMessageFetch(pageParam));
+        dispatch(doMessageFetchAndGo(pageParam));
         scrollToTopPage();
     }
 

@@ -45,7 +45,7 @@ export const doCommentSavedError = makeActionCreator(COMMENT_SAVEDERROR, 'error'
 export function doCommentFetch(messageId, page) {
     return dispatch => {
         dispatch(doStartLoading());
-        let urlParam = getUrlParamsString(page, ['messageid=' + encodeURIComponent(messageId)])
+        let urlParam = getUrlParamsString(page, messageId ? ['messageid=' + encodeURIComponent(messageId)] : null);
 
         return fetch(COMMENT_URL + urlParam, {credentials: 'include'})
                     .then(c => c.json())

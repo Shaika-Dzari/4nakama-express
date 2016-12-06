@@ -7,20 +7,33 @@ var PagingParser = require('../utils/PagingParser');
 var db = require('../database/db.js');
 var config = require('../config/config.js');
 
+var DEFAULT_PAGE_SIZE = 10;
+
 router.get('/', (req, res, next) => {
     var mid = req.query.messageid;
+    var pagingParam = new PagingParser(req, DEFAULT_PAGE_SIZE);
 
-    if (!mid) {
+    var user = req.user;
+    var query = null;
+
+    if (!mid && (!user || user.role != 'admin')) {
         res.status(400).json({message: "Missing message's id"});
         return;
     }
 
-    db.any(Comment.ALL_BY_MESSAGEID, {messageid: mid}, (err, comments) => {
+    if (mid) {
+        query = Comment.ALL_BY_MESSAGEID;
+    } else if (pagingParam.direction() == 'next') {
+        query = Comment.ALL_BY_NEXTPAGE;
+    } else {
+        query = Comment.ALL_BY_PREVPAGE;
+    }
+
+    db.any(query, pagingParam.merge({messageid: mid}), (err, comments) => {
         if (err) next(err);
 
         res.json(comments);
     });
-
 });
 
 router.post('/', (req, res, next) => {

@@ -32,10 +32,10 @@ export default class DashboardPage extends React.Component {
                             <Link to="/dashboard/files">Fichiers</Link>
                         </div>
                         <div className="col-3 menu-item">
-                            <a href="#">Commentaires</a>
+                            <Link to="/dashboard/comments">Commentaires</Link>
                         </div>
                         <div className="col-3 menu-item">
-                            <a href="#">Histoires</a>
+                            <Link to="/dashboard/comments">Histoires</Link>
                         </div>
                     </div>
                 </div>

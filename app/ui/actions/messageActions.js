@@ -33,6 +33,16 @@ function makeActionCreator(type, ...argNames) {
     }
 }
 
+
+export function doMessageFetchAndGo(pageParams) {
+
+    return (dispatch) => {
+        let urlParam = getUrlParamsString(pageParams);
+        dispatch(push('/blog' + urlParam));
+        dispatch(doMessageFetch(pageParams));
+    }
+}
+
 export function doMessageFetch(pageParams) {
 
     return (dispatch, getState) => {
@@ -48,9 +58,7 @@ export function doMessageFetch(pageParams) {
                     if (msgs) {
                         msgs.forEach(m => m.bodyhtml = remarkable.render(m.body));
                     }
-                    dispatch(push('/blog' + urlParam));
                     dispatch(doMessagesReceive(msgs, pageParams));
-
                 });
     }
 }

@@ -1,18 +1,94 @@
 import React, {PropTypes} from 'react';
+import { connect } from 'react-redux';
+import LinkPager from '../../component/pager/linkpager.jsx';
+import {doCommentOperation, doCommentFetch} from '../../actions/commentActions.js';
 
 const mapStateToProps = (state, ownProps) => {
 
     return {
-        comments: state.comments.items,
+        items: state.comments.items,
         index: state.comments.index,
-        messageindex: state.comments.messageindex,
-        frommessageid: ownProps.messageId
+        messageindex: state.comments.messageindex
     };
 }
 
-const CommentAdmin = ({comments, index, frommessageid}) => {
+const CommentList = ({items, index}) => {
+
+    let rows = null;
+
+    if (items && index && index.length > 0) {
+        rows = index.map(i => {
+            let c = items[i];
+            return (
+                <tr key={'comment-' + c.id}>
+                    <td>{c.id}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            );
+        })
+    } else {
+        rows = <tr key={'comment-none'}><td colSpan="5">None</td></tr>
+    }
 
     return (
-        <div></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Text</th>
+                    <th>Message</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows}
+            </tbody>
+        </table>
     );
+};
+
+class CommentAdmin extends React.Component {
+
+    // ({comments, index, messageindex})
+
+    constructor(props) {
+        super(props);
+        this.onChangePage = this.onChangePage.bind(this);
+    }
+
+    onChangePage(pageParam) {
+        const { dispatch } = this.props
+        dispatch(doCommentFetch(pageParam));
+    }
+
+    componentDidMount() {
+        const { dispatch } = this.props
+        this.onChangePage(this.props.page);
+    }
+
+    render() {
+        let prevdate = null;
+        let nextdate = null;
+
+        if (this.props.items && this.props.index && this.props.index.length > 0) {
+            prevdate = this.props.items[this.props.index[0]].createdat;
+            nextdate = this.props.items[this.props.index[this.props.index.length - 1]].createdat;
+        }
+
+
+        return (
+            <div>
+                <CommentList items={this.props.items} index={this.props.index} />
+                <LinkPager size={10} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
+            </div>
+        );
+
+    }
 }
+
+
+export default connect(mapStateToProps)(CommentAdmin);

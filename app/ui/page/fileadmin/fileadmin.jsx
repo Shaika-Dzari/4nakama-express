@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
     return {
         items: state.files.items,
         index: state.files.index,
+        page: state.files.page,
         error: state.files.error || null
     }
 };
@@ -32,7 +33,7 @@ class FileAdmin extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(doFileFetch());
+        dispatch(doFileFetch(this.props.page));
     }
 
     onRemove(event) {
