@@ -39,7 +39,7 @@ export function doMessageFetch(pageParams) {
         dispatch(doStartLoading());
         let urlParam = getUrlParamsString(pageParams);
 
-        // console.log(MSG_URL + urlParam, pageParams);
+        //console.log('doMessageFetch >> /blog' + urlParam);
 
         return fetch(MSG_URL + urlParam, {credentials: 'include'})
                 .then(r => r.json())
@@ -48,7 +48,9 @@ export function doMessageFetch(pageParams) {
                     if (msgs) {
                         msgs.forEach(m => m.bodyhtml = remarkable.render(m.body));
                     }
+                    dispatch(push('/blog' + urlParam));
                     dispatch(doMessagesReceive(msgs, pageParams));
+
                 });
     }
 }

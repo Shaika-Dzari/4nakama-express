@@ -5,8 +5,9 @@ import FileUpload from '../../component/fileupload/fileupload.jsx';
 import ToggleBox from '../../component/togglebox/togglebox.jsx';
 import FileGrid from '../../component/filegrid/filegrid.jsx';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
-import DatePager from '../../component/pager/datepager.jsx';
+import LinkPager from '../../component/pager/linkpager.jsx';
 import PagingParam from '../../utils/PagingParam.js';
+import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
 
 import {doFileFetch, doFileCopyToStore, doFileDelete} from '../../actions/fileActions.js';
 
@@ -26,6 +27,7 @@ class FileAdmin extends React.Component {
         super(props);
         this.onRemove = this.onRemove.bind(this);
         this.onCopyToStore = this.onCopyToStore.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
     }
 
     componentDidMount() {
@@ -40,6 +42,14 @@ class FileAdmin extends React.Component {
         dispatch(doFileDelete(fileid));
     }
 
+
+    onChangePage(pageParam) {
+        const { dispatch } = this.props
+        dispatch(doFileFetch(pageParam));
+        scrollToTopPage();
+    }
+
+
     onCopyToStore(event) {
         event.preventDefault();
         let fileid = event.target.getAttribute('data-4n-id');
@@ -48,6 +58,13 @@ class FileAdmin extends React.Component {
     }
 
     render() {
+        let prevdate = null;
+        let nextdate = null;
+
+        if (this.props.items && this.props.index && this.props.index.length > 0) {
+            prevdate = this.props.items[this.props.index[0]].createdat;
+            nextdate = this.props.items[this.props.index[this.props.index.length - 1]].createdat;
+        }
 
         return (
             <div className="fileadmin">
@@ -60,7 +77,7 @@ class FileAdmin extends React.Component {
                     <FileGrid items={this.props.items} index={this.props.index} onRemove={this.onRemove} onCopyToStore={this.onCopyToStore} />
                 </div>
 
-                <DatePager items={this.props.items} index={this.props.index} fetchFunction={doFileFetch} size={15} />
+                <LinkPager size={15} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
             </div>
         );
     }

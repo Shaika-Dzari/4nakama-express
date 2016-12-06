@@ -9,6 +9,7 @@ var config = require('../config/config.js');
 
 router.get('/', (req, res, next) => {
     var mid = req.query.messageid;
+
     if (!mid) {
         res.status(400).json({message: "Missing message's id"});
         return;
@@ -20,35 +21,6 @@ router.get('/', (req, res, next) => {
         res.json(comments);
     });
 
-    /*
-    var mid = req.query.messageid;
-    var params = {};
-    var isLoggedIn = authUtils.isLoggedIn(req);
-
-    var pageParam = new PagingParser(req);
-
-    if (!mid && !isLoggedIn) {
-        next(new Error('unauthorized'));
-    }
-
-    if (mid)
-        params.messageId = mid;
-
-    if (isLoggedIn)
-        params.approved = 1;
-
-    params = pageParam.merge(params);
-
-    Comment.find(params)
-            .sort({createdAt: pageParam.sort()})
-            .limit(pageParam.size())
-            .select('-authorId')
-            .exec(function (err, comments) {
-                if (err) next(err);
-
-                res.json(comments);
-            });
-    */
 });
 
 router.post('/', (req, res, next) => {
@@ -95,36 +67,6 @@ router.post('/', (req, res, next) => {
         res.status(201).json(comment);
     });
 
-    /*
-    var user = req.user;
-    var commentBody = req.body;
-
-    var authorId = null;
-    var authorName = null;
-
-    if (user) {
-        authorId = user._id;
-        authorName = user.name;
-    } else if (commentBody.name) {
-        authorName = commentBody.name;
-    } else {
-        next(new Error("Missing name"));
-    }
-
-    var comment = new Comment({
-        text: commentBody.text,
-        authorId: authorId,
-        authorName: authorName,
-        messageId: commentBody.messageId,
-        approved: user ? 1 : 0
-    });
-
-    comment.save((serr, savedComment) => {
-        if (serr) next(serr);
-
-        res.json(savedComment);
-    });
-    */
 });
 
 router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
@@ -157,31 +99,6 @@ router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
     } else {
         res.status(400).json({message: 'Invalid operation'});
     }
-
-    /*
-    Comment.findById(cid, (err, comment) => {
-        if (err) next(err);
-
-        if (!comment) {
-            res.sendStatus(204).end();
-            return;
-        }
-
-        if (op == 'approve') {
-            comment.approve = 1;
-            comment.save((serr, savedComment) => {
-                if (serr) next(serr);
-
-                res.json(savedComment);
-            });
-
-        } else if (op == 'delete') {
-            comment.remove((eerr, comment) => {
-                res.sendStatus(204);
-            });
-        }
-    });
-    */
 
 });
 

@@ -24,18 +24,6 @@ router.get('/', function(req, res, next) {
         res.json(files);
     });
 
-    /*
-
-    File.find(pageParam.params())
-            .sort({createdAt: pageParam.sort()})
-            .limit(pageParam.size())
-            .select('-ownerId')
-            .exec(function (err, files) {
-                if (err) next(err);
-
-                res.json(files);
-            });
-*/
 });
 
 router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
@@ -72,18 +60,10 @@ router.post('/', authUtils.enforceLoggedIn, (req, res, next) => {
                 res.json(newFile);
             });
 
-            /*
-            newFile.save(function(serr, savedFile) {
-                if (serr) next(serr);
-
-                res.json(savedFile);
-            });
-            */
         });
 
 
     });
-    //res.json('OK');
 });
 
 

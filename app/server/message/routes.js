@@ -6,9 +6,7 @@ var htmlutils = require('../htmlutils');
 var PagingParser = require('../utils/PagingParser');
 var db = require('../database/db.js');
 
-var DEFAULT_PAGE_SIZE = 3;
-
-// GET messages (blog post)
+var DEFAULT_PAGE_SIZE = 5;
 
 router.get('/', function(req, res, next) {
 
@@ -33,17 +31,6 @@ router.get('/', function(req, res, next) {
         res.json(msgs);
     });
 
-    /*
-
-    Message.find(params)
-            .sort({createdAt: pagingParam.sort()})
-            .limit(pagingParam.size())
-            .select('-authorId')
-            .exec(function (err, mgs) {
-                if (err) next(err);
-                res.json(mgs);
-            });
-            */
 });
 
 router.get('/:messageid', function(req, res, next) {
@@ -61,12 +48,6 @@ router.get('/:messageid', function(req, res, next) {
         res.json(msg);
     });
 
-    /*
-    Message.findOne(params, '-authorId', function (err, msg) {
-        if (err) next(err);
-        res.json(msg);
-    });
-    */
 });
 
 /**
@@ -93,14 +74,6 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         m.id = data.id;
         res.json(m);
     });
-
-    /*
-    m.save(function(serr, savedMsg) {
-        if (serr) next(serr);
-
-        res.json(savedMsg);
-    });
-    */
 });
 
 
@@ -125,23 +98,6 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
         res.json(requestMessage);
     })
 
-    /*
-    Message.findOne({_id: id}, function (err, msg) {
-        if (err) next(err);
-
-        msg.text = requestMessage.text;
-        msg.title = requestMessage.title;
-        msg.prettyUrl = htmlutils.sanitizeUrl(requestMessage.prettyUrl);
-        msg.published = requestMessage.published || 0;
-        msg.categories = requestMessage.categories
-
-        msg.save(function(serr, savedMsg) {
-            if (serr) next(serr);
-
-            res.json(savedMsg);
-        });
-    });
-     */
 });
 
 module.exports = router;

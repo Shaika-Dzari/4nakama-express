@@ -29,6 +29,7 @@ const AppRoute = () => {
             <Router history={ history }>
                 <Route path="/" component={ PublicLayout }>
                     <IndexRoute component={ BlogPage } />
+                    <Route path="blog" component={ BlogPage } />
                     <Route path="login" component={ LoginPage } />
                     <Route path="blog/:messageId" component={ MessagePage } />
 

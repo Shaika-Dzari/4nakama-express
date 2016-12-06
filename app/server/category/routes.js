@@ -32,14 +32,6 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         res.status(201).json({id: data.id, name: name});
     });
 
-    /*
-    var newCategory = new Category({name: req.body.name});
-    newCategory.save(function(err, cat, nb) {
-        if (err) next(err);
-
-        res.status(201).json(cat);
-    })
-    */
 });
 
 

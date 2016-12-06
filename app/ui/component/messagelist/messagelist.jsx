@@ -1,7 +1,5 @@
 import React, {PropTypes} from 'react';
 import Message from '../message/message.jsx';
-import AlertBox from '../alertbox/alertbox.jsx';
-import Pager from '../pager/pager.jsx';
 
 const MessageList = ({messages, index, openMessage}) => {
 
@@ -14,9 +12,6 @@ const MessageList = ({messages, index, openMessage}) => {
         });
     }
 
-    // Change that!
-    var fromDate = new Date();
-    // onPrevious={this.onPreviousPage} onNext={this.onNextPage}
     return (
         <div>{msgs}</div>
     )

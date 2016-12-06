@@ -29,7 +29,7 @@ class PageHeader extends Component {
     render() {
 
         var links = [];
-        links.push(<IndexLink to="/" activeClassName="active" key="pagehead_1"><img src="/menu-blog-icon.jpg" /><span>Blog</span></IndexLink>);
+        links.push(<IndexLink to="/blog" activeClassName="active" key="pagehead_1"><img src="/menu-blog-icon.jpg" /><span>Blog</span></IndexLink>);
         links.push(<Link to="/ecriture" activeClassName="active" key="pagehead_2"><span>Histoire</span></Link>);
         links.push(<Link to="/projet" activeClassName="active" key="pagehead_3"><span>Projets</span></Link>);
         links.push(<Link to="/about" activeClassName="active" key="pagehead_4"><span>A Propos</span></Link>);
@@ -45,7 +45,7 @@ class PageHeader extends Component {
             <div className="site-header">
 
                 <h1 className="site-title">
-                    <Link to="/"><img src="/logo.jpg" alt="4n" />akama</Link>
+                    <Link to="/blog"><img src="/logo.jpg" alt="4n" />akama</Link>
                 </h1>
                 <h5>A whisper from my Ghost</h5>
 

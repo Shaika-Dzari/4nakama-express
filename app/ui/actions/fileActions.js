@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import makeActionCreator from './actionCreator.js';
 import FileUploadUtils from '../utils/FileUploadUtils.js';
@@ -70,6 +71,7 @@ export function doFileFetch(pageParams) {
                     .then(files => {
                         dispatch(doStopLoading());
                         dispatch(doFileReceived(files, pageParams));
+                        dispatch(push('/dashboard/files' + urlParams));
                     })
                     .catch(e => {
                         dispatch(doStopLoading());
