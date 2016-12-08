@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
-import { doChallenge } from '../actions/userActions.js'
+import { doChallenge } from '../actions/userActions.js';
 
 const mapStateToProps = (state, ownProps) => {
     return {

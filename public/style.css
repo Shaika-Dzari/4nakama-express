@@ -153,6 +153,14 @@ div.login {
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #dedede; }
+.comment-box {
+  margin: 20px 30px 30px 40px; }
+  .comment-box .frm {
+    padding: 5px 10px; }
+.messagepage-details {
+  margin: 0 10px; }
+  .messagepage-details .messagepage-comments {
+    margin: 20px 30px 30px 40px; }
 .onefile {
   border: 1px solid #ddd;
   background-color: #fbfbfb;

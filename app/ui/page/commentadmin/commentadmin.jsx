@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
     };
 }
 
-const CommentList = ({items, index}) => {
+const CommentList = ({items, index, callback}) => {
 
     let rows = null;
 
@@ -25,7 +25,10 @@ const CommentList = ({items, index}) => {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>
+                        <a href="#" onClick={callback} data-n4-op="approved">Approuved</a>
+                        <a href="#" onClick={callback} data-n4-op="delete">Delete</a>
+                    </td>
                 </tr>
             );
         })
@@ -58,6 +61,7 @@ class CommentAdmin extends React.Component {
     constructor(props) {
         super(props);
         this.onChangePage = this.onChangePage.bind(this);
+        this.doOneOperation = this.doOneOperation.bind(this);
     }
 
     onChangePage(pageParam) {
@@ -70,6 +74,12 @@ class CommentAdmin extends React.Component {
         this.onChangePage(this.props.page);
     }
 
+    doOneOperation(event) {
+        event.preventDefault();
+        let link = event.target;
+        console.log(link.dataset.n4Op);
+    }
+
     render() {
         let prevdate = null;
         let nextdate = null;
@@ -79,10 +89,9 @@ class CommentAdmin extends React.Component {
             nextdate = this.props.items[this.props.index[this.props.index.length - 1]].createdat;
         }
 
-
         return (
             <div>
-                <CommentList items={this.props.items} index={this.props.index} />
+                <CommentList items={this.props.items} index={this.props.index} callback={this.doOneOperation} />
                 <LinkPager size={10} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
             </div>
         );

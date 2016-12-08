@@ -28,7 +28,7 @@ const ALL_BY_PREVPAGE = "with previous_page as ( " +
 
 const ALL_BY_MESSAGEID = 'select * from comment where messageid = ${messageid} and approved = true order by createdat asc';
 const ONE_BY_ID = 'select * from comment where id = ${id}';
-const CREATE_ONE = 'insert into comment(body, authorname, authorid, messageid, approved) values(${body}, ${authorname}, ${authorid}, ${messageid}, ${approved}) returning id';
+const CREATE_ONE = 'insert into comment(body, authorname, email, authorid, messageid, approved) values(${body}, ${authorname}, ${authoremail}, ${authorid}, ${messageid}, ${approved}) returning id';
 const APPROVED_BY_ID = 'update comment set approved = TRUE where id = ${id}';
 const DELETE_BY_ID = 'delete from comment where id = ${id}';
 

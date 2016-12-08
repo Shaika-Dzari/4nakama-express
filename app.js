@@ -68,7 +68,7 @@ app.use(function(req, res, next) {
 
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something broke!').end();
+  res.status(500).json({err}).end();
 });
 
 // Pipe to index

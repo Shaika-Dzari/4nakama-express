@@ -45,7 +45,12 @@ router.get('/:messageid', function(req, res, next) {
     db.one(Message.ONE_BY_ID, {id: id}, (err, msg) => {
         if (err) next(err);
 
-        res.json(msg);
+        let response = {
+            data: msg,
+            total: msg && msg.length > 0 ? msg[0].total_count : null
+        }
+
+        res.json(response);
     });
 
 });

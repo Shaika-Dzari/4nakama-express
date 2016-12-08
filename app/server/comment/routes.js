@@ -43,6 +43,7 @@ router.post('/', (req, res, next) => {
 
     var authorId = null;
     var authorName = null;
+    var authorEmail = null;
 
     // Check offensive words
     // Bad, use another function.
@@ -55,10 +56,11 @@ router.post('/', (req, res, next) => {
     if (user) {
         authorId = user.id;
         authorName = user.username;
-    } else if (commentBody.name) {
+    } else if (commentBody.name && commentBody.email) {
         authorName = commentBody.name;
+        authorEmail = commentBody.email;
     } else {
-        next(new Error("Missing name"));
+        next(new Error("Missing name or email"));
     }
 
     if (!commentBody.messageId) {
@@ -66,11 +68,12 @@ router.post('/', (req, res, next) => {
     }
 
     var comment = {
-        body: commentBody,
+        body: commentBody.text,
         authorname: authorName,
+        authoremail: authorEmail,
         authorid: authorId,
         messageid: commentBody.messageId,
-        approved: user ? 1 : 0
+        approved: user ? true : false
     };
 
     db.insert(Comment.CREATE_ONE, comment, (err, data) => {

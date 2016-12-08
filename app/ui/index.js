@@ -5,7 +5,6 @@ import 'whatwg-fetch';
 
 import './index.scss';
 
-
 ReactDOM.render(
   <AppRoute />,
   document.getElementById('app')

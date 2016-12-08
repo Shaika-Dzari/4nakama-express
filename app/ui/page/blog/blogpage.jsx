@@ -29,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
         page: p,
         categories: state.categories.items,
         categoriesindex: state.categories.index,
-
+        total: state.messages.total
     }
 }
 
@@ -70,6 +70,7 @@ class BlogPage extends React.Component {
                         </div>
                         <div className="list-ctn">
                             <LinkPager size={5} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
+                            <span>{this.props.total}</span>
                         </div>
                     </div>
                     <div className="col-2">

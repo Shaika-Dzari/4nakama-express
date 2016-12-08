@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(695);
+	__webpack_require__(699);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29439,15 +29439,15 @@
 
 	var _messagepage2 = _interopRequireDefault(_messagepage);
 
-	var _fileadmin = __webpack_require__(670);
+	var _fileadmin = __webpack_require__(674);
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _commentadmin = __webpack_require__(682);
+	var _commentadmin = __webpack_require__(686);
 
 	var _commentadmin2 = _interopRequireDefault(_commentadmin);
 
-	var _createstore = __webpack_require__(683);
+	var _createstore = __webpack_require__(687);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -38157,8 +38157,8 @@
 	        messagesindex: state.messages.index,
 	        page: p,
 	        categories: state.categories.items,
-	        categoriesindex: state.categories.index
-
+	        categoriesindex: state.categories.index,
+	        total: state.messages.total
 	    };
 	};
 
@@ -38216,7 +38216,12 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'list-ctn' },
-	                        _react2.default.createElement(_linkpager2.default, { size: 5, prevdate: prevdate, nextdate: nextdate, callback: this.onChangePage })
+	                        _react2.default.createElement(_linkpager2.default, { size: 5, prevdate: prevdate, nextdate: nextdate, callback: this.onChangePage }),
+	                        _react2.default.createElement(
+	                            'span',
+	                            null,
+	                            this.props.total
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -71157,6 +71162,16 @@
 
 	var _commentActions = __webpack_require__(669);
 
+	var _commentbox = __webpack_require__(670);
+
+	var _commentbox2 = _interopRequireDefault(_commentbox);
+
+	var _comment = __webpack_require__(672);
+
+	var _comment2 = _interopRequireDefault(_comment);
+
+	__webpack_require__(673);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71196,6 +71211,18 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
+	            var commentlist = null;
+
+	            if (this.props.commentsindex && this.props.commentsindex.length > 0) {
+	                commentlist = this.props.commentsindex.map(function (i) {
+	                    var c = _this2.props.comments[i];
+	                    return _react2.default.createElement(_comment2.default, { key: 'comment-' + c.id, name: c.authorname, body: c.body });
+	                });
+	            } else {
+	                commentlist = 'No comment yet.';
+	            }
 
 	            return _react2.default.createElement(
 	                'div',
@@ -71203,7 +71230,17 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'col-10' },
-	                    _react2.default.createElement(_message2.default, this.props.message)
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'messagepage-details' },
+	                        _react2.default.createElement(_message2.default, this.props.message),
+	                        _react2.default.createElement(_commentbox2.default, { messageId: this.props.selectedid }),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'messagepage-comments' },
+	                            commentlist
+	                        )
+	                    )
 	                ),
 	                _react2.default.createElement('div', { className: 'col-2' })
 	            );
@@ -71224,7 +71261,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doCommentSavedError = exports.doCommentSaved = exports.doCommentReceive = exports.COMMENT_SAVEDERROR = exports.COMMENT_SAVED = exports.COMMENT_RECEIVE = undefined;
+	exports.doCommentTextKp = exports.doCommentNameKp = exports.doCommentEmailKp = exports.doCommentSavedError = exports.doCommentSaved = exports.doCommentReceive = exports.COMMENT_TEXT_KP = exports.COMMENT_NAME_KP = exports.COMMENT_EMAIL_KP = exports.COMMENT_SAVEDERROR = exports.COMMENT_SAVED = exports.COMMENT_RECEIVE = undefined;
 	exports.doCommentFetch = doCommentFetch;
 	exports.doCommentAdd = doCommentAdd;
 	exports.doCommentApprove = doCommentApprove;
@@ -71245,6 +71282,9 @@
 	var COMMENT_RECEIVE = exports.COMMENT_RECEIVE = 'COMMENT_RECEIVE';
 	var COMMENT_SAVED = exports.COMMENT_SAVED = 'COMMENT_SAVED';
 	var COMMENT_SAVEDERROR = exports.COMMENT_SAVEDERROR = 'COMMENT_SAVEDERROR';
+	var COMMENT_EMAIL_KP = exports.COMMENT_EMAIL_KP = 'COMMENT_EMAIL_KP';
+	var COMMENT_NAME_KP = exports.COMMENT_NAME_KP = 'COMMENT_NAME_KP';
+	var COMMENT_TEXT_KP = exports.COMMENT_TEXT_KP = 'COMMENT_TEXT_KP';
 
 	var COMMENT_URL = "/api/comments";
 
@@ -71277,6 +71317,10 @@
 	var doCommentSaved = exports.doCommentSaved = (0, _actionCreator2.default)(COMMENT_SAVED, 'comment');
 	var doCommentSavedError = exports.doCommentSavedError = (0, _actionCreator2.default)(COMMENT_SAVEDERROR, 'error');
 
+	var doCommentEmailKp = exports.doCommentEmailKp = (0, _actionCreator2.default)(COMMENT_EMAIL_KP, 'email');
+	var doCommentNameKp = exports.doCommentNameKp = (0, _actionCreator2.default)(COMMENT_NAME_KP, 'name');
+	var doCommentTextKp = exports.doCommentTextKp = (0, _actionCreator2.default)(COMMENT_TEXT_KP, 'text');
+
 	function doCommentFetch(messageId, page) {
 	    return function (dispatch) {
 	        dispatch((0, _navigationActions.doStartLoading)());
@@ -71303,15 +71347,21 @@
 	            return;
 	        }
 
+	        comment.messageId = messageId;
 	        var params = {
+	            headers: {
+	                'Accept': 'application/json',
+	                'Content-Type': 'application/json'
+	            },
 	            method: 'POST',
 	            body: JSON.stringify(comment),
 	            credentials: 'include'
 	        };
 
+	        console.log(params);
 	        dispatch((0, _navigationActions.doStartLoading)());
 
-	        return fetch(COMMENT_URL.replace(':messageId', messageId), params).then(c = c.json()).then(function (c) {
+	        return fetch(COMMENT_URL, params).then(c = c.json()).then(function (c) {
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            dispatch(doCommentSaved(c));
 	        }).catch(function (e) {
@@ -71345,19 +71395,232 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(538);
+
+	var _commentActions = __webpack_require__(669);
+
+	__webpack_require__(671);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	    var u = state.user ? state.user.connectedUser : null;
+	    var newcomment = state.comments.newcomment || {};
+	    return {
+	        user: u,
+	        name: newcomment.name || '',
+	        email: newcomment.email || '',
+	        text: newcomment.text || '',
+	        messageId: ownProps.messageId
+	    };
+	};
+
+	var CommentBox = function (_React$Component) {
+	    _inherits(CommentBox, _React$Component);
+
+	    function CommentBox(props) {
+	        _classCallCheck(this, CommentBox);
+
+	        var _this = _possibleConstructorReturn(this, (CommentBox.__proto__ || Object.getPrototypeOf(CommentBox)).call(this, props));
+
+	        _this.onEmailChange = _this.onEmailChange.bind(_this);
+	        _this.onNameChange = _this.onNameChange.bind(_this);
+	        _this.onTextChange = _this.onTextChange.bind(_this);
+	        _this.onSave = _this.onSave.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(CommentBox, [{
+	        key: 'onEmailChange',
+	        value: function onEmailChange(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _commentActions.doCommentEmailKp)(event.target.value));
+	        }
+	    }, {
+	        key: 'onNameChange',
+	        value: function onNameChange(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _commentActions.doCommentNameKp)(event.target.value));
+	        }
+	    }, {
+	        key: 'onTextChange',
+	        value: function onTextChange(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            dispatch((0, _commentActions.doCommentTextKp)(event.target.value));
+	        }
+	    }, {
+	        key: 'onSave',
+	        value: function onSave(event) {
+	            event.preventDefault();
+	            var dispatch = this.props.dispatch;
+
+	            var comment = {
+	                name: this.props.name,
+	                email: this.props.email,
+	                text: this.props.text
+	            };
+
+	            dispatch((0, _commentActions.doCommentAdd)(this.props.messageId, comment));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var a = null;
+
+	            if (!this.props.user) {
+	                a = _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'comment-name' },
+	                        'Name'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Your name', value: this.props.name, onChange: this.onNameChange }),
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'comment-email' },
+	                        'Email'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', id: 'comment-email', placeholder: 'Email (will not be published)', value: this.props.email, onChange: this.onEmailChange })
+	                );
+	            } else {
+	                a = _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'Connected as ',
+	                    this.props.user.username
+	                );
+	            }
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'comment-box' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'frm' },
+	                    a,
+	                    _react2.default.createElement(
+	                        'label',
+	                        { htmlFor: 'comment-body' },
+	                        'Your Comment'
+	                    ),
+	                    _react2.default.createElement('textarea', { name: 'commentbody', id: 'comment-body', rows: '4', value: this.props.text, onChange: this.onTextChange }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'right' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.onSave },
+	                            'Save'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CommentBox;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CommentBox);
+
+/***/ },
+/* 671 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 672 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Comment = function Comment(_ref) {
+	    var name = _ref.name;
+	    var body = _ref.body;
+
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "box" },
+	        _react2.default.createElement(
+	            "div",
+	            { className: "body" },
+	            _react2.default.createElement(
+	                "p",
+	                null,
+	                body
+	            )
+	        ),
+	        _react2.default.createElement(
+	            "div",
+	            { className: "footer right" },
+	            "By ",
+	            name
+	        )
+	    );
+	};
+
+	exports.default = Comment;
+
+/***/ },
+/* 673 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 674 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _reactRouter = __webpack_require__(470);
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileupload = __webpack_require__(671);
+	var _fileupload = __webpack_require__(675);
 
 	var _fileupload2 = _interopRequireDefault(_fileupload);
 
-	var _togglebox = __webpack_require__(677);
+	var _togglebox = __webpack_require__(681);
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
-	var _filegrid = __webpack_require__(678);
+	var _filegrid = __webpack_require__(682);
 
 	var _filegrid2 = _interopRequireDefault(_filegrid);
 
@@ -71375,9 +71638,9 @@
 
 	var _UrlParamUtils = __webpack_require__(639);
 
-	var _fileActions = __webpack_require__(672);
+	var _fileActions = __webpack_require__(676);
 
-	__webpack_require__(681);
+	__webpack_require__(685);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71479,7 +71742,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileAdmin);
 
 /***/ },
-/* 671 */
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71496,17 +71759,17 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileActions = __webpack_require__(672);
+	var _fileActions = __webpack_require__(676);
 
-	var _FileUploadUtils = __webpack_require__(673);
+	var _FileUploadUtils = __webpack_require__(677);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _onefile = __webpack_require__(674);
+	var _onefile = __webpack_require__(678);
 
 	var _onefile2 = _interopRequireDefault(_onefile);
 
-	__webpack_require__(676);
+	__webpack_require__(680);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71638,7 +71901,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileUpload);
 
 /***/ },
-/* 672 */
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71662,7 +71925,7 @@
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
-	var _FileUploadUtils = __webpack_require__(673);
+	var _FileUploadUtils = __webpack_require__(677);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
@@ -71749,7 +72012,7 @@
 	}
 
 /***/ },
-/* 673 */
+/* 677 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71851,7 +72114,7 @@
 	exports.default = FileUploaderUtils;
 
 /***/ },
-/* 674 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71864,7 +72127,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(675);
+	__webpack_require__(679);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71946,19 +72209,19 @@
 	exports.default = OneFile;
 
 /***/ },
-/* 675 */
+/* 679 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 676 */
+/* 680 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 677 */
+/* 681 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72043,7 +72306,7 @@
 	exports.default = ToggleBox;
 
 /***/ },
-/* 678 */
+/* 682 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72056,11 +72319,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _filegriditem = __webpack_require__(679);
+	var _filegriditem = __webpack_require__(683);
 
 	var _filegriditem2 = _interopRequireDefault(_filegriditem);
 
-	__webpack_require__(680);
+	__webpack_require__(684);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72092,7 +72355,7 @@
 	exports.default = FileGrid;
 
 /***/ },
-/* 679 */
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72172,19 +72435,19 @@
 	exports.default = FileGridItem;
 
 /***/ },
-/* 680 */
+/* 684 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 681 */
+/* 685 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 682 */
+/* 686 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72227,6 +72490,7 @@
 	var CommentList = function CommentList(_ref) {
 	    var items = _ref.items;
 	    var index = _ref.index;
+	    var callback = _ref.callback;
 
 
 	    var rows = null;
@@ -72245,7 +72509,20 @@
 	                _react2.default.createElement('td', null),
 	                _react2.default.createElement('td', null),
 	                _react2.default.createElement('td', null),
-	                _react2.default.createElement('td', null)
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: callback, 'data-n4-op': 'approved' },
+	                        'Approuved'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#', onClick: callback, 'data-n4-op': 'delete' },
+	                        'Delete'
+	                    )
+	                )
 	            );
 	        });
 	    } else {
@@ -72315,6 +72592,7 @@
 	        var _this = _possibleConstructorReturn(this, (CommentAdmin.__proto__ || Object.getPrototypeOf(CommentAdmin)).call(this, props));
 
 	        _this.onChangePage = _this.onChangePage.bind(_this);
+	        _this.doOneOperation = _this.doOneOperation.bind(_this);
 	        return _this;
 	    }
 
@@ -72333,6 +72611,13 @@
 	            this.onChangePage(this.props.page);
 	        }
 	    }, {
+	        key: 'doOneOperation',
+	        value: function doOneOperation(event) {
+	            event.preventDefault();
+	            var link = event.target;
+	            console.log(link.dataset.n4Op);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var prevdate = null;
@@ -72346,7 +72631,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(CommentList, { items: this.props.items, index: this.props.index }),
+	                _react2.default.createElement(CommentList, { items: this.props.items, index: this.props.index, callback: this.doOneOperation }),
 	                _react2.default.createElement(_linkpager2.default, { size: 10, prevdate: prevdate, nextdate: nextdate, callback: this.onChangePage })
 	            );
 	        }
@@ -72358,7 +72643,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CommentAdmin);
 
 /***/ },
-/* 683 */
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72371,15 +72656,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(684);
+	var _reduxThunk = __webpack_require__(688);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(685);
+	var _rootreducers = __webpack_require__(689);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(694);
+	var _ActionsLogger = __webpack_require__(698);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -72394,7 +72679,7 @@
 	exports.default = store;
 
 /***/ },
-/* 684 */
+/* 688 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72422,7 +72707,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 685 */
+/* 689 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72435,19 +72720,19 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(686);
+	var _messageReducers = __webpack_require__(690);
 
-	var _categoryReducers = __webpack_require__(687);
+	var _categoryReducers = __webpack_require__(691);
 
-	var _navigationReducers = __webpack_require__(688);
+	var _navigationReducers = __webpack_require__(692);
 
-	var _userReducers = __webpack_require__(689);
+	var _userReducers = __webpack_require__(693);
 
-	var _fileReducers = __webpack_require__(690);
+	var _fileReducers = __webpack_require__(694);
 
-	var _commentReducers = __webpack_require__(692);
+	var _commentReducers = __webpack_require__(696);
 
-	var _statisticReducers = __webpack_require__(693);
+	var _statisticReducers = __webpack_require__(697);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -72464,7 +72749,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 686 */
+/* 690 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72510,20 +72795,25 @@
 	        switch (action.type) {
 
 	            case _messageActions.MSG_LIST_RECEIVE:
-
+	                // DEAL with total
 	                var msgList = {};
 	                var msgIdx = [];
+	                var totalMessages = null;
 
 	                if (action.messages) {
 	                    action.messages.forEach(function (m) {
 	                        var id = m.id;
 	                        msgList[id] = m;
 	                        msgIdx.push(id);
+
+	                        if (!totalMessages) {
+	                            totalMessages = m.total_count;
+	                        }
 	                    });
 	                }
 
 	                return {
-	                    v: Object.assign({}, state, { items: msgList, index: msgIdx, page: action.page })
+	                    v: Object.assign({}, state, { items: msgList, index: msgIdx, page: action.page, total: totalMessages })
 	                };
 
 	            case _messageActions.MSG_OPEN:
@@ -72604,7 +72894,7 @@
 	}
 
 /***/ },
-/* 687 */
+/* 691 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72678,7 +72968,7 @@
 	}
 
 /***/ },
-/* 688 */
+/* 692 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72707,7 +72997,7 @@
 	}
 
 /***/ },
-/* 689 */
+/* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72740,7 +73030,7 @@
 	}
 
 /***/ },
-/* 690 */
+/* 694 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72754,9 +73044,9 @@
 	exports.fileReducers = fileReducers;
 	exports.fileUploadReducers = fileUploadReducers;
 
-	var _fileActions = __webpack_require__(672);
+	var _fileActions = __webpack_require__(676);
 
-	var _IndexReducer = __webpack_require__(691);
+	var _IndexReducer = __webpack_require__(695);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -72851,7 +73141,7 @@
 	}
 
 /***/ },
-/* 691 */
+/* 695 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72880,7 +73170,7 @@
 	}
 
 /***/ },
-/* 692 */
+/* 696 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72892,14 +73182,14 @@
 
 	var _commentActions = __webpack_require__(669);
 
-	var _IndexReducer = __webpack_require__(691);
+	var _IndexReducer = __webpack_require__(695);
 
 	var sortComment = function sortComment(c0, c1) {
 	    return c0.createdat.getTime() - c1.createdat.getTime();
 	};
 
 	function commentReducers() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [] } : arguments[0];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [], newcomment: {} } : arguments[0];
 	    var action = arguments[1];
 
 	    switch (action.type) {
@@ -72908,13 +73198,20 @@
 	            receivedItems['page'] = action.page;
 	            return Object.assign({}, state, receivedItems);
 
+	        case _commentActions.COMMENT_EMAIL_KP:
+	        case _commentActions.COMMENT_NAME_KP:
+	        case _commentActions.COMMENT_TEXT_KP:
+	            var anewcomment = Object.assign({}, state.newcomment, action);
+	            delete anewcomment.type;
+	            return Object.assign({}, state, { newcomment: anewcomment });
+
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ },
-/* 693 */
+/* 697 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72939,7 +73236,7 @@
 	}
 
 /***/ },
-/* 694 */
+/* 698 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72961,7 +73258,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 695 */
+/* 699 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

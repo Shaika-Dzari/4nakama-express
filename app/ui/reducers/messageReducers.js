@@ -25,19 +25,24 @@ export function messageReducers(state = {items: {}, index: []}, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
-
+         // DEAL with total
             let msgList = {};
             let msgIdx = [];
+            let totalMessages = null;
 
             if (action.messages) {
                 action.messages.forEach(m => {
                     let id = m.id;
                     msgList[id] = m;
                     msgIdx.push(id);
+
+                    if (!totalMessages) {
+                        totalMessages = m.total_count;
+                    }
                 });
             }
 
-            return Object.assign({}, state, {items: msgList, index: msgIdx, page: action.page});
+            return Object.assign({}, state, {items: msgList, index: msgIdx, page: action.page, total: totalMessages});
 
         case MSG_OPEN:
             return Object.assign({}, state, {selectedid: action.messageid});

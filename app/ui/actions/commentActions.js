@@ -6,6 +6,9 @@ import { getUrlParamsString } from '../utils/UrlParamUtils.js';
 export const COMMENT_RECEIVE = 'COMMENT_RECEIVE';
 export const COMMENT_SAVED = 'COMMENT_SAVED';
 export const COMMENT_SAVEDERROR = 'COMMENT_SAVEDERROR';
+export const COMMENT_EMAIL_KP = 'COMMENT_EMAIL_KP';
+export const COMMENT_NAME_KP = 'COMMENT_NAME_KP';
+export const COMMENT_TEXT_KP = 'COMMENT_TEXT_KP';
 
 const COMMENT_URL = "/api/comments";
 
@@ -42,6 +45,10 @@ export const doCommentReceive = makeActionCreator(COMMENT_RECEIVE, 'comments', '
 export const doCommentSaved = makeActionCreator(COMMENT_SAVED, 'comment');
 export const doCommentSavedError = makeActionCreator(COMMENT_SAVEDERROR, 'error');
 
+export const doCommentEmailKp = makeActionCreator(COMMENT_EMAIL_KP, 'email');
+export const doCommentNameKp = makeActionCreator(COMMENT_NAME_KP, 'name');
+export const doCommentTextKp = makeActionCreator(COMMENT_TEXT_KP, 'text');
+
 export function doCommentFetch(messageId, page) {
     return dispatch => {
         dispatch(doStartLoading());
@@ -69,15 +76,21 @@ export function doCommentAdd(messageId, comment) {
             return;
         }
 
+        comment.messageId = messageId;
         let params = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             method: 'POST',
             body: JSON.stringify(comment),
             credentials: 'include'
         };
 
+        console.log(params);
         dispatch(doStartLoading());
 
-        return fetch(COMMENT_URL.replace(':messageId', messageId), params)
+        return fetch(COMMENT_URL, params)
                     .then(c = c.json())
                     .then(c => {
                         dispatch(doStopLoading());
