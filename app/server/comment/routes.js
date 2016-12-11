@@ -3,7 +3,8 @@ var router = express.Router();
 var passport = require('passport');
 var Comment = require('./comment');
 var authUtils = require('../authutils');
-var PagingParser = require('../utils/PagingParser');
+var PagingParser = require('../utils/PagingParser.js');
+var ApiError = require('../utils/ApiError.js');
 var db = require('../database/db.js');
 var config = require('../config/config.js');
 
@@ -47,11 +48,16 @@ router.post('/', (req, res, next) => {
 
     // Check offensive words
     // Bad, use another function.
-    let idx = config.comment.rejected.indexOf(commentBody);
+    let idx = config.comment.rejected.indexOf(commentBody.text);
     if (idx != -1) {
+        console.log('Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.');
+        return next(new ApiError(400, 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'));
+/*
         res.status(400).json({'message': 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'});
-        return;
+        return;*/
     }
+
+    console.log('after');
 
     if (user) {
         authorId = user.id;

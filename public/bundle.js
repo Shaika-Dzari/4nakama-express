@@ -71361,10 +71361,13 @@
 	        console.log(params);
 	        dispatch((0, _navigationActions.doStartLoading)());
 
-	        return fetch(COMMENT_URL, params).then(c = c.json()).then(function (c) {
+	        return fetch(COMMENT_URL, params).then(function (c) {
+	            return c.json();
+	        }).then(function (c) {
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            dispatch(doCommentSaved(c));
 	        }).catch(function (e) {
+	            console.log(e);
 	            dispatch((0, _navigationActions.doStopLoading)());
 	            dispatch(doCommentSavedError(e));
 	        });

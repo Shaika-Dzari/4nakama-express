@@ -66,11 +66,6 @@ app.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).json({err}).end();
-});
-
 // Pipe to index
 app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
     console.log('redirecting to index.html...')
@@ -80,6 +75,18 @@ app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
 
 // All API routes
 app.use('/api', require('./app/server/routes.js'));
+
+
+app.use(function(err, req, res, next) {
+
+  if (err.name == 'ApiError') {
+      console.log(err.httpCode, err.message);
+      res.status(err.httpCode).json({message: err.message}).end();
+  } else {
+      console.log(err);
+      res.status(500).json({message: 'Unexpected error.'}).end();
+  }
+});
 
 // ----------------------------------------------------------------------------
 // Check storage

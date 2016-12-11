@@ -91,12 +91,13 @@ export function doCommentAdd(messageId, comment) {
         dispatch(doStartLoading());
 
         return fetch(COMMENT_URL, params)
-                    .then(c = c.json())
+                    .then(c => c.json())
                     .then(c => {
                         dispatch(doStopLoading());
                         dispatch(doCommentSaved(c));
                     })
                     .catch(e => {
+                        console.log(e);
                         dispatch(doStopLoading());
                         dispatch(doCommentSavedError(e));
                     });
