@@ -304,6 +304,10 @@ table {
   table td, table th {
     padding: 1rem;
     text-align: left; }
+  table td.cell-100 {
+    width: 100px; }
+  table td.cell-200 {
+    width: 200px; }
 
 a.link-close {
   display: inline-block;

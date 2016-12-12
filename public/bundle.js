@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(699);
+	__webpack_require__(700);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29419,35 +29419,35 @@
 
 	var _blogpage2 = _interopRequireDefault(_blogpage);
 
-	var _dashboardpage = __webpack_require__(643);
+	var _dashboardpage = __webpack_require__(645);
 
 	var _dashboardpage2 = _interopRequireDefault(_dashboardpage);
 
-	var _loginpage = __webpack_require__(649);
+	var _loginpage = __webpack_require__(650);
 
 	var _loginpage2 = _interopRequireDefault(_loginpage);
 
-	var _messageadmin = __webpack_require__(653);
+	var _messageadmin = __webpack_require__(654);
 
 	var _messageadmin2 = _interopRequireDefault(_messageadmin);
 
-	var _messageeditor = __webpack_require__(657);
+	var _messageeditor = __webpack_require__(658);
 
 	var _messageeditor2 = _interopRequireDefault(_messageeditor);
 
-	var _messagepage = __webpack_require__(668);
+	var _messagepage = __webpack_require__(669);
 
 	var _messagepage2 = _interopRequireDefault(_messagepage);
 
-	var _fileadmin = __webpack_require__(674);
+	var _fileadmin = __webpack_require__(675);
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _commentadmin = __webpack_require__(686);
+	var _commentadmin = __webpack_require__(687);
 
 	var _commentadmin2 = _interopRequireDefault(_commentadmin);
 
-	var _createstore = __webpack_require__(687);
+	var _createstore = __webpack_require__(688);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -37874,8 +37874,10 @@
 	});
 	exports.doStartLoading = doStartLoading;
 	exports.doStopLoading = doStopLoading;
+	exports.doRaiseGlobalError = doRaiseGlobalError;
 	var STARTLOADING = exports.STARTLOADING = 'STARTLOADING';
 	var STOPLOADING = exports.STOPLOADING = 'STOPLOADING';
+	var GLOBAL_ERROR = exports.GLOBAL_ERROR = 'GLOBAL_ERROR';
 
 	function doStartLoading() {
 	    return {
@@ -37886,6 +37888,13 @@
 	function doStopLoading() {
 	    return {
 	        type: STOPLOADING
+	    };
+	}
+
+	function doRaiseGlobalError(error) {
+	    return {
+	        type: GLOBAL_ERROR,
+	        error: error
 	    };
 	}
 
@@ -38127,13 +38136,13 @@
 
 	var _PagingParam2 = _interopRequireDefault(_PagingParam);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
 
 	var _messageActions = __webpack_require__(640);
 
 	var _categoryActions = __webpack_require__(641);
 
-	__webpack_require__(642);
+	__webpack_require__(644);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38180,7 +38189,7 @@
 	            var dispatch = this.props.dispatch;
 
 	            dispatch((0, _messageActions.doMessageFetchAndGo)(pageParam));
-	            (0, _UrlParamUtils.scrollToTopPage)();
+	            (0, _HtmlUtils.scrollToTopPage)();
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -48962,6 +48971,7 @@
 	});
 	exports.getUrlParamsString = getUrlParamsString;
 	exports.scrollToTopPage = scrollToTopPage;
+	exports.escapeHTML = escapeHTML;
 	function getUrlParamsString(pagingParam, additionalParams) {
 	    var body = [];
 	    var urlParams = '';
@@ -48999,6 +49009,10 @@
 	    }
 	}
 
+	function escapeHTML(html) {
+	    return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+	}
+
 /***/ },
 /* 640 */
 /***/ function(module, exports, __webpack_require__) {
@@ -49022,7 +49036,7 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
 
 	var _remarkable = __webpack_require__(578);
 
@@ -49069,7 +49083,7 @@
 	function doMessageFetchAndGo(pageParams) {
 
 	    return function (dispatch) {
-	        var urlParam = (0, _UrlParamUtils.getUrlParamsString)(pageParams);
+	        var urlParam = (0, _HtmlUtils.getUrlParamsString)(pageParams);
 	        dispatch((0, _reactRouterRedux.push)('/blog' + urlParam));
 	        dispatch(doMessageFetch(pageParams));
 	    };
@@ -49079,7 +49093,7 @@
 
 	    return function (dispatch, getState) {
 	        dispatch((0, _navigationActions.doStartLoading)());
-	        var urlParam = (0, _UrlParamUtils.getUrlParamsString)(pageParams);
+	        var urlParam = (0, _HtmlUtils.getUrlParamsString)(pageParams);
 
 	        //console.log('doMessageFetch >> /blog' + urlParam);
 
@@ -49184,100 +49198,175 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.CATEGORY_ERROR = exports.CATEGORY_UPDATED = exports.CATEGORY_RECEIVE = exports.CATEGORY_FETCH = undefined;
+	exports.doCategoryError = exports.doCategoryUpdated = exports.doCategoryReceive = exports.CATEGORY_ERROR = exports.CATEGORY_UPDATED = exports.CATEGORY_RECEIVE = exports.CATEGORY_FETCH = undefined;
 	exports.doCategoryFetch = doCategoryFetch;
-	exports.doCategoryReceive = doCategoryReceive;
-	exports.doCategoryUpdated = doCategoryUpdated;
-	exports.doCategoryError = doCategoryError;
 	exports.doCategorySave = doCategorySave;
 
-	__webpack_require__(564);
+	var _FetchUtils = __webpack_require__(642);
 
-	var _navigationActions = __webpack_require__(565);
+	var FetchUtils = _interopRequireWildcard(_FetchUtils);
+
+	var _actionCreator = __webpack_require__(643);
+
+	var _actionCreator2 = _interopRequireDefault(_actionCreator);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var CATEGORY_URL = '/api/categories';
 
 	var CATEGORY_FETCH = exports.CATEGORY_FETCH = 'CATEGORY_FETCH';
 	var CATEGORY_RECEIVE = exports.CATEGORY_RECEIVE = 'CATEGORY_RECEIVE';
 	var CATEGORY_UPDATED = exports.CATEGORY_UPDATED = 'CATEGORY_UPDATED';
 	var CATEGORY_ERROR = exports.CATEGORY_ERROR = 'CATEGORY_ERROR';
 
-	var CATEGORY_URL = '/api/categories';
+	var doCategoryReceive = exports.doCategoryReceive = (0, _actionCreator2.default)(CATEGORY_RECEIVE, 'categories');
+	var doCategoryUpdated = exports.doCategoryUpdated = (0, _actionCreator2.default)(CATEGORY_UPDATED, 'category');
+	var doCategoryError = exports.doCategoryError = (0, _actionCreator2.default)(CATEGORY_ERROR, 'error');
 
 	function doCategoryFetch() {
+
 	    return function (dispatch, getState) {
 	        var cs = getState().categories.index;
 
 	        if (!cs || cs.length == 0) {
 
-	            dispatch((0, _navigationActions.doStartLoading)());
-
-	            return fetch(CATEGORY_URL, { credentials: 'include' }).then(function (r) {
-	                return r.json();
-	            }).then(function (cats) {
-	                dispatch((0, _navigationActions.doStopLoading)());
-	                dispatch(doCategoryReceive(cats));
-	            });
+	            return FetchUtils.get(dispatch, CATEGORY_URL, {}, doCategoryReceive, doCategoryError);
 	        }
 	    };
 	}
 
-	function doCategoryReceive(categories) {
-	    return {
-	        type: CATEGORY_RECEIVE,
-	        categories: categories
-	    };
-	}
-
-	function doCategoryUpdated(category) {
-	    return {
-	        type: CATEGORY_UPDATED,
-	        category: category
-	    };
-	}
-
-	function doCategoryError(error) {
-	    return {
-	        type: CATEGORY_ERROR,
-	        error: error
-	    };
-	}
-
 	function doCategorySave(category) {
+	    var cid = category.id;
+	    var url = CATEGORY_URL + (cid === 'new' ? '' : '/' + cid);
+
 	    return function (dispatch) {
-	        dispatch((0, _navigationActions.doStartLoading)());
-	        var cid = category.id;
-	        var url = CATEGORY_URL + (cid === 'new' ? '' : '/' + cid);
-	        var protocol = cid === 'new' ? 'POST' : 'PUT';
-
-	        var params = {
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'
-	            },
-	            method: protocol,
-	            body: JSON.stringify(category),
-	            credentials: 'include'
-	        };
-
-	        return fetch(url, params).then(function (r) {
-	            return r.json();
-	        }).then(function (c) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCategoryUpdated(c));
-	        }).catch(function (e) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCategoryError(e));
-	        });
+	        if (cid === 'new') {
+	            return FetchUtils.post(dispatch, url, category, doCategoryUpdated, doCategoryError);
+	        } else {
+	            return FetchUtils.put(dispatch, url, category, doCategoryUpdated, doCategoryError);
+	        }
 	    };
 	}
 
 /***/ },
 /* 642 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.get = get;
+	exports.post = post;
+	exports.put = put;
+
+	__webpack_require__(564);
+
+	var _navigationActions = __webpack_require__(565);
+
+	function isObject(obj) {
+	    return obj === Object(obj);
+	}
+
+	function get(dispatch, url, option, successCallback, errorCallback) {
+
+	    return fetch(url, option).then(function (response) {
+	        dispatch((0, _navigationActions.doStopLoading)());
+	        var ok = response.ok;
+	        dispatch((0, _navigationActions.doStopLoading)());
+
+	        response.json().then(function (j) {
+
+	            if (ok) {
+	                dispatch(successCallback(j));
+	            } else {
+	                dispatch(errorCallback(j));
+	            }
+	        });
+	    }).catch(function (e) {
+	        dispatch((0, _navigationActions.doStopLoading)());
+	        dispatch((0, _navigationActions.doRaiseGlobalError)(e));
+	    });
+	}
+
+	function saveOrUpdate(dispatch, operation, url, obj, successCallback, errorCallback) {
+
+	    var isJsonObject = isObject(obj);
+	    var val = isJsonObject ? JSON.stringify(obj) : obj;
+	    var headers = isJsonObject ? { 'Accept': 'application/json', 'Content-Type': 'application/json' } : { "Content-Type": "application/x-www-form-urlencoded" };
+
+	    var opts = {
+	        headers: headers,
+	        method: operation,
+	        body: val,
+	        credentials: 'include'
+	    };
+
+	    return fetch(url, opts).then(function (response) {
+	        dispatch((0, _navigationActions.doStopLoading)());
+	        var ok = response.ok;
+
+	        response.json().then(function (j) {
+
+	            if (ok) {
+	                dispatch(successCallback(j));
+	            } else {
+	                dispatch(errorCallback(j));
+	            }
+	        });
+	    }).catch(function (e) {
+	        dispatch((0, _navigationActions.doStopLoading)());
+	        dispatch((0, _navigationActions.doRaiseGlobalError)(e));
+	    });
+	}
+
+	function post(dispatch, url, obj, successCallback, errorCallback) {
+	    return saveOrUpdate(dispatch, 'POST', url, obj, successCallback, errorCallback);
+	}
+
+	function put(dispatch, url, obj, successCallback, errorCallback) {
+	    return saveOrUpdate(dispatch, 'PUT', url, obj, successCallback, errorCallback);
+	}
+
+/***/ },
+/* 643 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = makeActionCreator;
+	function makeActionCreator(type) {
+	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        argNames[_key - 1] = arguments[_key];
+	    }
+
+	    return function () {
+	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	            args[_key2] = arguments[_key2];
+	        }
+
+	        var action = { type: type };
+	        argNames.forEach(function (arg, index) {
+	            action[argNames[index]] = args[index];
+	        });
+	        return action;
+	    };
+	}
+
+/***/ },
+/* 644 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 643 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49294,11 +49383,11 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _dashboardcontent = __webpack_require__(644);
+	var _dashboardcontent = __webpack_require__(646);
 
 	var _dashboardcontent2 = _interopRequireDefault(_dashboardcontent);
 
-	__webpack_require__(648);
+	__webpack_require__(649);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49390,7 +49479,7 @@
 	exports.default = DashboardPage;
 
 /***/ },
-/* 644 */
+/* 646 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49407,9 +49496,9 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _statisticActions = __webpack_require__(645);
+	var _statisticActions = __webpack_require__(647);
 
-	__webpack_require__(647);
+	__webpack_require__(648);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49540,7 +49629,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(DashboardContent);
 
 /***/ },
-/* 645 */
+/* 647 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49556,7 +49645,7 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _actionCreator = __webpack_require__(646);
+	var _actionCreator = __webpack_require__(643);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
@@ -49588,40 +49677,6 @@
 	function doStatsRefresh() {}
 
 /***/ },
-/* 646 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = makeActionCreator;
-	function makeActionCreator(type) {
-	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        argNames[_key - 1] = arguments[_key];
-	    }
-
-	    return function () {
-	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	            args[_key2] = arguments[_key2];
-	        }
-
-	        var action = { type: type };
-	        argNames.forEach(function (arg, index) {
-	            action[argNames[index]] = args[index];
-	        });
-	        return action;
-	    };
-	}
-
-/***/ },
-/* 647 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 648 */
 /***/ function(module, exports) {
 
@@ -49629,6 +49684,12 @@
 
 /***/ },
 /* 649 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 650 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49647,13 +49708,13 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(650);
+	var _alertbox = __webpack_require__(651);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
 	var _userActions = __webpack_require__(563);
 
-	__webpack_require__(652);
+	__webpack_require__(653);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49744,7 +49805,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 /***/ },
-/* 650 */
+/* 651 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49757,7 +49818,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(651);
+	__webpack_require__(652);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49785,12 +49846,6 @@
 	exports.default = AlertBox;
 
 /***/ },
-/* 651 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 652 */
 /***/ function(module, exports) {
 
@@ -49798,6 +49853,12 @@
 
 /***/ },
 /* 653 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49818,7 +49879,7 @@
 
 	var _messageActions = __webpack_require__(640);
 
-	var _table = __webpack_require__(654);
+	var _table = __webpack_require__(655);
 
 	var _table2 = _interopRequireDefault(_table);
 
@@ -49826,7 +49887,7 @@
 
 	var _PagingParam2 = _interopRequireDefault(_PagingParam);
 
-	var _datepager = __webpack_require__(655);
+	var _datepager = __webpack_require__(656);
 
 	var _datepager2 = _interopRequireDefault(_datepager);
 
@@ -49943,7 +50004,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouter.withRouter)(MessageAdmin));
 
 /***/ },
-/* 654 */
+/* 655 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50057,7 +50118,7 @@
 	exports.default = Table;
 
 /***/ },
-/* 655 */
+/* 656 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50074,7 +50135,7 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _pager = __webpack_require__(656);
+	var _pager = __webpack_require__(657);
 
 	var _pager2 = _interopRequireDefault(_pager);
 
@@ -50082,7 +50143,7 @@
 
 	var _PagingParam2 = _interopRequireDefault(_PagingParam);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50120,7 +50181,7 @@
 	            }
 
 	            if (this.props.scrollToTop) {
-	                (0, _UrlParamUtils.scrollToTopPage)();
+	                (0, _HtmlUtils.scrollToTopPage)();
 	            }
 
 	            dispatch(this.props.fetchFunction(new _PagingParam2.default(date, 'prev', this.props.size || DEFAULT_SIZE)));
@@ -50134,7 +50195,7 @@
 	            var date = null;
 
 	            if (this.props.scrollToTop) {
-	                (0, _UrlParamUtils.scrollToTopPage)();
+	                (0, _HtmlUtils.scrollToTopPage)();
 	            }
 
 	            if (this.props.index && this.props.index.length > 0) {
@@ -50163,7 +50224,7 @@
 	exports.default = (0, _reactRedux.connect)()(DatePager);
 
 /***/ },
-/* 656 */
+/* 657 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50211,7 +50272,7 @@
 	exports.default = Pager;
 
 /***/ },
-/* 657 */
+/* 658 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50228,25 +50289,25 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(650);
+	var _alertbox = __webpack_require__(651);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _editor = __webpack_require__(658);
+	var _editor = __webpack_require__(659);
 
 	var _editor2 = _interopRequireDefault(_editor);
 
-	var _categoryeditor = __webpack_require__(664);
+	var _categoryeditor = __webpack_require__(665);
 
 	var _categoryeditor2 = _interopRequireDefault(_categoryeditor);
 
-	var _clipboard = __webpack_require__(665);
+	var _clipboard = __webpack_require__(666);
 
 	var _clipboard2 = _interopRequireDefault(_clipboard);
 
 	var _messageActions = __webpack_require__(640);
 
-	__webpack_require__(667);
+	__webpack_require__(668);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50482,7 +50543,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(MessageEditor);
 
 /***/ },
-/* 658 */
+/* 659 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50495,11 +50556,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactSimplemdeEditor = __webpack_require__(659);
+	var _reactSimplemdeEditor = __webpack_require__(660);
 
 	var _reactSimplemdeEditor2 = _interopRequireDefault(_reactSimplemdeEditor);
 
-	__webpack_require__(660);
+	__webpack_require__(661);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50548,7 +50609,7 @@
 	exports.default = Editor;
 
 /***/ },
-/* 659 */
+/* 660 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -70438,16 +70499,16 @@
 	//# sourceMappingURL=react-simplemde-editor.js.map
 
 /***/ },
-/* 660 */
+/* 661 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(661);
+	var content = __webpack_require__(662);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(663)(content, {});
+	var update = __webpack_require__(664)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -70464,10 +70525,10 @@
 	}
 
 /***/ },
-/* 661 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(662)();
+	exports = module.exports = __webpack_require__(663)();
 	// imports
 
 
@@ -70478,7 +70539,7 @@
 
 
 /***/ },
-/* 662 */
+/* 663 */
 /***/ function(module, exports) {
 
 	/*
@@ -70534,7 +70595,7 @@
 
 
 /***/ },
-/* 663 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -70786,7 +70847,7 @@
 
 
 /***/ },
-/* 664 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70803,7 +70864,7 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _alertbox = __webpack_require__(650);
+	var _alertbox = __webpack_require__(651);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
@@ -70987,7 +71048,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CategoryEditor);
 
 /***/ },
-/* 665 */
+/* 666 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71002,7 +71063,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(666);
+	__webpack_require__(667);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71127,12 +71188,6 @@
 	exports.default = Clipboard;
 
 /***/ },
-/* 666 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 667 */
 /***/ function(module, exports) {
 
@@ -71140,6 +71195,12 @@
 
 /***/ },
 /* 668 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 669 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71160,17 +71221,17 @@
 
 	var _message2 = _interopRequireDefault(_message);
 
-	var _commentActions = __webpack_require__(669);
+	var _commentActions = __webpack_require__(670);
 
-	var _commentbox = __webpack_require__(670);
+	var _commentbox = __webpack_require__(671);
 
 	var _commentbox2 = _interopRequireDefault(_commentbox);
 
-	var _comment = __webpack_require__(672);
+	var _comment = __webpack_require__(673);
 
 	var _comment2 = _interopRequireDefault(_comment);
 
-	__webpack_require__(673);
+	__webpack_require__(674);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71253,7 +71314,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(MessagePage);
 
 /***/ },
-/* 669 */
+/* 670 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71261,116 +71322,63 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.doCommentTextKp = exports.doCommentNameKp = exports.doCommentEmailKp = exports.doCommentSavedError = exports.doCommentSaved = exports.doCommentReceive = exports.COMMENT_TEXT_KP = exports.COMMENT_NAME_KP = exports.COMMENT_EMAIL_KP = exports.COMMENT_SAVEDERROR = exports.COMMENT_SAVED = exports.COMMENT_RECEIVE = undefined;
+	exports.doCommentOperationDone = exports.doCommentTextKp = exports.doCommentNameKp = exports.doCommentEmailKp = exports.doCommentSavedError = exports.doCommentSaved = exports.doCommentReceive = exports.COMMENT_TEXT_KP = exports.COMMENT_NAME_KP = exports.COMMENT_EMAIL_KP = exports.COMMENT_SAVEDERROR = exports.COMMENT_SAVED = exports.COMMENT_OPERATIONDONE = exports.COMMENT_RECEIVE = undefined;
 	exports.doCommentFetch = doCommentFetch;
 	exports.doCommentAdd = doCommentAdd;
 	exports.doCommentApprove = doCommentApprove;
 	exports.doCommentDelete = doCommentDelete;
+	exports.doCommentOperation = doCommentOperation;
 
-	__webpack_require__(564);
-
-	var _navigationActions = __webpack_require__(565);
-
-	var _actionCreator = __webpack_require__(646);
+	var _actionCreator = __webpack_require__(643);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
+
+	var _FetchUtils = __webpack_require__(642);
+
+	var FetchUtils = _interopRequireWildcard(_FetchUtils);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var COMMENT_URL = "/api/comments";
+
 	var COMMENT_RECEIVE = exports.COMMENT_RECEIVE = 'COMMENT_RECEIVE';
+	var COMMENT_OPERATIONDONE = exports.COMMENT_OPERATIONDONE = 'COMMENT_OPERATIONDONE';
 	var COMMENT_SAVED = exports.COMMENT_SAVED = 'COMMENT_SAVED';
 	var COMMENT_SAVEDERROR = exports.COMMENT_SAVEDERROR = 'COMMENT_SAVEDERROR';
 	var COMMENT_EMAIL_KP = exports.COMMENT_EMAIL_KP = 'COMMENT_EMAIL_KP';
 	var COMMENT_NAME_KP = exports.COMMENT_NAME_KP = 'COMMENT_NAME_KP';
 	var COMMENT_TEXT_KP = exports.COMMENT_TEXT_KP = 'COMMENT_TEXT_KP';
 
-	var COMMENT_URL = "/api/comments";
-
-	function doCommentOperation(commentId, operation) {
-
-	    var params = {
-	        method: 'POST',
-	        body: 'op=' + operation,
-	        credentials: 'include'
-	    };
-
-	    return function (dispatch) {
-
-	        if (!commentId) {
-	            dispatch(doCommentSavedError(new Error('Missing comment id.')));
-	            return;
-	        }
-
-	        return fetch(COMMENT_URL + '/' + commentId, params).then(c = c.json()).then(function (c) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentSaved(c));
-	        }).catch(function (e) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentSavedError(e));
-	        });
-	    };
-	}
-
 	var doCommentReceive = exports.doCommentReceive = (0, _actionCreator2.default)(COMMENT_RECEIVE, 'comments', 'page');
 	var doCommentSaved = exports.doCommentSaved = (0, _actionCreator2.default)(COMMENT_SAVED, 'comment');
 	var doCommentSavedError = exports.doCommentSavedError = (0, _actionCreator2.default)(COMMENT_SAVEDERROR, 'error');
-
 	var doCommentEmailKp = exports.doCommentEmailKp = (0, _actionCreator2.default)(COMMENT_EMAIL_KP, 'email');
 	var doCommentNameKp = exports.doCommentNameKp = (0, _actionCreator2.default)(COMMENT_NAME_KP, 'name');
 	var doCommentTextKp = exports.doCommentTextKp = (0, _actionCreator2.default)(COMMENT_TEXT_KP, 'text');
+	var doCommentOperationDone = exports.doCommentOperationDone = (0, _actionCreator2.default)(COMMENT_OPERATIONDONE, 'comment');
 
 	function doCommentFetch(messageId, page) {
-	    return function (dispatch) {
-	        dispatch((0, _navigationActions.doStartLoading)());
-	        var urlParam = (0, _UrlParamUtils.getUrlParamsString)(page, messageId ? ['messageid=' + encodeURIComponent(messageId)] : null);
+	    var urlParam = (0, _HtmlUtils.getUrlParamsString)(page, messageId ? ['messageid=' + encodeURIComponent(messageId)] : null);
 
-	        return fetch(COMMENT_URL + urlParam, { credentials: 'include' }).then(function (c) {
-	            return c.json();
-	        }).then(function (c) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentReceive(c));
-	        }).catch(function (e) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentSavedError(e));
-	        });
+	    return function (dispatch) {
+	        return FetchUtils.get(dispatch, COMMENT_URL + urlParam, { credentials: 'include' }, doCommentReceive, doCommentSavedError);
 	    };
 	}
 
 	function doCommentAdd(messageId, comment) {
+	    if (!messageId) {
+	        dispatch(doCommentSavedError(new Error('Missing message id.')));
+	        return;
+	    }
+
+	    comment.messageId = messageId;
 
 	    return function (dispatch) {
-
-	        if (!messageId) {
-	            dispatch(doCommentSavedError(new Error('Missing message id.')));
-	            return;
-	        }
-
-	        comment.messageId = messageId;
-	        var params = {
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'
-	            },
-	            method: 'POST',
-	            body: JSON.stringify(comment),
-	            credentials: 'include'
-	        };
-
-	        console.log(params);
-	        dispatch((0, _navigationActions.doStartLoading)());
-
-	        return fetch(COMMENT_URL, params).then(function (c) {
-	            return c.json();
-	        }).then(function (c) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentSaved(c));
-	        }).catch(function (e) {
-	            console.log(e);
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doCommentSavedError(e));
-	        });
+	        return FetchUtils.post(dispatch, COMMENT_URL, comment, doCommentSaved, doCommentSavedError);
 	    };
 	}
 
@@ -71382,8 +71390,20 @@
 	    return doCommentOperation(commentId, 'delete');
 	}
 
+	function doCommentOperation(commentId, operation) {
+
+	    if (!commentId) {
+	        dispatch(doCommentSavedError(new Error('Missing comment id.')));
+	        return;
+	    }
+
+	    return function (dispatch) {
+	        return FetchUtils.put(dispatch, COMMENT_URL + '/' + commentId, { operation: operation }, doCommentOperationDone, doCommentSavedError);
+	    };
+	}
+
 /***/ },
-/* 670 */
+/* 671 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71400,9 +71420,9 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _commentActions = __webpack_require__(669);
+	var _commentActions = __webpack_require__(670);
 
-	__webpack_require__(671);
+	__webpack_require__(672);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71541,13 +71561,13 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CommentBox);
 
 /***/ },
-/* 671 */
+/* 672 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 672 */
+/* 673 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71590,13 +71610,13 @@
 	exports.default = Comment;
 
 /***/ },
-/* 673 */
+/* 674 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 674 */
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71615,19 +71635,19 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileupload = __webpack_require__(675);
+	var _fileupload = __webpack_require__(676);
 
 	var _fileupload2 = _interopRequireDefault(_fileupload);
 
-	var _togglebox = __webpack_require__(681);
+	var _togglebox = __webpack_require__(682);
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
-	var _filegrid = __webpack_require__(682);
+	var _filegrid = __webpack_require__(683);
 
 	var _filegrid2 = _interopRequireDefault(_filegrid);
 
-	var _alertbox = __webpack_require__(650);
+	var _alertbox = __webpack_require__(651);
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
@@ -71639,11 +71659,11 @@
 
 	var _PagingParam2 = _interopRequireDefault(_PagingParam);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
 
-	var _fileActions = __webpack_require__(676);
+	var _fileActions = __webpack_require__(677);
 
-	__webpack_require__(685);
+	__webpack_require__(686);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71698,7 +71718,7 @@
 	            var dispatch = this.props.dispatch;
 
 	            dispatch((0, _fileActions.doFileFetch)(pageParam));
-	            (0, _UrlParamUtils.scrollToTopPage)();
+	            (0, _HtmlUtils.scrollToTopPage)();
 	        }
 	    }, {
 	        key: 'onCopyToStore',
@@ -71745,7 +71765,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileAdmin);
 
 /***/ },
-/* 675 */
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71762,17 +71782,17 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileActions = __webpack_require__(676);
+	var _fileActions = __webpack_require__(677);
 
-	var _FileUploadUtils = __webpack_require__(677);
+	var _FileUploadUtils = __webpack_require__(678);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _onefile = __webpack_require__(678);
+	var _onefile = __webpack_require__(679);
 
 	var _onefile2 = _interopRequireDefault(_onefile);
 
-	__webpack_require__(680);
+	__webpack_require__(681);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71904,7 +71924,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileUpload);
 
 /***/ },
-/* 676 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71924,15 +71944,15 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _actionCreator = __webpack_require__(646);
+	var _actionCreator = __webpack_require__(643);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
-	var _FileUploadUtils = __webpack_require__(677);
+	var _FileUploadUtils = __webpack_require__(678);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _UrlParamUtils = __webpack_require__(639);
+	var _HtmlUtils = __webpack_require__(639);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71995,7 +72015,7 @@
 	    return function (dispatch) {
 	        dispatch((0, _navigationActions.doStartLoading)());
 
-	        var urlParams = (0, _UrlParamUtils.getUrlParamsString)(pageParams);
+	        var urlParams = (0, _HtmlUtils.getUrlParamsString)(pageParams);
 
 	        return fetch(FILE_URL + urlParams, { credentials: 'include' }).then(function (fs) {
 	            return fs.json();
@@ -72015,7 +72035,7 @@
 	}
 
 /***/ },
-/* 677 */
+/* 678 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72117,7 +72137,7 @@
 	exports.default = FileUploaderUtils;
 
 /***/ },
-/* 678 */
+/* 679 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72130,7 +72150,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(679);
+	__webpack_require__(680);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72212,12 +72232,6 @@
 	exports.default = OneFile;
 
 /***/ },
-/* 679 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 680 */
 /***/ function(module, exports) {
 
@@ -72225,6 +72239,12 @@
 
 /***/ },
 /* 681 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 682 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72309,7 +72329,7 @@
 	exports.default = ToggleBox;
 
 /***/ },
-/* 682 */
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72322,11 +72342,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _filegriditem = __webpack_require__(683);
+	var _filegriditem = __webpack_require__(684);
 
 	var _filegriditem2 = _interopRequireDefault(_filegriditem);
 
-	__webpack_require__(684);
+	__webpack_require__(685);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72358,7 +72378,7 @@
 	exports.default = FileGrid;
 
 /***/ },
-/* 683 */
+/* 684 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72438,12 +72458,6 @@
 	exports.default = FileGridItem;
 
 /***/ },
-/* 684 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 685 */
 /***/ function(module, exports) {
 
@@ -72451,6 +72465,12 @@
 
 /***/ },
 /* 686 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72471,7 +72491,9 @@
 
 	var _linkpager2 = _interopRequireDefault(_linkpager);
 
-	var _commentActions = __webpack_require__(669);
+	var _commentActions = __webpack_require__(670);
+
+	var _HtmlUtils = __webpack_require__(639);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72501,28 +72523,61 @@
 	    if (items && index && index.length > 0) {
 	        rows = index.map(function (i) {
 	            var c = items[i];
+	            var body = (0, _HtmlUtils.escapeHTML)(c.body);
+
+	            if (body.length > 200) {
+	                body = body.substr(0, 200) + '...';
+	            }
+
 	            return _react2.default.createElement(
 	                'tr',
 	                { key: 'comment-' + c.id },
 	                _react2.default.createElement(
 	                    'td',
-	                    null,
+	                    { className: 'cell-100' },
 	                    c.id
 	                ),
-	                _react2.default.createElement('td', null),
-	                _react2.default.createElement('td', null),
-	                _react2.default.createElement('td', null),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'cell-200' },
+	                    c.authorname,
+	                    ' / ',
+	                    c.email
+	                ),
 	                _react2.default.createElement(
 	                    'td',
 	                    null,
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#', onClick: callback, 'data-n4-op': 'approved' },
-	                        'Approuved'
+	                    body
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'cell-100' },
+	                    c.messageid
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'cell-100' },
+	                    c.approved ? _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        '✓'
+	                    ) : _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        '∅'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    { className: 'right cell-200' },
+	                    c.approved ? _react2.default.createElement('span', null) : _react2.default.createElement(
+	                        'button',
+	                        { className: 'btn', href: '#', onClick: callback, 'data-n4-op': 'approve', 'data-n4-id': c.id },
+	                        'Approve'
 	                    ),
 	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#', onClick: callback, 'data-n4-op': 'delete' },
+	                        'button',
+	                        { className: 'btn', href: '#', onClick: callback, 'data-n4-op': 'delete', 'data-n4-id': c.id },
 	                        'Delete'
 	                    )
 	                )
@@ -72557,7 +72612,7 @@
 	                _react2.default.createElement(
 	                    'th',
 	                    null,
-	                    'Email'
+	                    'Name / Email'
 	                ),
 	                _react2.default.createElement(
 	                    'th',
@@ -72568,6 +72623,11 @@
 	                    'th',
 	                    null,
 	                    'Message'
+	                ),
+	                _react2.default.createElement(
+	                    'th',
+	                    null,
+	                    'Approved'
 	                ),
 	                _react2.default.createElement(
 	                    'th',
@@ -72609,8 +72669,6 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            var dispatch = this.props.dispatch;
-
 	            this.onChangePage(this.props.page);
 	        }
 	    }, {
@@ -72618,7 +72676,10 @@
 	        value: function doOneOperation(event) {
 	            event.preventDefault();
 	            var link = event.target;
-	            console.log(link.dataset.n4Op);
+	            var dispatch = this.props.dispatch;
+
+
+	            dispatch((0, _commentActions.doCommentOperation)(link.dataset.n4Id, link.dataset.n4Op));
 	        }
 	    }, {
 	        key: 'render',
@@ -72646,7 +72707,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CommentAdmin);
 
 /***/ },
-/* 687 */
+/* 688 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72659,15 +72720,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(688);
+	var _reduxThunk = __webpack_require__(689);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(689);
+	var _rootreducers = __webpack_require__(690);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(698);
+	var _ActionsLogger = __webpack_require__(699);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -72682,7 +72743,7 @@
 	exports.default = store;
 
 /***/ },
-/* 688 */
+/* 689 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72710,7 +72771,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 689 */
+/* 690 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72723,19 +72784,19 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(690);
+	var _messageReducers = __webpack_require__(691);
 
-	var _categoryReducers = __webpack_require__(691);
+	var _categoryReducers = __webpack_require__(692);
 
-	var _navigationReducers = __webpack_require__(692);
+	var _navigationReducers = __webpack_require__(693);
 
-	var _userReducers = __webpack_require__(693);
+	var _userReducers = __webpack_require__(694);
 
-	var _fileReducers = __webpack_require__(694);
+	var _fileReducers = __webpack_require__(695);
 
-	var _commentReducers = __webpack_require__(696);
+	var _commentReducers = __webpack_require__(697);
 
-	var _statisticReducers = __webpack_require__(697);
+	var _statisticReducers = __webpack_require__(698);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -72752,7 +72813,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 690 */
+/* 691 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72897,7 +72958,7 @@
 	}
 
 /***/ },
-/* 691 */
+/* 692 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72971,7 +73032,7 @@
 	}
 
 /***/ },
-/* 692 */
+/* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73000,7 +73061,7 @@
 	}
 
 /***/ },
-/* 693 */
+/* 694 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73033,7 +73094,7 @@
 	}
 
 /***/ },
-/* 694 */
+/* 695 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73047,9 +73108,9 @@
 	exports.fileReducers = fileReducers;
 	exports.fileUploadReducers = fileUploadReducers;
 
-	var _fileActions = __webpack_require__(676);
+	var _fileActions = __webpack_require__(677);
 
-	var _IndexReducer = __webpack_require__(695);
+	var _IndexReducer = __webpack_require__(696);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -73144,7 +73205,7 @@
 	}
 
 /***/ },
-/* 695 */
+/* 696 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -73173,7 +73234,7 @@
 	}
 
 /***/ },
-/* 696 */
+/* 697 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73183,9 +73244,11 @@
 	});
 	exports.commentReducers = commentReducers;
 
-	var _commentActions = __webpack_require__(669);
+	var _commentActions = __webpack_require__(670);
 
-	var _IndexReducer = __webpack_require__(695);
+	var _IndexReducer = __webpack_require__(696);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var sortComment = function sortComment(c0, c1) {
 	    return c0.createdat.getTime() - c1.createdat.getTime();
@@ -73208,13 +73271,37 @@
 	            delete anewcomment.type;
 	            return Object.assign({}, state, { newcomment: anewcomment });
 
+	        case _commentActions.COMMENT_SAVED:
+	            return Object.assign({}, state, { newcomment: null });
+
+	        case _commentActions.COMMENT_OPERATIONDONE:
+
+	            console.log(action);
+
+	            if (action.comment.operation == 'approved') {} else if (action.comment.operation == 'deleted') {
+	                var cid = action.comment.id;
+	                var newitems = Object.assign({}, state.items);
+	                var newindex = [].concat(_toConsumableArray(state.index));
+	                var itemidx = newindex.indexOf(cid);
+
+	                console.log(itemidx);
+
+	                if (itemidx != -1) {
+	                    newindex.splice(itemidx, 1);
+	                    delete newitems[cid];
+	                    console.log(newindex, newitems);
+
+	                    return Object.assign({}, state, { items: newitems, index: newindex });
+	                }
+	            }
+
 	        default:
 	            return state;
 	    }
 	}
 
 /***/ },
-/* 697 */
+/* 698 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73224,7 +73311,7 @@
 	});
 	exports.statisticReducers = statisticReducers;
 
-	var _statisticActions = __webpack_require__(645);
+	var _statisticActions = __webpack_require__(647);
 
 	function statisticReducers() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: [] } : arguments[0];
@@ -73239,7 +73326,7 @@
 	}
 
 /***/ },
-/* 698 */
+/* 699 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -73252,7 +73339,7 @@
 	        return function (action) {
 	            var actionType = action.type;
 	            var result = next(action);
-	            console.log('> ' + actionType, store.getState());
+	            console.log('> ' + actionType, action, store.getState());
 	            return result;
 	        };
 	    };
@@ -73261,7 +73348,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 699 */
+/* 700 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

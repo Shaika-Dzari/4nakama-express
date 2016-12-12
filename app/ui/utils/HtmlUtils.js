@@ -39,3 +39,9 @@ export function scrollToTopPage(){
     }
 }
 
+export function escapeHTML(html) {
+    return document.createElement('div')
+        .appendChild(document.createTextNode(html))
+        .parentNode
+        .innerHTML;
+}

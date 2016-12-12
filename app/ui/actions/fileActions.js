@@ -3,7 +3,7 @@ import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import makeActionCreator from './actionCreator.js';
 import FileUploadUtils from '../utils/FileUploadUtils.js';
-import { getUrlParamsString } from '../utils/UrlParamUtils.js';
+import { getUrlParamsString } from '../utils/HtmlUtils.js';
 
 export const FILE_UPLOAD_ONCHANGE = 'FILE_UPLOAD_ONCHANGE';
 export const FILE_UPLOAD_POSTALL = 'FILE_UPLOAD_POSTALL';

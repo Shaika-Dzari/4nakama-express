@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
-import { getUrlParamsString } from '../utils/UrlParamUtils.js';
+import { getUrlParamsString } from '../utils/HtmlUtils.js';
 import Remarkable from 'remarkable';
 
 export const MSG_CACHE_HIT  = 'MSG_CACHE_HIT';

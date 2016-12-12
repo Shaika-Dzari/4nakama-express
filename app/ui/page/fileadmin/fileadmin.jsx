@@ -7,7 +7,7 @@ import FileGrid from '../../component/filegrid/filegrid.jsx';
 import AlertBox from '../../component/alertbox/alertbox.jsx';
 import LinkPager from '../../component/pager/linkpager.jsx';
 import PagingParam from '../../utils/PagingParam.js';
-import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
+import { scrollToTopPage } from '../../utils/HtmlUtils.js';
 
 import {doFileFetch, doFileCopyToStore, doFileDelete} from '../../actions/fileActions.js';
 

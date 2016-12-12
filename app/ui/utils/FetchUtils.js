@@ -1,18 +1,70 @@
-export function parseOrReject(response) {
-    if (response.ok) return response.json();
+import 'whatwg-fetch';
+import {doStartLoading, doStopLoading, doRaiseGlobalError} from '../actions/navigationActions.js';
 
-    response.json().then(j => {
-        throw new Error(response.url, response.status, j);
-    });
+function isObject(obj) {
+  return obj === Object(obj);
 }
 
-// Thanks to https://github.com/matthew-andrews/fetchres
-export class ApiError extends Error {
+export function get(dispatch, url, option, successCallback, errorCallback) {
 
-	constructor(url, status, json) {
-		super();
-		this.message = `${url} responded with a ${status}`;
-		this.name = 'ApiError';
-        this.json = json;
-	}
+    return fetch(url, option)
+            .then(response => {
+                dispatch(doStopLoading());
+                let ok = response.ok;
+                dispatch(doStopLoading());
+
+                response.json().then(j => {
+
+                    if (ok) {
+                        dispatch(successCallback(j));
+                    } else {
+                        dispatch(errorCallback(j));
+                    }
+
+                });
+            }).catch(e => {
+                dispatch(doStopLoading());
+                dispatch(doRaiseGlobalError(e));
+            });
+}
+
+function saveOrUpdate(dispatch, operation, url, obj, successCallback, errorCallback) {
+
+    let isJsonObject = isObject(obj);
+    let val = isJsonObject ? JSON.stringify(obj) : obj;
+    let headers = isJsonObject ? {'Accept': 'application/json', 'Content-Type': 'application/json'} : {"Content-Type": "application/x-www-form-urlencoded"};
+
+    let opts = {
+        headers: headers,
+        method: operation,
+        body: val,
+        credentials: 'include'
+    }
+
+    return fetch(url, opts)
+            .then(response => {
+                dispatch(doStopLoading());
+                let ok = response.ok;
+
+                response.json().then(j => {
+
+                    if (ok) {
+                        dispatch(successCallback(j));
+                    } else {
+                        dispatch(errorCallback(j));
+                    }
+
+                });
+            }).catch(e => {
+                dispatch(doStopLoading());
+                dispatch(doRaiseGlobalError(e));
+            });
+}
+
+export function post(dispatch, url, obj, successCallback, errorCallback) {
+    return saveOrUpdate(dispatch, 'POST', url, obj, successCallback, errorCallback);
+}
+
+export function put(dispatch, url, obj, successCallback, errorCallback) {
+    return saveOrUpdate(dispatch, 'PUT', url, obj, successCallback, errorCallback);
 }

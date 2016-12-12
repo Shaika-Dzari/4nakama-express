@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Pager from './pager.jsx';
 import PagingParam from '../../utils/PagingParam.js';
-import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
+import { scrollToTopPage } from '../../utils/HtmlUtils.js';
 
 const DEFAULT_SIZE = 10;
 

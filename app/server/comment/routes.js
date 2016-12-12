@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var sanitizeHtml = require('sanitize-html');
 var Comment = require('./comment');
 var authUtils = require('../authutils');
 var PagingParser = require('../utils/PagingParser.js');
@@ -50,11 +51,7 @@ router.post('/', (req, res, next) => {
     // Bad, use another function.
     let idx = config.comment.rejected.indexOf(commentBody.text);
     if (idx != -1) {
-        console.log('Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.');
         return next(new ApiError(400, 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'));
-/*
-        res.status(400).json({'message': 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'});
-        return;*/
     }
 
     console.log('after');
@@ -73,8 +70,10 @@ router.post('/', (req, res, next) => {
         next(new Error("Missing message's id"));
     }
 
+    var body = sanitizeHtml(commentBody.text, {allowedTags: [ 'br' ]})
+
     var comment = {
-        body: commentBody.text,
+        body: body,
         authorname: authorName,
         authoremail: authorEmail,
         authorid: authorId,
@@ -99,10 +98,11 @@ router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
 
 
     // We can either approve or delete a comment
-    let op = req.query.op;
+    let op = req.body.operation;
     let cid = req.params.commentId;
 
     if (!op || !cid) {
+        console.log(req, cid, op);
         next(new Error("Missing operation or comment's Id"));
     }
 
@@ -110,13 +110,13 @@ router.put('/:commentId', authUtils.enforceLoggedIn, (req, res, next) => {
         db.none(Comment.APPROVED_BY_ID, {id: cid}, (err) => {
             if (err) next(err);
 
-            res.sendStatus(204).end();
+            res.json({id: cid, operation: 'approved'});
         });
     } else if (op == 'delete') {
         db.none(Comment.DELETE_BY_ID, {id: cid}, (err) => {
             if (err) next(err);
 
-            res.sendStatus(204).end();
+            res.json({id: cid, operation: 'deleted'});
         });
     } else {
         res.status(400).json({message: 'Invalid operation'});

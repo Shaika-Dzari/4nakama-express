@@ -47,6 +47,14 @@ table {
         padding: 1rem;
         text-align: left;
     }
+
+    td.cell-100 {
+        width: 100px;
+    }
+
+    td.cell-200 {
+        width: 200px;
+    }
 }
 
 a.link-close {

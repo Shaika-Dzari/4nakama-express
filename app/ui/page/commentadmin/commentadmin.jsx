@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import LinkPager from '../../component/pager/linkpager.jsx';
 import {doCommentOperation, doCommentFetch} from '../../actions/commentActions.js';
+import { escapeHTML } from '../../utils/HtmlUtils.js';
 
 const mapStateToProps = (state, ownProps) => {
 
@@ -19,15 +20,22 @@ const CommentList = ({items, index, callback}) => {
     if (items && index && index.length > 0) {
         rows = index.map(i => {
             let c = items[i];
+            let body = escapeHTML(c.body);
+
+            if (body.length > 200) {
+                body = body.substr(0, 200) + '...';
+            }
+
             return (
                 <tr key={'comment-' + c.id}>
-                    <td>{c.id}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <a href="#" onClick={callback} data-n4-op="approved">Approuved</a>
-                        <a href="#" onClick={callback} data-n4-op="delete">Delete</a>
+                    <td className="cell-100">{c.id}</td>
+                    <td className="cell-200">{c.authorname} / {c.email}</td>
+                    <td>{body}</td>
+                    <td className="cell-100">{c.messageid}</td>
+                    <td className="cell-100">{c.approved ? <span>&#10003;</span> : <span>&#8709;</span>}</td>
+                    <td className="right cell-200">
+                        {c.approved ? <span></span> : <button className="btn" href="#" onClick={callback} data-n4-op="approve" data-n4-id={c.id}>Approve</button>}
+                        <button className="btn" href="#" onClick={callback} data-n4-op="delete" data-n4-id={c.id}>Delete</button>
                     </td>
                 </tr>
             );
@@ -41,9 +49,10 @@ const CommentList = ({items, index, callback}) => {
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Email</th>
+                    <th>Name / Email</th>
                     <th>Text</th>
                     <th>Message</th>
+                    <th>Approved</th>
                     <th>-</th>
                 </tr>
             </thead>
@@ -70,14 +79,15 @@ class CommentAdmin extends React.Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props
         this.onChangePage(this.props.page);
     }
 
     doOneOperation(event) {
         event.preventDefault();
         let link = event.target;
-        console.log(link.dataset.n4Op);
+        const { dispatch } = this.props;
+
+        dispatch(doCommentOperation(link.dataset.n4Id, link.dataset.n4Op));
     }
 
     render() {

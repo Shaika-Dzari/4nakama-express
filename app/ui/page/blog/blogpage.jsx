@@ -6,7 +6,7 @@ import MessageList from '../../component/messagelist/messagelist.jsx';
 import LinkPager from '../../component/pager/linkpager.jsx';
 import Remarkable from 'remarkable';
 import PagingParam from '../../utils/PagingParam.js';
-import { scrollToTopPage } from '../../utils/UrlParamUtils.js';
+import { scrollToTopPage } from '../../utils/HtmlUtils.js';
 
 import {doMessageFetchAndGo} from '../../actions/messageActions.js';
 import {doCategoryFetch} from '../../actions/categoryActions.js';
