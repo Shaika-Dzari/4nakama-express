@@ -68,6 +68,14 @@ a.link-close {
     color: $color-font-1;
 }
 
+input.validation-error, textarea.validation-error {
+    border: 1px solid $color-border-error;
+}
+
+.box.noborder {
+    border: 0;
+}
+
 @media only screen and (min-width: 920px) {
 
     .page-layout {

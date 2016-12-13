@@ -5,7 +5,7 @@ const sortComment = (c0, c1) => {
     return c0.createdat.getTime() - c1.createdat.getTime();
 };
 
-export function commentReducers(state = {items: {}, index: [], newcomment: {}}, action) {
+export function commentReducers(state = {items: {}, index: [], newcomment: {}, error: null}, action) {
     switch (action.type) {
         case COMMENT_RECEIVE:
             let receivedItems = indexes(action.comments);
@@ -22,27 +22,26 @@ export function commentReducers(state = {items: {}, index: [], newcomment: {}}, 
         case COMMENT_SAVED:
             return Object.assign({}, state, {newcomment: null});
 
+        case COMMENT_SAVEDERROR:
+            return Object.assign({}, state, {error: action.error.message});
+
         case COMMENT_OPERATIONDONE:
 
-            console.log(action);
+            let cid = parseInt(action.comment.id);
+            let newitems = Object.assign({}, state.items);
+            let newindex = [...state.index];
+            let itemidx = newindex.indexOf(cid);
 
-            if (action.comment.operation == 'approved') {
+            if (itemidx != -1) {
 
-            } else if (action.comment.operation == 'deleted') {
-                let cid = action.comment.id;
-                let newitems = Object.assign({}, state.items);
-                let newindex = [...state.index];
-                let itemidx = newindex.indexOf(cid);
-
-                console.log(itemidx);
-
-                if (itemidx != -1) {
+                if (action.comment.operation == 'approved') {
+                    newitems[cid].approved = true;
+                } else if (action.comment.operation == 'deleted') {
                     newindex.splice(itemidx, 1);
                     delete newitems[cid];
-                    console.log(newindex, newitems);
-
-                    return Object.assign({}, state, {items: newitems, index: newindex});
                 }
+
+                return Object.assign({}, state, {items: newitems, index: newindex});
             }
 
         default:

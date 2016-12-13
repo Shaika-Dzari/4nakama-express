@@ -28,7 +28,6 @@ const CommentList = ({items, index, callback}) => {
 
             return (
                 <tr key={'comment-' + c.id}>
-                    <td className="cell-100">{c.id}</td>
                     <td className="cell-200">{c.authorname} / {c.email}</td>
                     <td>{body}</td>
                     <td className="cell-100">{c.messageid}</td>
@@ -48,7 +47,6 @@ const CommentList = ({items, index, callback}) => {
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name / Email</th>
                     <th>Text</th>
                     <th>Message</th>

@@ -157,6 +157,13 @@ div.login {
   margin: 20px 30px 30px 40px; }
   .comment-box .frm {
     padding: 5px 10px; }
+.single-comment .heading {
+  background-color: #fefefe; }
+  .single-comment .heading .comment-author {
+    font-weight: bold; }
+  .single-comment .heading .comment-date {
+    font-size: 0.8em;
+    color: #999; }
 .messagepage-details {
   margin: 0 10px; }
   .messagepage-details .messagepage-comments {
@@ -318,6 +325,12 @@ a.link-close {
   border-top: 1px solid #176ba1;
   background-color: #1872ab;
   color: #fafafa; }
+
+input.validation-error, textarea.validation-error {
+  border: 1px solid #f40000; }
+
+.box.noborder {
+  border: 0; }
 
 @media only screen and (min-width: 920px) {
   .page-layout {

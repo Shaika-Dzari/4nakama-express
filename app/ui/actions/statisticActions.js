@@ -1,5 +1,4 @@
-import 'whatwg-fetch';
-import {doStartLoading, doStopLoading} from './navigationActions.js';
+import * as FetchUtils from '../utils/FetchUtils.js';
 import makeActionCreator from './actionCreator.js';
 
 const STATS_URL = "/api/statistics";
@@ -12,20 +11,6 @@ export const doStatsReceived = makeActionCreator(STATS_RECEIVED, 'stats');
 
 export function doStatsFetch() {
     return dispatch => {
-        dispatch(doStartLoading());
-
-        return fetch(STATS_URL, {credentials: 'include'})
-                    .then(s => s.json())
-                    .then(stats => {
-                        dispatch(doStopLoading());
-                        dispatch(doStatsReceived(stats));
-                    })
-                    .catch(e => {
-                        dispatch(doStopLoading());
-                        //dispatch(doFileRequestError(e));
-                    });
+        return FetchUtils.get(dispatch, STATS_URL, {credentials: 'include'}, doStatsReceived, (e) => console.log(e));
     };
-}
-export function doStatsRefresh() {
-
 }

@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import { getUrlParamsString } from '../utils/HtmlUtils.js';
 import Remarkable from 'remarkable';
+import makeActionCreator from './actionCreator.js';
 
 export const MSG_CACHE_HIT  = 'MSG_CACHE_HIT';
 export const MSG_LIST_FETCH = 'MSG_LIST_FETCH';
@@ -22,18 +23,6 @@ export const MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
 const MSG_URL = '/api/messages';
 const remarkable = new Remarkable();
 
-
-function makeActionCreator(type, ...argNames) {
-    return function (...args) {
-        let action = { type };
-        argNames.forEach((arg, index) => {
-            action[argNames[index]] = args[index]
-        });
-        return action;
-    }
-}
-
-
 export function doMessageFetchAndGo(pageParams) {
 
     return (dispatch) => {
@@ -48,8 +37,6 @@ export function doMessageFetch(pageParams) {
     return (dispatch, getState) => {
         dispatch(doStartLoading());
         let urlParam = getUrlParamsString(pageParams);
-
-        //console.log('doMessageFetch >> /blog' + urlParam);
 
         return fetch(MSG_URL + urlParam, {credentials: 'include'})
                 .then(r => r.json())
@@ -126,8 +113,6 @@ export function doMessageEditAndNavigate(message) {
         dispatch(push('/dashboard/messages/' + message.id));
     }
 }
-
-// dispatch(push('/dashboard/messages/' + messageId));
 
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');

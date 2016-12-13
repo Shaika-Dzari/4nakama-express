@@ -38140,7 +38140,7 @@
 
 	var _messageActions = __webpack_require__(640);
 
-	var _categoryActions = __webpack_require__(641);
+	var _categoryActions = __webpack_require__(642);
 
 	__webpack_require__(644);
 
@@ -49042,6 +49042,10 @@
 
 	var _remarkable2 = _interopRequireDefault(_remarkable);
 
+	var _actionCreator = __webpack_require__(641);
+
+	var _actionCreator2 = _interopRequireDefault(_actionCreator);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var MSG_CACHE_HIT = exports.MSG_CACHE_HIT = 'MSG_CACHE_HIT';
@@ -49062,24 +49066,6 @@
 	var MSG_URL = '/api/messages';
 	var remarkable = new _remarkable2.default();
 
-	function makeActionCreator(type) {
-	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        argNames[_key - 1] = arguments[_key];
-	    }
-
-	    return function () {
-	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	            args[_key2] = arguments[_key2];
-	        }
-
-	        var action = { type: type };
-	        argNames.forEach(function (arg, index) {
-	            action[argNames[index]] = args[index];
-	        });
-	        return action;
-	    };
-	}
-
 	function doMessageFetchAndGo(pageParams) {
 
 	    return function (dispatch) {
@@ -49094,8 +49080,6 @@
 	    return function (dispatch, getState) {
 	        dispatch((0, _navigationActions.doStartLoading)());
 	        var urlParam = (0, _HtmlUtils.getUrlParamsString)(pageParams);
-
-	        //console.log('doMessageFetch >> /blog' + urlParam);
 
 	        return fetch(MSG_URL + urlParam, { credentials: 'include' }).then(function (r) {
 	            return r.json();
@@ -49175,22 +49159,48 @@
 	    };
 	}
 
-	// dispatch(push('/dashboard/messages/' + messageId));
-
-	var doMessageEdit = exports.doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
-	var doMessageOpen = exports.doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
-	var doMessagesReceive = exports.doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
-	var doMessageEditorTextChange = exports.doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
-	var doMessageEditorTitleChange = exports.doMessageEditorTitleChange = makeActionCreator(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
-	var doMessageEditorTitleBlur = exports.doMessageEditorTitleBlur = makeActionCreator(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');
-	var doMessageEditorPrettyUrlChange = exports.doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyUrl');
-	var doMessageEditorSaveError = exports.doMessageEditorSaveError = makeActionCreator(MSG_UPDATE_SAVEERROR, 'error');
-	var doMessageEditorPublishedCheck = exports.doMessageEditorPublishedCheck = makeActionCreator(MSG_EDITOR_PUBL_CHECK, 'messageId', 'published');
-	var doMessageEditorCategoryCheck = exports.doMessageEditorCategoryCheck = makeActionCreator(MSG_EDITOR_CAT_CHECK, 'messageId', 'category');
-	var doMessageEditorCategoryUnCheck = exports.doMessageEditorCategoryUnCheck = makeActionCreator(MSG_EDITOR_CAT_UNCHECK, 'messageId', 'category');
+	var doMessageEdit = exports.doMessageEdit = (0, _actionCreator2.default)(MSG_EDIT, 'message');
+	var doMessageOpen = exports.doMessageOpen = (0, _actionCreator2.default)(MSG_OPEN, 'messageId');
+	var doMessagesReceive = exports.doMessagesReceive = (0, _actionCreator2.default)(MSG_LIST_RECEIVE, 'messages', 'page');
+	var doMessageEditorTextChange = exports.doMessageEditorTextChange = (0, _actionCreator2.default)(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
+	var doMessageEditorTitleChange = exports.doMessageEditorTitleChange = (0, _actionCreator2.default)(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
+	var doMessageEditorTitleBlur = exports.doMessageEditorTitleBlur = (0, _actionCreator2.default)(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');
+	var doMessageEditorPrettyUrlChange = exports.doMessageEditorPrettyUrlChange = (0, _actionCreator2.default)(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyUrl');
+	var doMessageEditorSaveError = exports.doMessageEditorSaveError = (0, _actionCreator2.default)(MSG_UPDATE_SAVEERROR, 'error');
+	var doMessageEditorPublishedCheck = exports.doMessageEditorPublishedCheck = (0, _actionCreator2.default)(MSG_EDITOR_PUBL_CHECK, 'messageId', 'published');
+	var doMessageEditorCategoryCheck = exports.doMessageEditorCategoryCheck = (0, _actionCreator2.default)(MSG_EDITOR_CAT_CHECK, 'messageId', 'category');
+	var doMessageEditorCategoryUnCheck = exports.doMessageEditorCategoryUnCheck = (0, _actionCreator2.default)(MSG_EDITOR_CAT_UNCHECK, 'messageId', 'category');
 
 /***/ },
 /* 641 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = makeActionCreator;
+	function makeActionCreator(type) {
+	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        argNames[_key - 1] = arguments[_key];
+	    }
+
+	    return function () {
+	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	            args[_key2] = arguments[_key2];
+	        }
+
+	        var action = { type: type };
+	        argNames.forEach(function (arg, index) {
+	            action[argNames[index]] = args[index];
+	        });
+	        return action;
+	    };
+	}
+
+/***/ },
+/* 642 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49202,11 +49212,11 @@
 	exports.doCategoryFetch = doCategoryFetch;
 	exports.doCategorySave = doCategorySave;
 
-	var _FetchUtils = __webpack_require__(642);
+	var _FetchUtils = __webpack_require__(643);
 
 	var FetchUtils = _interopRequireWildcard(_FetchUtils);
 
-	var _actionCreator = __webpack_require__(643);
+	var _actionCreator = __webpack_require__(641);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
@@ -49251,7 +49261,7 @@
 	}
 
 /***/ },
-/* 642 */
+/* 643 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49329,34 +49339,6 @@
 
 	function put(dispatch, url, obj, successCallback, errorCallback) {
 	    return saveOrUpdate(dispatch, 'PUT', url, obj, successCallback, errorCallback);
-	}
-
-/***/ },
-/* 643 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = makeActionCreator;
-	function makeActionCreator(type) {
-	    for (var _len = arguments.length, argNames = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	        argNames[_key - 1] = arguments[_key];
-	    }
-
-	    return function () {
-	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	            args[_key2] = arguments[_key2];
-	        }
-
-	        var action = { type: type };
-	        argNames.forEach(function (arg, index) {
-	            action[argNames[index]] = args[index];
-	        });
-	        return action;
-	    };
 	}
 
 /***/ },
@@ -49639,17 +49621,18 @@
 	});
 	exports.doStatsReceived = exports.STATS_REFRESH = exports.STATS_RECEIVED = exports.STATS_FETCH = undefined;
 	exports.doStatsFetch = doStatsFetch;
-	exports.doStatsRefresh = doStatsRefresh;
 
-	__webpack_require__(564);
+	var _FetchUtils = __webpack_require__(643);
 
-	var _navigationActions = __webpack_require__(565);
+	var FetchUtils = _interopRequireWildcard(_FetchUtils);
 
-	var _actionCreator = __webpack_require__(643);
+	var _actionCreator = __webpack_require__(641);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	var STATS_URL = "/api/statistics";
 
@@ -49661,20 +49644,11 @@
 
 	function doStatsFetch() {
 	    return function (dispatch) {
-	        dispatch((0, _navigationActions.doStartLoading)());
-
-	        return fetch(STATS_URL, { credentials: 'include' }).then(function (s) {
-	            return s.json();
-	        }).then(function (stats) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            dispatch(doStatsReceived(stats));
-	        }).catch(function (e) {
-	            dispatch((0, _navigationActions.doStopLoading)());
-	            //dispatch(doFileRequestError(e));
+	        return FetchUtils.get(dispatch, STATS_URL, { credentials: 'include' }, doStatsReceived, function (e) {
+	            return console.log(e);
 	        });
 	    };
 	}
-	function doStatsRefresh() {}
 
 /***/ },
 /* 648 */
@@ -70868,7 +70842,7 @@
 
 	var _alertbox2 = _interopRequireDefault(_alertbox);
 
-	var _categoryActions = __webpack_require__(641);
+	var _categoryActions = __webpack_require__(642);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71279,7 +71253,7 @@
 	            if (this.props.commentsindex && this.props.commentsindex.length > 0) {
 	                commentlist = this.props.commentsindex.map(function (i) {
 	                    var c = _this2.props.comments[i];
-	                    return _react2.default.createElement(_comment2.default, { key: 'comment-' + c.id, name: c.authorname, body: c.body });
+	                    return _react2.default.createElement(_comment2.default, { key: 'comment-' + c.id, name: c.authorname, body: c.body, createdat: c.createdat });
 	                });
 	            } else {
 	                commentlist = 'No comment yet.';
@@ -71295,12 +71269,12 @@
 	                        'div',
 	                        { className: 'messagepage-details' },
 	                        _react2.default.createElement(_message2.default, this.props.message),
-	                        _react2.default.createElement(_commentbox2.default, { messageId: this.props.selectedid }),
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'messagepage-comments' },
 	                            commentlist
-	                        )
+	                        ),
+	                        _react2.default.createElement(_commentbox2.default, { messageId: this.props.selectedid })
 	                    )
 	                ),
 	                _react2.default.createElement('div', { className: 'col-2' })
@@ -71329,13 +71303,13 @@
 	exports.doCommentDelete = doCommentDelete;
 	exports.doCommentOperation = doCommentOperation;
 
-	var _actionCreator = __webpack_require__(643);
+	var _actionCreator = __webpack_require__(641);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
 	var _HtmlUtils = __webpack_require__(639);
 
-	var _FetchUtils = __webpack_require__(642);
+	var _FetchUtils = __webpack_require__(643);
 
 	var FetchUtils = _interopRequireWildcard(_FetchUtils);
 
@@ -71440,7 +71414,8 @@
 	        name: newcomment.name || '',
 	        email: newcomment.email || '',
 	        text: newcomment.text || '',
-	        messageId: ownProps.messageId
+	        messageId: ownProps.messageId,
+	        error: state.comments.error
 	    };
 	};
 
@@ -71456,6 +71431,11 @@
 	        _this.onNameChange = _this.onNameChange.bind(_this);
 	        _this.onTextChange = _this.onTextChange.bind(_this);
 	        _this.onSave = _this.onSave.bind(_this);
+	        _this.state = {
+	            classes: {
+	                name: '', email: '', body: ''
+	            }
+	        };
 	        return _this;
 	    }
 
@@ -71489,13 +71469,48 @@
 	            event.preventDefault();
 	            var dispatch = this.props.dispatch;
 
-	            var comment = {
-	                name: this.props.name,
-	                email: this.props.email,
-	                text: this.props.text
-	            };
+	            if (this.validate()) {
 
-	            dispatch((0, _commentActions.doCommentAdd)(this.props.messageId, comment));
+	                var comment = {
+	                    name: this.props.name,
+	                    email: this.props.email,
+	                    text: this.props.text
+	                };
+
+	                dispatch((0, _commentActions.doCommentAdd)(this.props.messageId, comment));
+	            }
+	        }
+	    }, {
+	        key: 'validate',
+	        value: function validate() {
+	            var name = this.props.name;
+	            var email = this.props.email;
+	            var text = this.props.text;
+	            var connected = !!this.props.user;
+	            var cs = { name: '', email: '', body: '' };
+	            var ok = true;
+
+	            if (!connected) {
+
+	                if (!name || name.length < 3) {
+	                    cs.name = 'validation-error';
+	                    ok = false;
+	                }
+
+	                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+	                    cs.email = 'validation-error';
+	                    ok = false;
+	                }
+	            }
+
+	            if (!text || text.length < 2) {
+	                cs.text = 'validation-error';
+	                ok = false;
+	            }
+
+	            this.setState({ classes: cs });
+
+	            return ok;
 	        }
 	    }, {
 	        key: 'render',
@@ -71511,13 +71526,15 @@
 	                        { htmlFor: 'comment-name' },
 	                        'Name'
 	                    ),
-	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Your name', value: this.props.name, onChange: this.onNameChange }),
+	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Your name', id: 'comment-name',
+	                        value: this.props.name, onChange: this.onNameChange, className: this.state.classes.name }),
 	                    _react2.default.createElement(
 	                        'label',
 	                        { htmlFor: 'comment-email' },
 	                        'Email'
 	                    ),
-	                    _react2.default.createElement('input', { type: 'text', id: 'comment-email', placeholder: 'Email (will not be published)', value: this.props.email, onChange: this.onEmailChange })
+	                    _react2.default.createElement('input', { type: 'text', id: 'comment-email', placeholder: 'Email (will not be published)',
+	                        value: this.props.email, onChange: this.onEmailChange, className: this.state.classes.email })
 	                );
 	            } else {
 	                a = _react2.default.createElement(
@@ -71525,6 +71542,16 @@
 	                    null,
 	                    'Connected as ',
 	                    this.props.user.username
+	                );
+	            }
+
+	            var error = null;
+
+	            if (this.props.error) {
+	                error = _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    this.props.error
 	                );
 	            }
 
@@ -71540,7 +71567,8 @@
 	                        { htmlFor: 'comment-body' },
 	                        'Your Comment'
 	                    ),
-	                    _react2.default.createElement('textarea', { name: 'commentbody', id: 'comment-body', rows: '4', value: this.props.text, onChange: this.onTextChange }),
+	                    _react2.default.createElement('textarea', { name: 'commentbody', id: 'comment-body', rows: '4',
+	                        value: this.props.text, onChange: this.onTextChange, className: this.state.classes.text }),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'right' },
@@ -71549,7 +71577,8 @@
 	                            { className: 'btn', onClick: this.onSave },
 	                            'Save'
 	                        )
-	                    )
+	                    ),
+	                    error
 	                )
 	            );
 	        }
@@ -71570,7 +71599,7 @@
 /* 673 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -71580,29 +71609,41 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	__webpack_require__(701);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Comment = function Comment(_ref) {
 	    var name = _ref.name;
+	    var createdat = _ref.createdat;
 	    var body = _ref.body;
 
 	    return _react2.default.createElement(
-	        "div",
-	        { className: "box" },
+	        'div',
+	        { className: 'box noborder single-comment' },
 	        _react2.default.createElement(
-	            "div",
-	            { className: "body" },
+	            'div',
+	            { className: 'heading' },
 	            _react2.default.createElement(
-	                "p",
-	                null,
-	                body
+	                'span',
+	                { className: 'comment-author' },
+	                name
+	            ),
+	            ' - ',
+	            _react2.default.createElement(
+	                'span',
+	                { className: 'comment-date' },
+	                createdat
 	            )
 	        ),
 	        _react2.default.createElement(
-	            "div",
-	            { className: "footer right" },
-	            "By ",
-	            name
+	            'div',
+	            { className: 'body' },
+	            _react2.default.createElement(
+	                'p',
+	                null,
+	                body
+	            )
 	        )
 	    );
 	};
@@ -71944,7 +71985,7 @@
 
 	var _navigationActions = __webpack_require__(565);
 
-	var _actionCreator = __webpack_require__(643);
+	var _actionCreator = __webpack_require__(641);
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
@@ -72534,11 +72575,6 @@
 	                { key: 'comment-' + c.id },
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'cell-100' },
-	                    c.id
-	                ),
-	                _react2.default.createElement(
-	                    'td',
 	                    { className: 'cell-200' },
 	                    c.authorname,
 	                    ' / ',
@@ -72604,11 +72640,6 @@
 	            _react2.default.createElement(
 	                'tr',
 	                null,
-	                _react2.default.createElement(
-	                    'th',
-	                    null,
-	                    'ID'
-	                ),
 	                _react2.default.createElement(
 	                    'th',
 	                    null,
@@ -72971,7 +73002,7 @@
 
 	exports.categoryReducers = categoryReducers;
 
-	var _categoryActions = __webpack_require__(641);
+	var _categoryActions = __webpack_require__(642);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -73255,7 +73286,7 @@
 	};
 
 	function commentReducers() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [], newcomment: {} } : arguments[0];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? { items: {}, index: [], newcomment: {}, error: null } : arguments[0];
 	    var action = arguments[1];
 
 	    switch (action.type) {
@@ -73274,25 +73305,26 @@
 	        case _commentActions.COMMENT_SAVED:
 	            return Object.assign({}, state, { newcomment: null });
 
+	        case _commentActions.COMMENT_SAVEDERROR:
+	            return Object.assign({}, state, { error: action.error.message });
+
 	        case _commentActions.COMMENT_OPERATIONDONE:
 
-	            console.log(action);
+	            var cid = parseInt(action.comment.id);
+	            var newitems = Object.assign({}, state.items);
+	            var newindex = [].concat(_toConsumableArray(state.index));
+	            var itemidx = newindex.indexOf(cid);
 
-	            if (action.comment.operation == 'approved') {} else if (action.comment.operation == 'deleted') {
-	                var cid = action.comment.id;
-	                var newitems = Object.assign({}, state.items);
-	                var newindex = [].concat(_toConsumableArray(state.index));
-	                var itemidx = newindex.indexOf(cid);
+	            if (itemidx != -1) {
 
-	                console.log(itemidx);
-
-	                if (itemidx != -1) {
+	                if (action.comment.operation == 'approved') {
+	                    newitems[cid].approved = true;
+	                } else if (action.comment.operation == 'deleted') {
 	                    newindex.splice(itemidx, 1);
 	                    delete newitems[cid];
-	                    console.log(newindex, newitems);
-
-	                    return Object.assign({}, state, { items: newitems, index: newindex });
 	                }
+
+	                return Object.assign({}, state, { items: newitems, index: newindex });
 	            }
 
 	        default:
@@ -73349,6 +73381,12 @@
 
 /***/ },
 /* 700 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 701 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

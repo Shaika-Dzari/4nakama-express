@@ -38,7 +38,7 @@ class MessagePage extends React.Component {
         if (this.props.commentsindex && this.props.commentsindex.length > 0) {
             commentlist = this.props.commentsindex.map(i => {
                 let c = this.props.comments[i];
-                return <Comment key={'comment-' + c.id} name={c.authorname} body={c.body} />
+                return <Comment key={'comment-' + c.id} name={c.authorname} body={c.body} createdat={c.createdat} />
             });
         } else {
             commentlist = 'No comment yet.';
@@ -48,12 +48,11 @@ class MessagePage extends React.Component {
             <div className="row">
                 <div className="col-10">
                     <div className="messagepage-details">
-
                         <Message {...this.props.message} />
-                        <CommentBox messageId={this.props.selectedid} />
                         <div className="messagepage-comments">
                             {commentlist}
                         </div>
+                        <CommentBox messageId={this.props.selectedid} />
                     </div>
                 </div>
                 <div className="col-2">
