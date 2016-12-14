@@ -2,6 +2,7 @@ create table nakama.account (
     id serial primary key,
     username text not null,
     password text not null,
+    displayname text not null,
     email text not null,
     role text not null default 'author',
     enabled boolean not null default TRUE,

@@ -8197,7 +8197,7 @@
 
 	__webpack_require__(564);
 
-	__webpack_require__(700);
+	__webpack_require__(703);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29439,15 +29439,15 @@
 
 	var _messagepage2 = _interopRequireDefault(_messagepage);
 
-	var _fileadmin = __webpack_require__(675);
+	var _fileadmin = __webpack_require__(676);
 
 	var _fileadmin2 = _interopRequireDefault(_fileadmin);
 
-	var _commentadmin = __webpack_require__(687);
+	var _commentadmin = __webpack_require__(688);
 
 	var _commentadmin2 = _interopRequireDefault(_commentadmin);
 
-	var _createstore = __webpack_require__(688);
+	var _createstore = __webpack_require__(691);
 
 	var _createstore2 = _interopRequireDefault(_createstore);
 
@@ -38535,18 +38535,18 @@
 	        'div',
 	        { className: 'pager' },
 	        prevdate ? _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(event) {
+	            'button',
+	            { className: 'btn', onClick: function onClick(event) {
 	                    event.preventDefault();callback(pp);
 	                } },
-	            'Previous'
+	            '◀ Previous'
 	        ) : null,
 	        nextdate ? _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: function onClick(event) {
+	            'button',
+	            { className: 'btn', onClick: function onClick(event) {
 	                    event.preventDefault();callback(np);
 	                } },
-	            'Next'
+	            'Next ▶'
 	        ) : null
 	    );
 	};
@@ -50226,14 +50226,14 @@
 	        'div',
 	        { className: 'pager' },
 	        onPrevious ? _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: onPrevious },
-	            '< précédent'
+	            'button',
+	            { className: 'btn', onClick: onPrevious },
+	            '◀ précédent'
 	        ) : null,
 	        onNext ? _react2.default.createElement(
-	            'a',
-	            { href: '#', onClick: onNext },
-	            'suivant >'
+	            'button',
+	            { className: 'btn', onClick: onNext },
+	            'suivant  ▶'
 	        ) : null
 	    );
 	};
@@ -71205,7 +71205,7 @@
 
 	var _comment2 = _interopRequireDefault(_comment);
 
-	__webpack_require__(674);
+	__webpack_require__(675);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71609,7 +71609,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(701);
+	__webpack_require__(674);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71658,6 +71658,12 @@
 
 /***/ },
 /* 675 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71676,15 +71682,15 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileupload = __webpack_require__(676);
+	var _fileupload = __webpack_require__(677);
 
 	var _fileupload2 = _interopRequireDefault(_fileupload);
 
-	var _togglebox = __webpack_require__(682);
+	var _togglebox = __webpack_require__(683);
 
 	var _togglebox2 = _interopRequireDefault(_togglebox);
 
-	var _filegrid = __webpack_require__(683);
+	var _filegrid = __webpack_require__(684);
 
 	var _filegrid2 = _interopRequireDefault(_filegrid);
 
@@ -71702,9 +71708,9 @@
 
 	var _HtmlUtils = __webpack_require__(639);
 
-	var _fileActions = __webpack_require__(677);
+	var _fileActions = __webpack_require__(678);
 
-	__webpack_require__(686);
+	__webpack_require__(687);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71806,7 +71812,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileAdmin);
 
 /***/ },
-/* 676 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71823,17 +71829,17 @@
 
 	var _reactRedux = __webpack_require__(538);
 
-	var _fileActions = __webpack_require__(677);
+	var _fileActions = __webpack_require__(678);
 
-	var _FileUploadUtils = __webpack_require__(678);
+	var _FileUploadUtils = __webpack_require__(679);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
-	var _onefile = __webpack_require__(679);
+	var _onefile = __webpack_require__(680);
 
 	var _onefile2 = _interopRequireDefault(_onefile);
 
-	__webpack_require__(681);
+	__webpack_require__(682);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71965,7 +71971,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(FileUpload);
 
 /***/ },
-/* 677 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71989,7 +71995,7 @@
 
 	var _actionCreator2 = _interopRequireDefault(_actionCreator);
 
-	var _FileUploadUtils = __webpack_require__(678);
+	var _FileUploadUtils = __webpack_require__(679);
 
 	var _FileUploadUtils2 = _interopRequireDefault(_FileUploadUtils);
 
@@ -72076,7 +72082,7 @@
 	}
 
 /***/ },
-/* 678 */
+/* 679 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72178,7 +72184,7 @@
 	exports.default = FileUploaderUtils;
 
 /***/ },
-/* 679 */
+/* 680 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72191,7 +72197,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(680);
+	__webpack_require__(681);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72273,12 +72279,6 @@
 	exports.default = OneFile;
 
 /***/ },
-/* 680 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 681 */
 /***/ function(module, exports) {
 
@@ -72286,6 +72286,12 @@
 
 /***/ },
 /* 682 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 683 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72370,7 +72376,7 @@
 	exports.default = ToggleBox;
 
 /***/ },
-/* 683 */
+/* 684 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72383,11 +72389,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _filegriditem = __webpack_require__(684);
+	var _filegriditem = __webpack_require__(685);
 
 	var _filegriditem2 = _interopRequireDefault(_filegriditem);
 
-	__webpack_require__(685);
+	__webpack_require__(686);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72419,7 +72425,7 @@
 	exports.default = FileGrid;
 
 /***/ },
-/* 684 */
+/* 685 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72499,12 +72505,6 @@
 	exports.default = FileGridItem;
 
 /***/ },
-/* 685 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 686 */
 /***/ function(module, exports) {
 
@@ -72512,6 +72512,12 @@
 
 /***/ },
 /* 687 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 688 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72533,6 +72539,10 @@
 	var _linkpager2 = _interopRequireDefault(_linkpager);
 
 	var _commentActions = __webpack_require__(670);
+
+	var _confirmbutton = __webpack_require__(689);
+
+	var _confirmbutton2 = _interopRequireDefault(_confirmbutton);
 
 	var _HtmlUtils = __webpack_require__(639);
 
@@ -72575,7 +72585,7 @@
 	                { key: 'comment-' + c.id },
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'cell-200' },
+	                    { className: 'cell-250' },
 	                    c.authorname,
 	                    ' / ',
 	                    c.email
@@ -72587,12 +72597,12 @@
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'cell-100' },
+	                    { className: 'cell-125' },
 	                    c.messageid
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'cell-100' },
+	                    { className: 'cell-125' },
 	                    c.approved ? _react2.default.createElement(
 	                        'span',
 	                        null,
@@ -72605,17 +72615,17 @@
 	                ),
 	                _react2.default.createElement(
 	                    'td',
-	                    { className: 'right cell-200' },
-	                    c.approved ? _react2.default.createElement('span', null) : _react2.default.createElement(
+	                    { className: 'right cell-250' },
+	                    !c.approved ? _react2.default.createElement(
 	                        'button',
-	                        { className: 'btn', href: '#', onClick: callback, 'data-n4-op': 'approve', 'data-n4-id': c.id },
+	                        { className: 'btn', href: '#', onClick: function onClick() {
+	                                return callback(c.id, 'approve');
+	                            } },
 	                        'Approve'
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'btn', href: '#', onClick: callback, 'data-n4-op': 'delete', 'data-n4-id': c.id },
-	                        'Delete'
-	                    )
+	                    ) : null,
+	                    _react2.default.createElement(_confirmbutton2.default, { text: 'Delete', action: function action() {
+	                            return callback(c.id, 'delete');
+	                        }, level: 'warning' })
 	                )
 	            );
 	        });
@@ -72660,11 +72670,7 @@
 	                    null,
 	                    'Approved'
 	                ),
-	                _react2.default.createElement(
-	                    'th',
-	                    null,
-	                    '-'
-	                )
+	                _react2.default.createElement('th', null)
 	            )
 	        ),
 	        _react2.default.createElement(
@@ -72704,13 +72710,11 @@
 	        }
 	    }, {
 	        key: 'doOneOperation',
-	        value: function doOneOperation(event) {
-	            event.preventDefault();
-	            var link = event.target;
+	        value: function doOneOperation(id, op) {
 	            var dispatch = this.props.dispatch;
 
 
-	            dispatch((0, _commentActions.doCommentOperation)(link.dataset.n4Id, link.dataset.n4Op));
+	            dispatch((0, _commentActions.doCommentOperation)(id, op));
 	        }
 	    }, {
 	        key: 'render',
@@ -72738,7 +72742,113 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CommentAdmin);
 
 /***/ },
-/* 688 */
+/* 689 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(299);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	__webpack_require__(690);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ConfirmButton = function (_React$Component) {
+	    _inherits(ConfirmButton, _React$Component);
+
+	    function ConfirmButton(props) {
+	        _classCallCheck(this, ConfirmButton);
+
+	        var _this = _possibleConstructorReturn(this, (ConfirmButton.__proto__ || Object.getPrototypeOf(ConfirmButton)).call(this, props));
+
+	        _this.confirm = _this.confirm.bind(_this);
+	        _this.cancel = _this.cancel.bind(_this);
+	        _this.state = {
+	            confirming: false
+	        };
+	        return _this;
+	    }
+
+	    _createClass(ConfirmButton, [{
+	        key: 'confirm',
+	        value: function confirm() {
+	            this.setState({ confirming: true });
+	        }
+	    }, {
+	        key: 'cancel',
+	        value: function cancel() {
+	            this.setState({ confirming: false });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var btn = null;
+
+	            if (this.state.confirming) {
+	                btn = _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    _react2.default.createElement(
+	                        'button',
+	                        { className: 'btn ' + this.props.level, onClick: this.props.action },
+	                        'Sure?'
+	                    ),
+	                    _react2.default.createElement(
+	                        'button',
+	                        { className: 'btn btn-x', onClick: this.cancel },
+	                        'X'
+	                    )
+	                );
+	            } else {
+	                btn = _react2.default.createElement(
+	                    'button',
+	                    { className: 'btn btn-action', onClick: this.confirm },
+	                    this.props.text
+	                );
+	            }
+
+	            return _react2.default.createElement(
+	                'span',
+	                { className: 'confirm' },
+	                btn
+	            );
+	        }
+	    }]);
+
+	    return ConfirmButton;
+	}(_react2.default.Component);
+
+	ConfirmButton.propTypes = {
+	    action: _react.PropTypes.func.isRequired,
+	    text: _react.PropTypes.string.isRequired,
+	    level: _react.PropTypes.oneOf(['warning', 'info'])
+	};
+
+	exports.default = ConfirmButton;
+
+/***/ },
+/* 690 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 691 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72751,15 +72861,15 @@
 
 	var _reactRouter = __webpack_require__(470);
 
-	var _reduxThunk = __webpack_require__(689);
+	var _reduxThunk = __webpack_require__(692);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _rootreducers = __webpack_require__(690);
+	var _rootreducers = __webpack_require__(693);
 
 	var _rootreducers2 = _interopRequireDefault(_rootreducers);
 
-	var _ActionsLogger = __webpack_require__(699);
+	var _ActionsLogger = __webpack_require__(702);
 
 	var _ActionsLogger2 = _interopRequireDefault(_ActionsLogger);
 
@@ -72774,7 +72884,7 @@
 	exports.default = store;
 
 /***/ },
-/* 689 */
+/* 692 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72802,7 +72912,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 690 */
+/* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72815,19 +72925,19 @@
 
 	var _redux = __webpack_require__(545);
 
-	var _messageReducers = __webpack_require__(691);
+	var _messageReducers = __webpack_require__(694);
 
-	var _categoryReducers = __webpack_require__(692);
+	var _categoryReducers = __webpack_require__(695);
 
-	var _navigationReducers = __webpack_require__(693);
+	var _navigationReducers = __webpack_require__(696);
 
-	var _userReducers = __webpack_require__(694);
+	var _userReducers = __webpack_require__(697);
 
-	var _fileReducers = __webpack_require__(695);
+	var _fileReducers = __webpack_require__(698);
 
-	var _commentReducers = __webpack_require__(697);
+	var _commentReducers = __webpack_require__(700);
 
-	var _statisticReducers = __webpack_require__(698);
+	var _statisticReducers = __webpack_require__(701);
 
 	var RootReducers = (0, _redux.combineReducers)({
 	    navigation: _navigationReducers.navigationReducers,
@@ -72844,7 +72954,7 @@
 	exports.default = RootReducers;
 
 /***/ },
-/* 691 */
+/* 694 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72989,7 +73099,7 @@
 	}
 
 /***/ },
-/* 692 */
+/* 695 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73063,7 +73173,7 @@
 	}
 
 /***/ },
-/* 693 */
+/* 696 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73092,7 +73202,7 @@
 	}
 
 /***/ },
-/* 694 */
+/* 697 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73125,7 +73235,7 @@
 	}
 
 /***/ },
-/* 695 */
+/* 698 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73139,9 +73249,9 @@
 	exports.fileReducers = fileReducers;
 	exports.fileUploadReducers = fileUploadReducers;
 
-	var _fileActions = __webpack_require__(677);
+	var _fileActions = __webpack_require__(678);
 
-	var _IndexReducer = __webpack_require__(696);
+	var _IndexReducer = __webpack_require__(699);
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -73236,7 +73346,7 @@
 	}
 
 /***/ },
-/* 696 */
+/* 699 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -73265,7 +73375,7 @@
 	}
 
 /***/ },
-/* 697 */
+/* 700 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73277,7 +73387,7 @@
 
 	var _commentActions = __webpack_require__(670);
 
-	var _IndexReducer = __webpack_require__(696);
+	var _IndexReducer = __webpack_require__(699);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -73333,7 +73443,7 @@
 	}
 
 /***/ },
-/* 698 */
+/* 701 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73358,7 +73468,7 @@
 	}
 
 /***/ },
-/* 699 */
+/* 702 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -73380,13 +73490,7 @@
 	exports.default = logger;
 
 /***/ },
-/* 700 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 701 */
+/* 703 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

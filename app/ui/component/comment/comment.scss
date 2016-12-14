@@ -1,6 +1,8 @@
+@import '../../variables.scss';
+
 .single-comment {
     .heading {
-        background-color: #fefefe;
+        background-color: $color-white;
 
         .comment-author {
             font-weight: bold;
@@ -8,7 +10,7 @@
 
         .comment-date {
             font-size: 0.8em;
-            color: #999;
+            color: $color-font-3;
         }
     }
 }

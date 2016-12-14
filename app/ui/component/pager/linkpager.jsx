@@ -11,8 +11,8 @@ const LinkPager = ({prevdate, nextdate, size, callback}) => {
 
     return (
         <div className="pager">
-            { prevdate ? <a href="#" onClick={(event) => {event.preventDefault(); callback(pp); }}>Previous</a> : null }
-            { nextdate ? <a href="#" onClick={(event) => {event.preventDefault(); callback(np); }}>Next</a> : null }
+            { prevdate ? <button className="btn" onClick={(event) => {event.preventDefault(); callback(pp); }}>&#9664; Previous</button> : null }
+            { nextdate ? <button className="btn" onClick={(event) => {event.preventDefault(); callback(np); }}>Next &#9654;</button> : null }
         </div>
     );
 }

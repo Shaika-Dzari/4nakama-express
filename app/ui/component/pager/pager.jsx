@@ -7,8 +7,8 @@ const Pager = ({onPrevious, onNext}) => {
 
     return (
         <div className="pager">
-            {onPrevious ? <a href="#" onClick={onPrevious}>&lt; précédent</a> : null}
-            {onNext ? <a href="#" onClick={onNext}>suivant &gt;</a> : null}
+            {onPrevious ? <button className="btn" onClick={onPrevious}>&#9664; précédent</button> : null}
+            {onNext ? <button className="btn" onClick={onNext}>suivant  &#9654;</button> : null}
         </div>
     );
 }

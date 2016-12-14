@@ -27,7 +27,8 @@ passport.serializeUser((user, done) => {
     let partialUser = {
         id: user.id,
         username: user.username,
-        role: user.role
+        role: user.role,
+        displayname: user.displayname
     };
     done(null, partialUser);
 });

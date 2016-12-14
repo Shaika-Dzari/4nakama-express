@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import LinkPager from '../../component/pager/linkpager.jsx';
 import {doCommentOperation, doCommentFetch} from '../../actions/commentActions.js';
+import ConfirmButton from '../../component/confirmbutton/confirmbutton.jsx';
 import { escapeHTML } from '../../utils/HtmlUtils.js';
 
 const mapStateToProps = (state, ownProps) => {
@@ -28,13 +29,13 @@ const CommentList = ({items, index, callback}) => {
 
             return (
                 <tr key={'comment-' + c.id}>
-                    <td className="cell-200">{c.authorname} / {c.email}</td>
+                    <td className="cell-250">{c.authorname} / {c.email}</td>
                     <td>{body}</td>
-                    <td className="cell-100">{c.messageid}</td>
-                    <td className="cell-100">{c.approved ? <span>&#10003;</span> : <span>&#8709;</span>}</td>
-                    <td className="right cell-200">
-                        {c.approved ? <span></span> : <button className="btn" href="#" onClick={callback} data-n4-op="approve" data-n4-id={c.id}>Approve</button>}
-                        <button className="btn" href="#" onClick={callback} data-n4-op="delete" data-n4-id={c.id}>Delete</button>
+                    <td className="cell-125">{c.messageid}</td>
+                    <td className="cell-125">{c.approved ? <span>&#10003;</span> : <span>&#8709;</span>}</td>
+                    <td className="right cell-250">
+                        {!c.approved ? <button className="btn" href="#" onClick={() => callback(c.id, 'approve')}>Approve</button> : null}
+                        <ConfirmButton text="Delete" action={() => callback(c.id, 'delete')} level="warning" />
                     </td>
                 </tr>
             );
@@ -51,7 +52,7 @@ const CommentList = ({items, index, callback}) => {
                     <th>Text</th>
                     <th>Message</th>
                     <th>Approved</th>
-                    <th>-</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -80,12 +81,10 @@ class CommentAdmin extends React.Component {
         this.onChangePage(this.props.page);
     }
 
-    doOneOperation(event) {
-        event.preventDefault();
-        let link = event.target;
+    doOneOperation(id, op) {
         const { dispatch } = this.props;
 
-        dispatch(doCommentOperation(link.dataset.n4Id, link.dataset.n4Op));
+        dispatch(doCommentOperation(id, op));
     }
 
     render() {

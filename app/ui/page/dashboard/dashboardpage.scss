@@ -10,9 +10,10 @@ div.dashboard {
             .menu-item {
                 background-color: $color-back-dark;
                 color: $color-font-1;
+                text-align: center;
 
                 a {
-                    text-align: center;
+
                     display: inline-block;
                     font-weight: bold;
                     text-decoration: none;

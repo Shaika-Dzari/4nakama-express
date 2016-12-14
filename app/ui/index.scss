@@ -44,16 +44,20 @@ table {
     }
 
     td, th {
-        padding: 1rem;
+        padding: 0.5em;
         text-align: left;
     }
 
-    td.cell-100 {
-        width: 100px;
+    td.cell-75 {
+        width: 75px;
     }
 
-    td.cell-200 {
-        width: 200px;
+    td.cell-125 {
+        width: 125px;
+    }
+
+    td.cell-250 {
+        width: 250px;
     }
 }
 

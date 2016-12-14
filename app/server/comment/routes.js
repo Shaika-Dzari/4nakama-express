@@ -11,6 +11,26 @@ var config = require('../config/config.js');
 
 var DEFAULT_PAGE_SIZE = 10;
 
+function cleanup(user, comment) {
+    if (!user || user.role != 'admin') {
+
+        let cs;
+        if (!Array.isArray(comment)) {
+            cs = [comment];
+        } else {
+            cs = comment;
+        }
+
+        cs.forEach(c => {
+            delete c['authoremail'];
+        });
+
+        return cs;
+    }
+
+    return comment;
+}
+
 router.get('/', (req, res, next) => {
     var mid = req.query.messageid;
     var pagingParam = new PagingParser(req, DEFAULT_PAGE_SIZE);
@@ -34,7 +54,7 @@ router.get('/', (req, res, next) => {
     db.any(query, pagingParam.merge({messageid: mid}), (err, comments) => {
         if (err) next(err);
 
-        res.json(comments);
+        res.json(cleanup(user, comments));
     });
 });
 
@@ -54,23 +74,22 @@ router.post('/', (req, res, next) => {
         return next(new ApiError(400, 'Usage of the word ' + config.comment.rejected[idx] + ' is not allowed.'));
     }
 
-    console.log('after');
-
     if (user) {
         authorId = user.id;
-        authorName = user.username;
+        authorName = user.displayname;
     } else if (commentBody.name && commentBody.email) {
-        authorName = commentBody.name;
-        authorEmail = commentBody.email;
+        authorName = sanitizeHtml(commentBody.name, {allowedTags: []});
+        authorEmail = sanitizeHtml(commentBody.email, {allowedTags: []})
     } else {
         next(new Error("Missing name or email"));
     }
 
+    // TODO : sanitize messageid
     if (!commentBody.messageId) {
         next(new Error("Missing message's id"));
     }
 
-    var body = sanitizeHtml(commentBody.text, {allowedTags: [ 'br' ]})
+    var body = sanitizeHtml(commentBody.text, {allowedTags: [ 'br' ]});
 
     var comment = {
         body: body,
@@ -85,7 +104,7 @@ router.post('/', (req, res, next) => {
         if (err) next(err);
 
         comment.id = data.id;
-        res.status(201).json(comment);
+        res.status(201).json(cleanup(user, comment));
     });
 
 });

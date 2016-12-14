@@ -68,18 +68,19 @@
     border-top: 1px solid #427474; }
 div.pager {
   text-align: center; }
-  div.pager a {
+  div.pager button {
     display: inline-block;
-    border: 1px solid #427474;
+    border: 1px solid #1a7dbc;
     padding: 2px 5px 4px 5px;
-    margin: 3px;
+    margin: 5px 0;
+    width: 120px;
     font-size: 0.8em;
     font-weight: bold;
     background-color: #1872ab;
     color: #fafafa; }
-  div.pager a:hover {
-    background-color: #cddddd;
-    color: #444; }
+  div.pager button:hover {
+    background-color: #1f95e0;
+    color: #fafafa; }
 div.list-ctn {
   margin: 10px; }
   div.list-ctn .info-element {
@@ -103,9 +104,9 @@ div.dashboard div.dashboard-menu {
   margin: 16px 10px 0 10px; }
   div.dashboard div.dashboard-menu .row .menu-item {
     background-color: #1872ab;
-    color: #fafafa; }
+    color: #fafafa;
+    text-align: center; }
     div.dashboard div.dashboard-menu .row .menu-item a {
-      text-align: center;
       display: inline-block;
       font-weight: bold;
       text-decoration: none;
@@ -158,12 +159,12 @@ div.login {
   .comment-box .frm {
     padding: 5px 10px; }
 .single-comment .heading {
-  background-color: #fefefe; }
+  background-color: #fff; }
   .single-comment .heading .comment-author {
     font-weight: bold; }
   .single-comment .heading .comment-date {
     font-size: 0.8em;
-    color: #999; }
+    color: #427474; }
 .messagepage-details {
   margin: 0 10px; }
   .messagepage-details .messagepage-comments {
@@ -278,6 +279,26 @@ div.login {
         background-color: #1f95e0; }
 .fileadmin .file-list {
   margin: 10px 0; }
+.confirm .btn-action {
+  min-width: 110px; }
+
+.confirm .btn.info, .confirm .btn.warning {
+  width: 80px;
+  color: #fff;
+  font-weight: bold;
+  width: 80px; }
+
+.confirm .btn.info {
+  border: 1px solid #009900;
+  background-color: #24b463; }
+
+.confirm .btn.warning {
+  border: 1px solid #aa2200;
+  background-color: #da5347; }
+
+.confirm .btn-x {
+  font-weight: bold;
+  width: 30px; }
 html, body {
   min-height: 100%;
   margin: 0;
@@ -309,12 +330,14 @@ table {
   table tbody tr {
     border-bottom: 1px solid #dedede; }
   table td, table th {
-    padding: 1rem;
+    padding: 0.5em;
     text-align: left; }
-  table td.cell-100 {
-    width: 100px; }
-  table td.cell-200 {
-    width: 200px; }
+  table td.cell-75 {
+    width: 75px; }
+  table td.cell-125 {
+    width: 125px; }
+  table td.cell-250 {
+    width: 250px; }
 
 a.link-close {
   display: inline-block;
