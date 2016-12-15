@@ -25,7 +25,7 @@ module.exports = mongoose.model('Account', AccountSchema);
 
 const ONE_BY_USERNAME = 'select * from account where username = ${username}';
 const ONE_BY_ID = 'select * from account where id = ${id}';
-const CREATE_ONE = 'insert into account(username, password, email, role) values(${username}, ${password}, ${email}, ${role}) returning id';
+const CREATE_ONE = 'insert into account(username, password, email, role, displayname) values(${username}, ${password}, ${email}, ${role}, ${displayname}) returning id';
 
 module.exports = {
     ONE_BY_USERNAME: ONE_BY_USERNAME,

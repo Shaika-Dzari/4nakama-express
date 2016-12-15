@@ -27,7 +27,6 @@ const ALL_PUBLISHED_BY_NEXTPAGE = "select m.*, s.value as total_count from messa
                                   "  and m.published = true " +
                                   "  and s.tablename = 'message' " +
                                   "  and s.statistic = 'total_count' " +
-                                  "  and m.messagetype = 'MESSAGE' " +
                                   "order by m.createdat desc " +
                                   "limit ${size^}";
 
@@ -36,13 +35,12 @@ const ALL_PUBLISHED_BY_PREVPAGE = "with previous_page as ( " +
                                   "    from message " +
                                   "    where createdat > ${createdat} " +
                                   "      and published = true " +
-                                  "      and m.messagetype = 'MESSAGE' " +
                                   "    order by createdat asc " +
                                   "    limit ${size^}" +
                                   ") " +
                                   "select * from previous_page order by createdat desc;";
 
-const ONE_BY_ID = "select * from message where id = ${id} and m.messagetype = 'MESSAGE' ";
+const ONE_BY_ID = "select * from message where id = ${id} ";
 const CREATE_ONE = "insert into message(title, body, published, authorname, authorid, prettyurl, categories) " +
                    "values(${title}, ${body}, ${published}, ${authorname}, ${authorid}, ${prettyurl}, ${categories}) " +
                    "returning id, createdat ";

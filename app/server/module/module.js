@@ -1,0 +1,2 @@
+const ALL = "select * from module m inner join modulemeta mt on (m.id = mt.moduleid) ";
+const ALL_BY_STATUS = "select * from module m inner join modulemeta mt on (m.id = mt.moduleid) where m.enablemodule = ${enablemodule}";
