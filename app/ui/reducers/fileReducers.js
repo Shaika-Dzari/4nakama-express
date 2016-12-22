@@ -1,13 +1,14 @@
 import {FILE_UPLOAD_ONCHANGE, FILE_UPLOAD_REMOVE, FILE_UPLOAD_ERROR, FILE_UPLOAD_SUCCESS, FILE_UPLOAD_PROGRESS,
         FILE_RECEIVED, FILE_REQUESTERROR, FILE_ADDED, FILE_COPYTOSTORE} from '../actions/fileActions.js';
-import {indexes} from '../utils/IndexReducer.js';
+//import {indexes} from '../utils/IndexReducer.js';
+import normalize from '../../common/Normalize.js';
 
 export function fileReducers(state = {items: {}, index: [], buffer: []}, action) {
 
     switch (action.type) {
 
         case FILE_RECEIVED:
-            let receivedItems = indexes(action.files);
+            let receivedItems = normalize(action.files);
             receivedItems['page'] = action.page;
             return Object.assign({}, state, receivedItems);
 

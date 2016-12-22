@@ -69,9 +69,7 @@ class FileAdmin extends React.Component {
 
         return (
             <div className="fileadmin">
-                <ToggleBox>
-                    <FileUpload />
-                </ToggleBox>
+                <FileUpload />
 
                 <div className="file-list">
                     {this.props.error ? <AlertBox message={this.props.error} /> : false }

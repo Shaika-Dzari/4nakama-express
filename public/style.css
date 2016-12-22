@@ -2,14 +2,23 @@
   background-color: #1872ab;
   color: #fafafa; }
   .site-header h1.site-title {
-    margin: 8px 5px 20px 20px; }
+    margin: 0 5px 5px 5px;
+    display: inline-block; }
     .site-header h1.site-title a {
       color: #fafafa; }
       .site-header h1.site-title a img {
         vertical-align: middle; }
   .site-header h5 {
-    margin: 8px 5px 10px 20px;
+    display: inline-block;
+    margin: 0 0 0 5px;
     font-size: 1em; }
+  @media only screen and (min-width: 920px) {
+    .site-header h1.site-title {
+      display: block;
+      margin: 8px 5px 20px 20px; }
+    .site-header h5 {
+      display: block;
+      margin: 8px 5px 20px 20px; } }
   .site-header .page-header-menu {
     margin-top: 5px;
     padding: 0 0 0 5px; }
@@ -18,13 +27,13 @@
       display: inline-block;
       font-weight: bold;
       text-decoration: none;
-      margin: 16px 10px 0 10px;
+      margin: 3px 0;
       padding: 10px;
       border-top: 1px solid #176ba1;
       border-bottom: 1px solid #176ba1;
       color: #fafafa; }
       .site-header .page-header-menu nav.site-menu a span {
-        display: none; }
+        display: inline; }
       .site-header .page-header-menu nav.site-menu a img {
         display: inline; }
     .site-header .page-header-menu nav.site-menu a:hover {
@@ -34,7 +43,9 @@
       margin-top: 20px;
       padding: 20px 0; }
       .site-header .page-header-menu nav.site-menu a {
-        display: block; }
+        display: block;
+        margin: 16px 10px 0 10px;
+        padding: 10px; }
         .site-header .page-header-menu nav.site-menu a span {
           display: inline; }
         .site-header .page-header-menu nav.site-menu a img {
@@ -85,20 +96,21 @@ div.list-ctn {
   margin: 10px; }
   div.list-ctn .info-element {
     padding: 10px; }
-.dashboard-content .dashboard-content-section {
+.dashboard-content-section {
   padding: 5px 10px;
   margin: 10px;
   border: 1px solid #dedede; }
-  .dashboard-content .dashboard-content-section h4 {
+  .dashboard-content-section h4 {
     margin: 3px 0; }
-  .dashboard-content .dashboard-content-section .dashboard-content-section-data {
+  .dashboard-content-section .dashboard-content-section-data {
     padding: 3px; }
-    .dashboard-content .dashboard-content-section .dashboard-content-section-data .dashboard-content-stats {
-      display: table;
-      width: 100%; }
-      .dashboard-content .dashboard-content-section .dashboard-content-section-data .dashboard-content-stats span {
-        display: table-cell;
-        width: 33%; }
+
+.dashboard-content-stats {
+  display: table;
+  width: 100%; }
+  .dashboard-content-stats span {
+    display: table-cell;
+    width: 33%; }
 div.dashboard div.dashboard-menu {
   color: #fafafa;
   margin: 16px 10px 0 10px; }
@@ -107,10 +119,14 @@ div.dashboard div.dashboard-menu {
     color: #fafafa;
     text-align: center; }
     div.dashboard div.dashboard-menu .row .menu-item a {
+      width: 75%;
       display: inline-block;
       font-weight: bold;
       text-decoration: none;
-      padding: 10px;
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 10px;
+      padding-bottom: 10px;
       border-top: 1px solid #176ba1;
       border-bottom: 1px solid #176ba1;
       color: #fafafa; }
@@ -128,6 +144,26 @@ div.dashboard div.dashboard-content {
 div.login {
   margin: 40px auto;
   width: 500px; }
+.message-table {
+  border: 1px solid #ddd;
+  padding: 5px 10px; }
+  .message-table .row {
+    margin: 5px 0;
+    padding: 5px 0; }
+  .message-table div.row.header {
+    border-bottom: 1px solid #ddd; }
+    .message-table div.row.header span {
+      font-weight: bold; }
+  .message-table a.row {
+    display: block;
+    border-bottom: 1px solid #ddd; }
+  .message-table a.row:last-child {
+    border: 0; }
+
+.filtermenu {
+  margin: 5px 10px 20px 10px; }
+  .filtermenu a {
+    margin: 0 10px; }
 .clipboard .frm {
   margin: 10px 0;
   border-top: 1px solid #427474; }
@@ -226,7 +262,8 @@ div.login {
       font-size: 16px; }
 
 .file-upload .upload-list {
-  padding: 5px 0; }
+  padding: 5px 0;
+  margin-bottom: 5px; }
 .grid-list {
   vertical-align: top;
   font-size: 0.9em; }
@@ -379,5 +416,10 @@ input.validation-error, textarea.validation-error {
       width: 100%; }
     .page-layout .content-section {
       background-color: #fff; } }
+
+.link {
+  text-decoration: none;
+  color: #1872ab;
+  font-weight: 600; }
 
 /* media only screen and (max-width: 1024px)*/

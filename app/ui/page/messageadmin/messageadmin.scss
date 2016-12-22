@@ -1,0 +1,33 @@
+.message-table {
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+
+    .row {
+        margin: 5px 0;
+        padding: 5px 0;
+    }
+
+    div.row.header {
+        border-bottom: 1px solid #ddd;
+
+        span {
+            font-weight: bold;
+        }
+    }
+
+    a.row {
+        display: block;
+        border-bottom: 1px solid #ddd;
+    }
+
+    a.row:last-child {
+        border:0;
+    }
+}
+
+.filtermenu {
+    margin: 5px 10px 20px 10px;
+    a {
+        margin: 0 10px;
+    }
+}

@@ -1,4 +1,4 @@
-export function indexes(response) {
+function normalize(response) {
 
     let list = {};
     let idx = [];
@@ -16,3 +16,5 @@ export function indexes(response) {
         index: idx
     }
 }
+
+module.exports = normalize;

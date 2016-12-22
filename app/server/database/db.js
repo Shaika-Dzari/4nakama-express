@@ -16,7 +16,7 @@ function one(query, params, done) {
 }
 
 function any(query, params, done) {
-    // console.log(pgp.as.format(query, params));
+    console.log(pgp.as.format(query, params));
 
     db.any(query, params)
       .then(data => done(null, data))
@@ -59,11 +59,16 @@ function batch(queries, done) {
     .catch(error => done(error));
 }
 
+function unwrap() {
+    return db;
+}
+
 module.exports = {
   one: one,
   any: any,
   none: none,
   insert: insert,
   update: update,
-  batch: batch
+  batch: batch,
+  unwrap: unwrap
 };

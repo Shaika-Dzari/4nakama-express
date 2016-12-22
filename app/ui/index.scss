@@ -121,5 +121,10 @@ input.validation-error, textarea.validation-error {
 
 }
 
+.link {
+    text-decoration: none;
+    color: $color-link-font;
+    font-weight: 600;
+}
 
 /* media only screen and (max-width: 1024px)*/

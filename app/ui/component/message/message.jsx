@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 
 import './message.scss';
 
-const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, prettyurl, withLink}) => {
+const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, prettyurl, withLink, permurl}) => {
 
     let cats = null;
     let innerTitle = null;
@@ -24,6 +24,7 @@ const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, 
         <article className="blog-message">
             <header>
                 <h1>{innerTitle}</h1>
+                <h5>{permurl}</h5>
                 <div className="row">
                     <div className="col-6">
                         <p>{authorname} - {createdat}</p>
@@ -50,6 +51,7 @@ Message.propTypes = {
     createdat: PropTypes.string.isRequired,
     categories: PropTypes.array,
     prettyurl: PropTypes.string.isRequired,
+    permurl: PropTypes.string.isRequired,
     withLink: PropTypes.bool
 };
 

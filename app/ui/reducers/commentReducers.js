@@ -1,5 +1,5 @@
 import { COMMENT_RECEIVE, COMMENT_SAVED, COMMENT_SAVEDERROR, COMMENT_EMAIL_KP, COMMENT_NAME_KP, COMMENT_TEXT_KP, COMMENT_OPERATIONDONE } from '../actions/commentActions.js';
-import {indexes} from '../utils/IndexReducer.js';
+import normalize from '../../common/Normalize.js';
 
 const sortComment = (c0, c1) => {
     return c0.createdat.getTime() - c1.createdat.getTime();
@@ -8,7 +8,7 @@ const sortComment = (c0, c1) => {
 export function commentReducers(state = {items: {}, index: [], newcomment: {}, error: null}, action) {
     switch (action.type) {
         case COMMENT_RECEIVE:
-            let receivedItems = indexes(action.comments);
+            let receivedItems = normalize(action.comments);
             receivedItems['page'] = action.page;
             return Object.assign({}, state, receivedItems);
 

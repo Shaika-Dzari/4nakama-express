@@ -1,20 +1,28 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
-import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate} from '../../actions/messageActions.js';
+import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate, doFilterAndNavigate} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 import PagingParam from '../../utils/PagingParam.js';
 import DatePager from '../../component/pager/datepager.jsx';
+
+import './messageadmin.scss';
+
 
 const MESSAGE_TABLE_DEF = {
     id: 'id', name: 'title', rowdate: 'createdat', link: 'link'
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+
+    let moduleid = ownProps.location.query.moduleid;
+
     return {
         messages: state.messages.items,
         index: state.messages.index,
-        page: state.messages.page
+        page: state.messages.page,
+        modules: state.modules,
+        moduleid: moduleid
     }
 }
 
@@ -24,6 +32,7 @@ class MessageAdmin extends React.Component {
         super(props);
         this.onNewMessage = this.onNewMessage.bind(this);
         this.onMessageClick = this.onMessageClick.bind(this);
+        this.onFilterClick = this.onFilterClick.bind(this);
     }
 
     componentDidMount() {
@@ -33,8 +42,7 @@ class MessageAdmin extends React.Component {
 
     onNewMessage() {
         const { dispatch } = this.props;
-        dispatch(doMessageEditAndNavigate({id: 'new'}));
-        //this.props.router.push('/dashboard/messages/new');
+        dispatch(doMessageEditAndNavigate({id: 'new', moduleid: moduleid}));
     }
 
     onMessageClick(messageId) {
@@ -42,11 +50,33 @@ class MessageAdmin extends React.Component {
         dispatch(doMessageFetchForEdit(messageId));
     }
 
+    onFilterClick(event) {
+        event.preventDefault();
+        let moduleid = event.target.dataset.n4ModuleId;
+        const { dispatch } = this.props;
+        dispatch(doFilterAndNavigate(moduleid));
+    }
+
     render() {
 
-        let msgs = this.props.index.map(i => {
-            return this.props.messages[i];
+        let rows = this.props.index.map(i => {
+            let m = this.props.messages[i];
+            return (
+                <a href={'/editor/' + m.id} key={m.id} className="message-link row" onClick={(e) => { e.preventDefault(); this.onMessageClick(m.id);}}>
+                    <div className="col-1">{m.id}</div>
+                    <div className="col-7"><span className="link">{m.title}</span></div>
+                    <div className="col-4">{m.createdat} - {m.published ? 'Published' : 'Unpublished'}</div>
+                </a>
+            );
         });
+        let self = this;
+        let filters = this.props.modules.index.reduce((a, i) => {
+            let m = self.props.modules.items[i];
+            if (m.enablemodule) {
+                a.push(<a href="#" onClick={this.onFilterClick} data-n4-module-id={m.id} className="link" key={'filter-' + m.code}>{m.name}</a>);
+            }
+            return a;
+        }, []);
 
         return (
             <div>
@@ -62,7 +92,20 @@ class MessageAdmin extends React.Component {
                         </div>
                     </div>
                     <div className="body">
-                        <Table cdef={MESSAGE_TABLE_DEF} items={msgs} linkTo={this.onMessageClick} />
+
+                        <div className="right filtermenu">
+                            Filters: {filters}
+                        </div>
+
+                        <div className="message-table">
+                            <div className="row header">
+                                <div className="col-1"><span>ID</span></div>
+                                <div className="col-7"><span>Title</span></div>
+                                <div className="col-4"><span>Informations</span></div>
+                            </div>
+                            {rows}
+                        </div>
+
                     </div>
                 </div>
 

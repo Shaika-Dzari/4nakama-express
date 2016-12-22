@@ -7,10 +7,12 @@ export const CATEGORY_FETCH = 'CATEGORY_FETCH';
 export const CATEGORY_RECEIVE = 'CATEGORY_RECEIVE';
 export const CATEGORY_UPDATED = 'CATEGORY_UPDATED';
 export const CATEGORY_ERROR = 'CATEGORY_ERROR';
+export const CATEGORY_CONSUME_PRELOAD = 'CATEGORY_CONSUME_PRELOAD';
 
 export const doCategoryReceive = makeActionCreator(CATEGORY_RECEIVE, 'categories');
 export const doCategoryUpdated = makeActionCreator(CATEGORY_UPDATED, 'category');
 export const doCategoryError = makeActionCreator(CATEGORY_ERROR, 'error');
+export const doCategoryConsumePreload = makeActionCreator(CATEGORY_CONSUME_PRELOAD);
 
 export function doCategoryFetch() {
 

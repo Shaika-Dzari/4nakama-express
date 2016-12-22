@@ -1,25 +1,24 @@
 @import '../../variables.scss';
 
-.dashboard-content {
-    .dashboard-content-section {
-        padding: 5px 10px;
-        margin: 10px;
-        border: 1px solid $color-border-1;
+.dashboard-content-section {
+    padding: 5px 10px;
+    margin: 10px;
+    border: 1px solid $color-border-1;
 
-        h4 {
-            margin: 3px 0;
-        }
+    h4 {
+        margin: 3px 0;
+    }
 
-        .dashboard-content-section-data {
-            padding: 3px;
-            .dashboard-content-stats {
-                display: table;
-                width:100%;
-                span {
-                    display: table-cell;
-                    width: 33%;
-                }
-            }
-        }
+    .dashboard-content-section-data {
+        padding: 3px;
+    }
+}
+
+.dashboard-content-stats {
+    display: table;
+    width:100%;
+    span {
+        display: table-cell;
+        width: 33%;
     }
 }
