@@ -9,7 +9,10 @@ import Feedback from '../feedback/feedback.jsx';
 import './pageheader.scss';
 
 const mapStateToProps = (state) => {
+
     return {
+        modules: state.modules.items,
+        index: state.modules.index,
         connectedUser: state.user.connectedUser
     }
 }
@@ -28,11 +31,16 @@ class PageHeader extends Component {
 
     render() {
 
-        var links = [];
-        links.push(<IndexLink to="/blog" activeClassName="active" key="pagehead_1"><img src="/menu-blog-icon.jpg" /><span>Blog</span></IndexLink>);
-        links.push(<Link to="/ecriture" activeClassName="active" key="pagehead_2"><span>Histoire</span></Link>);
-        links.push(<Link to="/projet" activeClassName="active" key="pagehead_3"><span>Projets</span></Link>);
-        links.push(<Link to="/about" activeClassName="active" key="pagehead_4"><span>A Propos</span></Link>);
+        let links = [];
+        let { modules } = this.props;
+        let { index } = this.props;
+        let i = 1;
+        for (let midx of index) {
+            let m = modules[midx];
+            if (m.enablemodule) {
+                links.push(<Link to={m.url} activeClassName="active" key={'pagehead_' + m.id}><span>{m.name}</span></Link>);
+            }
+        }
 
         if (this.props.connectedUser) {
             links.push(<Link to="/dashboard" activeClassName="active" key="pagehead_5"><span>Administration</span></Link>);

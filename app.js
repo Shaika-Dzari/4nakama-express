@@ -23,9 +23,12 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-//var LocalStrategy = require('passport-local').Strategy;
 var busboy = require('connect-busboy');
 var fs = require('fs');
+
+var hbs = require('express-handlebars');
+app.engine('handlebars', hbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 // Passport config
 require('./app/server/auth/authentication.js');
@@ -45,7 +48,15 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(publicFolder));
+
+var options = {
+    dotfiles: 'ignore',
+    etag: false,
+    extensions: ['htm', 'html'],
+    index: false
+};
+
+app.use(express.static(publicFolder, options));
 
 
 // passport config
@@ -67,15 +78,17 @@ app.use(function(req, res, next) {
 });
 
 // Pipe to index
-app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
-    console.log('redirecting to index.html...')
-    res.sendFile('index.html', { root: publicFolder });
-});
+// app.use(/\/(?!(api|\.css|\.js|\.gif)).*/, function(req, res, next) {
+//     console.log('redirecting to index.html...')
+//     res.sendFile('index.html', { root: publicFolder });
+// });
 
 
 // All API routes
-app.use('/api', require('./app/server/routes.js'));
+app.use('/api', require('./app/server/api-routes.js'));
 
+// Index
+app.use('/', require('./app/server/server-routes.js'));
 
 app.use(function(err, req, res, next) {
 

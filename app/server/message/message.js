@@ -19,14 +19,16 @@ var MessageSchema = new Schema({
 module.exports = mongoose.model('Message', MessageSchema);
 */
 
+const DEFAULT_PAGE_SIZE = 5;
 
-const ALL_BY_PAGE = "select * from message where createdat < ${createdat} order by createdat desc limit ${size^}";
+const ALL_BY_PAGE = "select * from message where createdat < ${createdat} and (${moduleid} is null or moduleid = ${moduleid}) order by createdat desc limit ${size^}";
 
 const ALL_PUBLISHED_BY_NEXTPAGE = "select m.*, s.value as total_count from message m, statistics s " +
                                   "where m.createdat < ${createdat} " +
                                   "  and m.published = true " +
                                   "  and s.tablename = 'message' " +
                                   "  and s.statistic = 'total_count' " +
+                                  "  and (${moduleid} is null or m.moduleid = ${moduleid})" +
                                   "order by m.createdat desc " +
                                   "limit ${size^}";
 
@@ -47,6 +49,20 @@ const CREATE_ONE = "insert into message(title, body, published, authorname, auth
 const UPDATE_ONE = "update message set title = ${title}, body = ${body}, prettyurl = ${prettyurl}, published = ${published}, categories = ${categories} where id = ${id}";
 const UPDATE_ONE_PUBLICATION = "update message set published = ${published} where id = ${id}";
 
+
+function computePrettyUrl(msgs) {
+    if (msgs) {
+        if (Array.isArray(msgs)) {
+            for (let m of msgs) {
+                m.permurl = m.id + '--' + m.prettyurl;
+            }
+        } else {
+            msgs.permurl = msgs.id + '--' + msgs.prettyurl;
+        }
+    }
+    return msgs;
+}
+
 module.exports = {
     ALL_BY_PAGE: ALL_BY_PAGE,
     ALL_PUBLISHED_BY_PREVPAGE: ALL_PUBLISHED_BY_PREVPAGE,
@@ -54,5 +70,6 @@ module.exports = {
     ONE_BY_ID: ONE_BY_ID,
     CREATE_ONE: CREATE_ONE,
     UPDATE_ONE: UPDATE_ONE,
-    UPDATE_ONE_PUBLICATION: UPDATE_ONE_PUBLICATION
+    UPDATE_ONE_PUBLICATION: UPDATE_ONE_PUBLICATION,
+    computePrettyUrl: computePrettyUrl
 };

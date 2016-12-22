@@ -1,18 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var Message = require('./message');
-var authUtils = require('../authutils');
-var htmlutils = require('../htmlutils');
-var PagingParser = require('../utils/PagingParser');
-var db = require('../database/db.js');
+let express = require('express');
+let router = express.Router();
+let Message = require('./message');
+let authUtils = require('../authutils');
+let htmlutils = require('../htmlutils');
+let PagingParser = require('../utils/PagingParser');
+let db = require('../database/db.js');
 
-var DEFAULT_PAGE_SIZE = 5;
 
 router.get('/', function(req, res, next) {
 
     // Paging Params
-    var pagingParam = new PagingParser(req, DEFAULT_PAGE_SIZE);
-    var query;
+    let pagingParam = new PagingParser(req, Message.DEFAULT_PAGE_SIZE);
+    let moduleid = req.query.moduleid || null;
+    let query;
 
     if (!authUtils.isLoggedIn(req)) {
         if (pagingParam.direction() == 'next') {
@@ -25,17 +25,17 @@ router.get('/', function(req, res, next) {
         query = Message.ALL_BY_PAGE;
     }
 
-    db.any(query, pagingParam.params(), (err, msgs) => {
+    db.any(query, pagingParam.merge({moduleid: moduleid}), (err, msgs) => {
         if (err) next(err);
 
-        res.json(msgs);
+        res.json(Message.computePrettyUrl(msgs));
     });
 
 });
 
 router.get('/:messageid', function(req, res, next) {
-    var id = req.params.messageid;
-    var params = {id: id};
+    let id = req.params.messageid;
+    let params = {id: id};
     if (!authUtils.isLoggedIn(req)) {
         params.published = 1;
     }
@@ -45,12 +45,7 @@ router.get('/:messageid', function(req, res, next) {
     db.one(Message.ONE_BY_ID, {id: id}, (err, msg) => {
         if (err) next(err);
 
-        let response = {
-            data: msg,
-            total: msg && msg.length > 0 ? msg[0].total_count : null
-        }
-
-        res.json(response);
+        res.json(Message.computePrettyUrl(msg));
     });
 
 });
@@ -60,10 +55,10 @@ router.get('/:messageid', function(req, res, next) {
  */
 router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
 
-    var user = req.user;
-    var msgreq = req.body;
+    let user = req.user;
+    let msgreq = req.body;
 
-    var m = {
+    let m = {
         title: msgreq.title,
         body: msgreq.body,
         authorid: user.id,
@@ -77,7 +72,7 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         if (err) next(err);
 
         m.id = data.id;
-        res.json(m);
+        res.json(Message.computePrettyUrl(m));
     });
 });
 
@@ -100,7 +95,7 @@ router.put('/:messageid', authUtils.enforceLoggedIn, function(req, res, next) {
 
         // Put cats back
         requestMessage.categories = originalCategories;
-        res.json(requestMessage);
+        res.json(Message.computePrettyUrl(requestMessage));
     })
 
 });

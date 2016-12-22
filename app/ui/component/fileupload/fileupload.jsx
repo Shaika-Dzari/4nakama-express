@@ -42,11 +42,13 @@ class FileUpload extends React.Component {
     render() {
 
         let toUpload = null;
+        let toSend = false;
 
         if (this.props.files) {
             toUpload = [];
 
             for (let fk in this.props.files) {
+                toSend = true;
                 let managedFile = this.props.files[fk];
                 let f = managedFile.file;
                 let progress = managedFile.progress;
@@ -64,32 +66,28 @@ class FileUpload extends React.Component {
 
                 toUpload.push(fileJsx);
             }
-            /*
-            toUpload = this.props.files.map(f => {
-                let refid = 'li-' + f.name;
-                return <OneFile key={refid}
-                                reffileid={refid}
-                                name={f.name}
-                                type={f.type}
-                                size={f.size} />
-            });*/
+
         }
 
         return (
-            <div className="file-upload">
-                <div className="button-section">
-                    <div className="select-section">
+
+            <div className="box bluebox">
+                <div className="heading right file-upload">
+                    <div className="button-section">
                         <input id="file-upload-file" type="file" className="file-upload-file" multiple onChange={this.onFileChange} />
                         <label htmlFor="file-upload-file">Sélectioner</label>
-                    </div>
-                    <div className="upload-section">
-                        <button className="btn btnblue" onClick={this.upload} disabled={!this.props.files}>Envoyer</button>
+
+                        {toSend ? <button className="btn btnblue" onClick={this.upload}>Envoyer</button> : null}
+
                     </div>
                 </div>
-                <div className="upload-list">
-                    {toUpload}
+                <div className="body">
+                    <div className="upload-list">
+                        {toUpload}
+                    </div>
                 </div>
             </div>
+
         );
     }
 }

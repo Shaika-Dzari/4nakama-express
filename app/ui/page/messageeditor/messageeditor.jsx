@@ -16,7 +16,6 @@ import './messageeditor.scss';
 const MESSAGE_URL = '/api/messages';
 
 const mapStateToProps = (state, ownProps) => {
-
     let id = ownProps.params.messageId;
     let msg = state.messages.items[id];
     let clipboards = [];
@@ -31,13 +30,13 @@ const mapStateToProps = (state, ownProps) => {
                 value: el.filepath
             };
         });
-
     }
 
     return {
         messageId: id,
+        module: state.modules.items[msg.moduleid],
         title: msg.title,
-        prettyUrl: msg.prettyurl,
+        prettyurl: msg.prettyurl,
         text: msg.body,
         published: msg.published,
         categories: msg.categories,
@@ -115,13 +114,12 @@ class MessageEditor extends React.Component {
                 <div className="heading">
                     <div className="row">
                         <div className="col-6">
-                            <h4>#{this.props.messageId}</h4>
+                            <h4>#{this.props.messageId} - {this.props.title} - {this.props.module.name}</h4>
                         </div>
                         <div className="col-6 right">
                             {this.props.published ? <button className="btn" onClick={this.onPublishedClick} data-n4-value="false">Retirer</button> :
                                                     <button className="btn" onClick={this.onPublishedClick} data-n4-value="true">Publier</button>
                             }
-
 
                             <button className="btn" onClick={this.onSave}>Sauvegarder</button>
                         </div>
@@ -137,7 +135,7 @@ class MessageEditor extends React.Component {
                                         <label htmlFor="msg-title">Titre</label>
                                         <input type="text" value={this.props.title} onChange={this.onTitleChange} onBlur={this.onTitleBlur} id="msg-title" />
                                         <label htmlFor="msg-url">URL</label>
-                                        <input type="text" value={this.props.prettyUrl} onChange={this.onPrettyUrlChange} id="msg-url" />
+                                        <input type="text" value={this.props.prettyurl} onChange={this.onPrettyUrlChange} id="msg-url" />
                                         <label htmlFor="msg-text">Message</label>
                                         <Editor value={this.props.text} onEditorChange={this.onEditorChange} id="msg-text" />
                                     </div>
@@ -147,18 +145,19 @@ class MessageEditor extends React.Component {
                         <div className="col-3">
                             <div className="box">
                                 <div className="body">
-
-                                    <CategoryEditor onComponentSelect={this.onCategorySelect}
-                                                    onComponentUnSelect={this.onCategoryUnSelect}
-                                                    selectedItems={this.props.categories} />
-
+                                    {this.props.module.enablecategory ?
+                                        <CategoryEditor onComponentSelect={this.onCategorySelect}
+                                                        onComponentUnSelect={this.onCategoryUnSelect}
+                                                        selectedItems={this.props.categories} />
+                                        :
+                                        null
+                                    }
                                     <Clipboard elements={this.props.clipboardElements} />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         );
     }

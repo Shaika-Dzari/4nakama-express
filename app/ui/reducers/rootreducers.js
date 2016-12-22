@@ -18,7 +18,8 @@ const RootReducers = combineReducers({
     routing: routerReducer,
     files: fileReducers,
     uploadfiles: fileUploadReducers,
-    statistics: statisticReducers
+    statistics: statisticReducers,
+    modules: (state = {items: {}, index: [], codeindex: {}}) => state
 });
 
 export default RootReducers;

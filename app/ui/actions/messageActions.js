@@ -2,6 +2,7 @@ import 'whatwg-fetch';
 import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
 import { getUrlParamsString } from '../utils/HtmlUtils.js';
+import * as FetchUtils from '../utils/FetchUtils.js';
 import Remarkable from 'remarkable';
 import makeActionCreator from './actionCreator.js';
 
@@ -19,16 +20,22 @@ export const MSG_EDITOR_CAT_CHECK = 'MSG_EDITOR_CAT_CHECK';
 export const MSG_EDITOR_CAT_UNCHECK = 'MSG_EDITOR_CAT_UNCHECK';
 export const MSG_UPDATE_RECEIVE = 'MSG_UPDATE_RECEIVE';
 export const MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
+export const MSG_CONSUME_PRELOAD = 'MSG_CONSUME_PRELOAD';
 
 const MSG_URL = '/api/messages';
 const remarkable = new Remarkable();
 
 export function doMessageFetchAndGo(pageParams) {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
         let urlParam = getUrlParamsString(pageParams);
         dispatch(push('/blog' + urlParam));
-        dispatch(doMessageFetch(pageParams));
+
+        if (!getState().messages.preloaded) {
+            dispatch(doMessageFetch(pageParams));
+        } else {
+            dispatch(doMessageConsumePreload());
+        }
     }
 }
 
@@ -114,14 +121,24 @@ export function doMessageEditAndNavigate(message) {
     }
 }
 
+
+export function doFilterAndNavigate(moduleid) {
+    return dispatch => {
+        dispatch(push('/dashboard/messages?moduleid=' + moduleid));
+        return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + moduleid, {credentials: 'include'}, doMessagesReceive, doMessageEditorSaveError);
+    }
+}
+
+
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
 export const doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
 export const doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
 export const doMessageEditorTitleChange = makeActionCreator(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
 export const doMessageEditorTitleBlur = makeActionCreator(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');
-export const doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyUrl');
+export const doMessageEditorPrettyUrlChange = makeActionCreator(MSG_EDITOR_PRETTYURL_CHANGE, 'messageId', 'prettyurl');
 export const doMessageEditorSaveError = makeActionCreator(MSG_UPDATE_SAVEERROR, 'error');
 export const doMessageEditorPublishedCheck = makeActionCreator(MSG_EDITOR_PUBL_CHECK, 'messageId', 'published');
 export const doMessageEditorCategoryCheck = makeActionCreator(MSG_EDITOR_CAT_CHECK, 'messageId', 'category');
 export const doMessageEditorCategoryUnCheck = makeActionCreator(MSG_EDITOR_CAT_UNCHECK, 'messageId', 'category');
+export const doMessageConsumePreload = makeActionCreator(MSG_CONSUME_PRELOAD);

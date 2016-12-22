@@ -6,7 +6,8 @@ import './dashboardcontent.scss';
 
 const mapStateToProps = (state) => {
     return {
-        statistics: state.statistics.items
+        statistics: state.statistics.items,
+        modules: state.modules
     }
 }
 
@@ -36,6 +37,15 @@ class DashboardContent extends React.Component {
             });
         }
 
+        let mods = this.props.modules.index.map(i => {
+            let m = this.props.modules.items[i];
+            return <div key={'mod-' + m.id} className="dashboard-content-stats">
+                        <span>{m.name}</span>
+                        <span>{m.enablemodule ? 'Enable' : 'Disable'}</span>
+                        <span>{m.url}</span>
+                    </div>;
+        });
+
         return (
             <div>
                 <div className="row">
@@ -56,9 +66,20 @@ class DashboardContent extends React.Component {
                         </div>
                     </div>
                     <div className="col-4">
-                        <div className="dashboard-content-section">
-                            <h4>Statistics</h4>
-                            <div className="dashboard-content-section-data">
+                        <div className="box codebox">
+                            <div className="heading">
+                                <h4>Modules</h4>
+                            </div>
+                            <div className="body">
+                                {mods}
+                            </div>
+                        </div>
+                        <br />
+                        <div className="box codebox">
+                            <div className="heading">
+                                <h4>Statistics</h4>
+                            </div>
+                            <div className="body">
                                 {sts}
                             </div>
                         </div>

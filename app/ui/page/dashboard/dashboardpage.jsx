@@ -25,17 +25,14 @@ export default class DashboardPage extends React.Component {
             <div className="dashboard">
                 <div className="dashboard-menu">
                     <div className="row">
-                        <div className="col-3 menu-item">
+                        <div className="col-4 menu-item">
                             <Link to="/dashboard/messages">Messages</Link>
                         </div>
-                        <div className="col-3 menu-item">
+                        <div className="col-4 menu-item">
                             <Link to="/dashboard/files">Fichiers</Link>
                         </div>
-                        <div className="col-3 menu-item">
+                        <div className="col-4 menu-item">
                             <Link to="/dashboard/comments">Commentaires</Link>
-                        </div>
-                        <div className="col-3 menu-item">
-                            <Link to="/dashboard/comments">Histoires</Link>
                         </div>
                     </div>
                 </div>

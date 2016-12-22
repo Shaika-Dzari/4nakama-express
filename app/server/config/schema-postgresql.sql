@@ -18,6 +18,8 @@ create table module (
     id serial primary key,
     code text not null,
     name text not null,
+    moduleorder integer not null,
+    url text not null,
     enablemodule boolean not null default true,
     enablecomment boolean not null default true,
     enablecategory boolean not null default true,
@@ -26,10 +28,10 @@ create table module (
 );
 
 -- Basic Modules
-insert into module(code, name, enablecomment, enablecategory) values('BLOG', 'Blog', true, true);
-insert into module(code, name, enablecomment, enablecategory) values('STORY', 'Stories', true, true);
-insert into module(code, name, enablecomment, enablecategory) values('PROJECT', 'Projects', true, false);
-insert into module(code, name, enablecomment, enablecategory) values('ABOUT', 'About', false, false);
+insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('BLOG', 'Blog', 0, '/blog', true, true);
+insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('STORY', 'Stories', 1, '/stories', true, true);
+insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('PROJECT', 'Projects', 2, '/projects', true, false);
+insert into module(code, name, moduleorder, url, enablemodule, enablecomment, enablecategory) values('ABOUT', 'About', 3, '/about', false, false, false);
 
 create table modulemetatype (
     id serial primary key,

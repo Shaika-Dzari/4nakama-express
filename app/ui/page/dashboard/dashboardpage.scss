@@ -13,11 +13,14 @@ div.dashboard {
                 text-align: center;
 
                 a {
-
+                    width: 75%;
                     display: inline-block;
                     font-weight: bold;
                     text-decoration: none;
-                    padding: 10px;
+                    padding-left: 10%;
+                    padding-right: 10%;
+                    padding-top:10px;
+                    padding-bottom:10px;
                     border-top: 1px solid #176ba1;
                     border-bottom: 1px solid #176ba1;
                     color: $color-font-1;

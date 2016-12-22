@@ -1,6 +1,7 @@
 import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
         MSG_EDITOR_TITLE_CHANGE, MSG_EDITOR_TITLE_BLUR, MSG_EDITOR_PRETTYURL_CHANGE, MSG_EDITOR_TEXT_CHANGE, MSG_EDITOR_PUBL_CHECK, MSG_EDITOR_CAT_CHECK,
-        MSG_UPDATE_RECEIVE, MSG_EDITOR_CAT_UNCHECK , MSG_UPDATE_SAVEERROR} from '../actions/messageActions.js';
+        MSG_UPDATE_RECEIVE, MSG_EDITOR_CAT_UNCHECK , MSG_UPDATE_SAVEERROR,
+        MSG_CONSUME_PRELOAD} from '../actions/messageActions.js';
 
 function updateMessage(messages, id, action) {
     let update = {};
@@ -21,7 +22,7 @@ function computePrettyUrl(title) {
     return p.toLowerCase();
 }
 
-export function messageReducers(state = {items: {}, index: []}, action) {
+export function messageReducers(state = {items: {}, index: [], preloaded: false}, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
@@ -46,6 +47,9 @@ export function messageReducers(state = {items: {}, index: []}, action) {
 
         case MSG_OPEN:
             return Object.assign({}, state, {selectedid: action.messageid});
+
+        case MSG_CONSUME_PRELOAD:
+            return Object.assign({}, state, {preloaded: false});
 
         case MSG_EDIT:
             return Object.assign({}, state, {items: Object.assign({}, state.items, {[action.message.id]: action.message})});
@@ -74,8 +78,12 @@ export function messageReducers(state = {items: {}, index: []}, action) {
             return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, action)});
 
         case MSG_EDITOR_TITLE_BLUR:
-            let prettyUrl = computePrettyUrl(action.title);
-            return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'prettyUrl': prettyUrl})});
+            if (!state.items[action.messageId].prettyurl) {
+                let prettyurl = computePrettyUrl(action.title);
+                return Object.assign({}, state, {items: updateMessage(state.items, action.messageId, {'prettyurl': prettyurl})});
+            }
+
+            return state;
 
         case MSG_EDITOR_CAT_CHECK:
             let csprime = state.items[action.messageId].categories ? [...state.items[action.messageId].categories] : [];
