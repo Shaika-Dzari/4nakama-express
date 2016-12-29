@@ -5,6 +5,7 @@ import { IndexLink, Link, withRouter } from 'react-router';
 import AuthenticationService from '../../utils/AuthenticationService.js';
 import { doLogout } from '../../actions/userActions.js';
 import Feedback from '../feedback/feedback.jsx';
+import {doMessageFetchAndGo} from '../../actions/messageActions.js';
 
 import './pageheader.scss';
 
@@ -22,11 +23,19 @@ class PageHeader extends Component {
     constructor(props) {
         super(props);
         this.disconnect = this.disconnect.bind(this);
+        this.navigate = this.navigate.bind(this);
     }
 
     disconnect() {
         const { dispatch } = this.props;
         dispatch(doLogout());
+    }
+
+    navigate(e) {
+        e.preventDefault();
+        let mc = e.target.dataset.n4ModuleCode;
+        const { dispatch } = this.props;
+        dispatch(doMessageFetchAndGo(null, mc));
     }
 
     render() {
@@ -38,7 +47,7 @@ class PageHeader extends Component {
         for (let midx of index) {
             let m = modules[midx];
             if (m.enablemodule) {
-                links.push(<Link to={m.url} activeClassName="active" key={'pagehead_' + m.id}><span>{m.name}</span></Link>);
+                links.push(<a href="#" onClick={this.navigate} key={'pagehead_' + m.id} data-n4-module-code={m.code}><span>{m.name}</span></a>);
             }
         }
 

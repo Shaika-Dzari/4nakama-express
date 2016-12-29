@@ -40,7 +40,9 @@ class MessageAdmin extends React.Component {
         dispatch(doMessageFetch(new PagingParam(null, null, 10)));
     }
 
-    onNewMessage() {
+    onNewMessage(event) {
+        event.preventDefault();
+        let moduleid = event.target.dataset.n4ModuleId;
         const { dispatch } = this.props;
         dispatch(doMessageEditAndNavigate({id: 'new', moduleid: moduleid}));
     }
@@ -69,14 +71,19 @@ class MessageAdmin extends React.Component {
                 </a>
             );
         });
-        let self = this;
-        let filters = this.props.modules.index.reduce((a, i) => {
-            let m = self.props.modules.items[i];
+
+        let filters = [];
+        let creators = [];
+
+        this.props.modules.index.forEach(i => {
+            let m = this.props.modules.items[i];
+
             if (m.enablemodule) {
-                a.push(<a href="#" onClick={this.onFilterClick} data-n4-module-id={m.id} className="link" key={'filter-' + m.code}>{m.name}</a>);
+                filters.push(<a href="#" onClick={this.onFilterClick} data-n4-module-id={m.id} className="link" key={'filter-' + m.code}>{m.name}</a>);
+                creators.push(<button className="btn" onClick={this.onNewMessage} data-n4-module-id={m.id} key={'creator-' + m.code}>{'New ' + m.name + ' message'}</button>)
             }
-            return a;
-        }, []);
+
+        });
 
         return (
             <div>
@@ -87,7 +94,7 @@ class MessageAdmin extends React.Component {
                                 <h4>Messages</h4>
                             </div>
                             <div className="col-6 right">
-                                <button className="btn" onClick={this.onNewMessage}>Nouveau Message</button>
+                                {creators}
                             </div>
                         </div>
                     </div>
@@ -105,7 +112,6 @@ class MessageAdmin extends React.Component {
                             </div>
                             {rows}
                         </div>
-
                     </div>
                 </div>
 

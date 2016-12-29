@@ -87,7 +87,6 @@ class MessageEditor extends React.Component {
         event.preventDefault();
         let pub = target.dataset.n4Value;
         const { dispatch } = this.props;
-        // TODO : publish request instead
         dispatch(doMessageEditorPublishedCheck(this.props.messageId, pub == 'true'));
     }
 

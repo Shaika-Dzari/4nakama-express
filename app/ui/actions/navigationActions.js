@@ -14,7 +14,6 @@ export function doStopLoading() {
     }
 }
 
-
 export function doRaiseGlobalError(error) {
     return {
         type: GLOBAL_ERROR,

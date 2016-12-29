@@ -25,8 +25,6 @@ export function getUrlParamsString(pagingParam, additionalParams) {
         urlParams = '?' + body.join('&');
     }
 
-    //console.log(body);
-
     return urlParams;
 }
 

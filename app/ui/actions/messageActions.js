@@ -25,11 +25,19 @@ export const MSG_CONSUME_PRELOAD = 'MSG_CONSUME_PRELOAD';
 const MSG_URL = '/api/messages';
 const remarkable = new Remarkable();
 
-export function doMessageFetchAndGo(pageParams) {
+const MODULE_URLS = {
+    blog: '/blog',
+    about: '/about',
+    project: '/project',
+    story: '/story'
+};
+
+export function doMessageFetchAndGo(pageParams, modulecode = 'BLOG') {
 
     return (dispatch, getState) => {
         let urlParam = getUrlParamsString(pageParams);
-        dispatch(push('/blog' + urlParam));
+        let clientUrl = MODULE_URLS[modulecode.toLowerCase()]
+        dispatch(push(clientUrl + urlParam));
 
         if (!getState().messages.preloaded) {
             dispatch(doMessageFetch(pageParams));

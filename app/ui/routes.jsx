@@ -17,6 +17,7 @@ import MessageEditor from './page/messageeditor/messageeditor.jsx';
 import MessagePage from './page/message/messagepage.jsx';
 import FileAdmin from './page/fileadmin/fileadmin.jsx';
 import CommentAdmin from './page/commentadmin/commentadmin.jsx';
+import AboutPage from './page/about/aboutpage.jsx';
 
 // Store
 import store from './store/createstore.js';
@@ -33,6 +34,7 @@ const AppRoute = () => {
                     <Route path="blog" component={ BlogPage } />
                     <Route path="login" component={ LoginPage } />
                     <Route path="blog/:messageId" component={ MessagePage } />
+                    <Route path="about" component={ AboutPage } />
 
                     <Route path="/dashboard" component={ ProtectedLayout }>
                         <IndexRoute component={ DashboardPage } />
