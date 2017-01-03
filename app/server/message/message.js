@@ -28,7 +28,7 @@ const ALL_PUBLISHED_BY_NEXTPAGE = "select m.*, s.value as total_count from messa
                                   "  and m.published = true " +
                                   "  and s.tablename = 'message' " +
                                   "  and s.statistic = 'total_count' " +
-                                  "  and (${moduleid} is null or m.moduleid = ${moduleid})" +
+                                  "  and (${moduleid} is null or m.moduleid = ${moduleid}) " +
                                   "order by m.createdat desc " +
                                   "limit ${size^}";
 

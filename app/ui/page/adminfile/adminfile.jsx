@@ -11,7 +11,7 @@ import { scrollToTopPage } from '../../utils/HtmlUtils.js';
 
 import {doFileFetch, doFileCopyToStore, doFileDelete} from '../../actions/fileActions.js';
 
-import './fileadmin.scss';
+import './adminfile.scss';
 
 const mapStateToProps = (state) => {
     return {
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
     }
 };
 
-class FileAdmin extends React.Component {
+class AdminFile extends React.Component {
 
     constructor(props) {
         super(props);
@@ -82,4 +82,4 @@ class FileAdmin extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(FileAdmin);
+export default connect(mapStateToProps)(AdminFile);

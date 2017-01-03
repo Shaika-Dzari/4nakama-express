@@ -13,7 +13,6 @@ import {doCategoryFetch} from '../../actions/categoryActions.js';
 
 import './blogpage.scss';
 
-
 const mapStateToProps = (state, ownProps) => {
 
     let fromdate = ownProps.location.query.fromdate;
@@ -25,11 +24,10 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         messages: state.messages.items,
-        messagesindex: state.messages.index,
+        displayed: state.messages.displayed,
         page: p,
         categories: state.categories.items,
-        categoriesindex: state.categories.index,
-        total: state.messages.total
+        categoriesindex: state.categories.index
     }
 }
 
@@ -48,7 +46,7 @@ class BlogPage extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props
-        this.onChangePage(this.props.page);
+        // this.onChangePage(this.props.page);
         dispatch(doCategoryFetch());
     }
 
@@ -57,20 +55,19 @@ class BlogPage extends React.Component {
         let prevdate = null;
         let nextdate = null;
 
-        if (this.props.messages && this.props.messagesindex && this.props.messagesindex.length > 0) {
-            prevdate = this.props.messages[this.props.messagesindex[0]].createdat;
-            nextdate = this.props.messages[this.props.messagesindex[this.props.messagesindex.length - 1]].createdat;
+        if (this.props.messages && this.props.displayed && this.props.displayed.length > 0) {
+            prevdate = this.props.messages[this.props.displayed[0]].createdat;
+            nextdate = this.props.messages[this.props.displayed[this.props.displayed.length - 1]].createdat;
         }
 
         return (
                 <div className="row">
                     <div className="col-10">
                         <div className="list-ctn">
-                            <MessageList messages={this.props.messages} index={this.props.messagesindex} />
+                            <MessageList messages={this.props.messages} index={this.props.displayed} />
                         </div>
                         <div className="list-ctn">
                             <LinkPager size={5} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
-                            <span>{this.props.total}</span>
                         </div>
                     </div>
                     <div className="col-2">

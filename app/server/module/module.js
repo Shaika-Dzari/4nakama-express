@@ -1,4 +1,4 @@
-const ALL = `select m.id, m.code, m.name, m.moduleorder, m.url, m.enablemodule, m.enablecomment, m.enablecategory,
+const ALL = `select m.id, m.code, m.name, m.moduleorder, m.enablemodule, m.enablecomment, m.enablecategory,
                     mt.id as mtid, mt.key as mtkey, mt.value as mtvalue, tp.id as tpid, tp.name as tpvaluetypename
              from module m
                 left outer join modulemeta mt on (m.id = mt.moduleid)
@@ -6,7 +6,7 @@ const ALL = `select m.id, m.code, m.name, m.moduleorder, m.url, m.enablemodule, 
              order by m.moduleorder
              `;
 
-const ALL_BY_STATUS = `select m.id, m.code, m.name, m.moduleorder, m.url, m.enablemodule, m.enablecomment, m.enablecategory,
+const ALL_BY_STATUS = `select m.id, m.code, m.name, m.moduleorder, m.enablemodule, m.enablecomment, m.enablecategory,
                               mt.id as mtid, mt.key as mtkey, mt.value as mtvalue, tp.name as valuetypename
                        from module m
                             left outer join modulemeta mt on (m.id = mt.moduleid)
@@ -34,7 +34,6 @@ function rebuildModuleObject(rows) {
                     code: r.code,
                     name: r.name,
                     moduleorder: r.moduleorder,
-                    url: r.url,
                     enablemodule: r.enablemodule,
                     enablecomment: r.enablecomment,
                     enablecategory: r.enablecategory,

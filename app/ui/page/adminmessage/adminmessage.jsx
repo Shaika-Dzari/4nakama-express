@@ -5,8 +5,9 @@ import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate, doFilte
 import Table from '../../component/table/table.jsx';
 import PagingParam from '../../utils/PagingParam.js';
 import DatePager from '../../component/pager/datepager.jsx';
+import LinkPager from '../../component/pager/linkpager.jsx';
 
-import './messageadmin.scss';
+import './adminmessage.scss';
 
 
 const MESSAGE_TABLE_DEF = {
@@ -17,16 +18,20 @@ const mapStateToProps = (state, ownProps) => {
 
     let moduleid = ownProps.location.query.moduleid;
 
+    if (!moduleid) {
+        moduleid = state.modules.codeindex['BLOG'];
+    }
+
     return {
         messages: state.messages.items,
-        index: state.messages.index,
+        displayed: state.messages.displayed,
         page: state.messages.page,
         modules: state.modules,
         moduleid: moduleid
     }
 }
 
-class MessageAdmin extends React.Component {
+class AdminMessage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -37,7 +42,7 @@ class MessageAdmin extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(doMessageFetch(new PagingParam(null, null, 10)));
+        //dispatch(doMessageFetch(new PagingParam(null, null, 10)));
     }
 
     onNewMessage(event) {
@@ -60,9 +65,21 @@ class MessageAdmin extends React.Component {
     }
 
     render() {
+        const { moduleid } = this.props;
+        let displayed = this.props.displayed;
+        let msgs = this.props.messages;
 
-        let rows = this.props.index.map(i => {
-            let m = this.props.messages[i];
+
+        let prevdate = null;
+        let nextdate = null;
+
+        if (msgs && displayed && displayed.length > 0) {
+            prevdate = msgs[displayed[0]].createdat;
+            nextdate = msgs[displayed[displayed.length - 1]].createdat;
+        }
+
+        let rows = displayed.map(i => {
+            let m = msgs[i];
             return (
                 <a href={'/editor/' + m.id} key={m.id} className="message-link row" onClick={(e) => { e.preventDefault(); this.onMessageClick(m.id);}}>
                     <div className="col-1">{m.id}</div>
@@ -80,7 +97,7 @@ class MessageAdmin extends React.Component {
 
             if (m.enablemodule) {
                 filters.push(<a href="#" onClick={this.onFilterClick} data-n4-module-id={m.id} className="link" key={'filter-' + m.code}>{m.name}</a>);
-                creators.push(<button className="btn" onClick={this.onNewMessage} data-n4-module-id={m.id} key={'creator-' + m.code}>{'New ' + m.name + ' message'}</button>)
+                creators.push(<button className="btn" onClick={this.onNewMessage} data-n4-module-id={m.id} key={'creator-' + m.code}>{'New ' + m.name}</button>)
             }
 
         });
@@ -114,12 +131,11 @@ class MessageAdmin extends React.Component {
                         </div>
                     </div>
                 </div>
-
-                <DatePager items={this.props.messages} index={this.props.index} fetchFunction={doMessageFetch} />
+                <LinkPager size={5} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
             </div>
         );
     }
 }
 
 
-export default connect(mapStateToProps)(withRouter(MessageAdmin));
+export default connect(mapStateToProps)(withRouter(AdminMessage));

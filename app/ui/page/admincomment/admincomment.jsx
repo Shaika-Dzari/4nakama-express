@@ -62,7 +62,7 @@ const CommentList = ({items, index, callback}) => {
     );
 };
 
-class CommentAdmin extends React.Component {
+class AdminComment extends React.Component {
 
     // ({comments, index, messageindex})
 
@@ -107,4 +107,4 @@ class CommentAdmin extends React.Component {
 }
 
 
-export default connect(mapStateToProps)(CommentAdmin);
+export default connect(mapStateToProps)(AdminComment);

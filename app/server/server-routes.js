@@ -44,7 +44,11 @@ router.use('/', (req, res, next) => {
             store.modules.codeindex = modulecodes;
 
             if (objs[1]) {
-                store.messages = normalize(Message.computePrettyUrl(objs[1]));
+                let normmsg = normalize(Message.computePrettyUrl(objs[1]));
+                store.messages = {};
+                store.messages.items = normmsg.items;
+                store.messages.index = {};
+                store.messages.index[modulecodes['BLOG']] = normmsg.index;
                 store.messages.preloaded = true;
             }
 

@@ -144,26 +144,28 @@ div.dashboard div.dashboard-content {
 div.login {
   margin: 40px auto;
   width: 500px; }
-.message-table {
-  border: 1px solid #ddd;
-  padding: 5px 10px; }
-  .message-table .row {
-    margin: 5px 0;
-    padding: 5px 0; }
-  .message-table div.row.header {
-    border-bottom: 1px solid #ddd; }
-    .message-table div.row.header span {
-      font-weight: bold; }
-  .message-table a.row {
-    display: block;
-    border-bottom: 1px solid #ddd; }
-  .message-table a.row:last-child {
-    border: 0; }
-
-.filtermenu {
-  margin: 5px 10px 20px 10px; }
-  .filtermenu a {
-    margin: 0 10px; }
+.editor {
+  padding: 5px 0 2px 0; }
+  .editor::after {
+    font-weight: bold; }
+  .editor.editor-bold::after {
+    content: '\212C'; }
+  .editor.editor-italic::after {
+    content: '\2148'; }
+  .editor.editor-heading::after {
+    content: '#'; }
+  .editor.editor-code::after {
+    content: '\23A8'; }
+  .editor.editor-quote::after {
+    content: '\201D'; }
+  .editor.editor-unorderedlist::after {
+    content: '\205D'; }
+  .editor.editor-orderedlist::after {
+    content: '\2172'; }
+  .editor.editor-link::after {
+    content: '\2693'; }
+  .editor.editor-image::after {
+    content: '\25A3'; }
 .clipboard .frm {
   margin: 10px 0;
   border-top: 1px solid #427474; }
@@ -205,6 +207,26 @@ div.login {
   margin: 0 10px; }
   .messagepage-details .messagepage-comments {
     margin: 20px 30px 30px 40px; }
+.message-table {
+  border: 1px solid #ddd;
+  padding: 5px 10px; }
+  .message-table .row {
+    margin: 5px 0;
+    padding: 5px 0; }
+  .message-table div.row.header {
+    border-bottom: 1px solid #ddd; }
+    .message-table div.row.header span {
+      font-weight: bold; }
+  .message-table a.row {
+    display: block;
+    border-bottom: 1px solid #ddd; }
+  .message-table a.row:last-child {
+    border: 0; }
+
+.filtermenu {
+  margin: 5px 10px 20px 10px; }
+  .filtermenu a {
+    margin: 0 10px; }
 .onefile {
   border: 1px solid #ddd;
   background-color: #fbfbfb;

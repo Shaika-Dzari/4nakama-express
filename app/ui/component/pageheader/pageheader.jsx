@@ -5,7 +5,7 @@ import { IndexLink, Link, withRouter } from 'react-router';
 import AuthenticationService from '../../utils/AuthenticationService.js';
 import { doLogout } from '../../actions/userActions.js';
 import Feedback from '../feedback/feedback.jsx';
-import {doMessageFetchAndGo} from '../../actions/messageActions.js';
+import {doNavigationTo} from '../../actions/navigationActions.js';
 
 import './pageheader.scss';
 
@@ -32,10 +32,11 @@ class PageHeader extends Component {
     }
 
     navigate(e) {
+        let mc = e.currentTarget || e.target;
+        console.log(mc);
         e.preventDefault();
-        let mc = e.target.dataset.n4ModuleCode;
         const { dispatch } = this.props;
-        dispatch(doMessageFetchAndGo(null, mc));
+        dispatch(doNavigationTo(mc.dataset.n4ModuleId));
     }
 
     render() {
@@ -47,22 +48,22 @@ class PageHeader extends Component {
         for (let midx of index) {
             let m = modules[midx];
             if (m.enablemodule) {
-                links.push(<a href="#" onClick={this.navigate} key={'pagehead_' + m.id} data-n4-module-code={m.code}><span>{m.name}</span></a>);
+                links.push(<a href="#" onClick={this.navigate} key={'pagehead_' + m.id} data-n4-module-id={m.id}><span>{m.name}</span></a>);
             }
         }
 
         if (this.props.connectedUser) {
-            links.push(<Link to="/dashboard" activeClassName="active" key="pagehead_5"><span>Administration</span></Link>);
-            links.push(<a href="#" onClick={this.disconnect} key="pagehead_6"><span>Déconnexion</span></a>);
+            links.push(<Link to="/dashboard" activeClassName="active" key="pagehead_ad"><span>Administration</span></Link>);
+            links.push(<a href="#" onClick={this.disconnect} key="pagehead_dc"><span>Déconnexion</span></a>);
         } else {
-            links.push(<Link to="/login" activeClassName="active" key="pagehead_7"><span>Connexion</span></Link>);
+            links.push(<Link to="/login" activeClassName="active" key="pagehead_cn"><span>Connexion</span></Link>);
         }
 
         return (
             <div className="site-header">
 
                 <h1 className="site-title">
-                    <Link to="/blog"><img src="/logo.jpg" alt="4n" />akama</Link>
+                    <Link to="/"><img src="/logo.jpg" alt="4n" />akama</Link>
                 </h1>
                 <h5>A whisper from my Ghost</h5>
 

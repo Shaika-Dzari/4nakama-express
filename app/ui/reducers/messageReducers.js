@@ -1,7 +1,42 @@
 import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
         MSG_EDITOR_TITLE_CHANGE, MSG_EDITOR_TITLE_BLUR, MSG_EDITOR_PRETTYURL_CHANGE, MSG_EDITOR_TEXT_CHANGE, MSG_EDITOR_PUBL_CHECK, MSG_EDITOR_CAT_CHECK,
         MSG_UPDATE_RECEIVE, MSG_EDITOR_CAT_UNCHECK , MSG_UPDATE_SAVEERROR,
-        MSG_CONSUME_PRELOAD} from '../actions/messageActions.js';
+        MSG_CONSUME_PRELOAD, MSG_SELECT_MODULE} from '../actions/messageActions.js';
+
+/*
+// existing 1,2,4,5,7,8,10,12
+{
+    items: {
+        4: {message},
+        5: {message},
+        7: {message},
+        8: {message},
+        10: {message},
+        12: {message}
+    },
+    order: {
+        module_1: [12,10,8,5,7,4],
+        module_2: []
+    },
+    displayed: [
+        8,5
+    ],
+    displayedmodule: 1
+}
+
+//  to loaded = has order ? items[last-order].date = items[4].createdat
+//  prev seek = prev order item OR > items[first-displayed] = createdat > items[8].createdat
+//  next seek = next order item OR < items[last-displayed] = createdat < items[5].createdat
+*/
+
+// Initial State
+const initialstate = {
+    items: {},
+    index: {},
+    displayed: [],
+    displayedmodule: null,
+    preloaded: false
+}
 
 function updateMessage(messages, id, action) {
     let update = {};
@@ -22,28 +57,39 @@ function computePrettyUrl(title) {
     return p.toLowerCase();
 }
 
-export function messageReducers(state = {items: {}, index: [], preloaded: false}, action) {
+
+function expand(state, messages) {
+    let newIndex = Object.assign({}, state.index);
+    let newItems = Object.assign({}, state.items);
+
+    for (let m of messages) {
+        // Add missing index
+        if (newIndex[m.moduleid].indexOf(m.id) == -1) {
+            newIndex[m.moduleid].push(m.id);
+        }
+        // Add or override
+        newItems[m.id] = m;
+    }
+
+    return {
+        items: newItems,
+        index: newIndex,
+        preloaded: false
+    };
+}
+
+export function messageReducers(state = initialstate, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
-         // DEAL with total
-            let msgList = {};
-            let msgIdx = [];
-            let totalMessages = null;
+            return expand(state, action.messages);
 
-            if (action.messages) {
-                action.messages.forEach(m => {
-                    let id = m.id;
-                    msgList[id] = m;
-                    msgIdx.push(id);
-
-                    if (!totalMessages) {
-                        totalMessages = m.total_count;
-                    }
-                });
+        case MSG_SELECT_MODULE:
+            if (state.index[action.moduleid]) {
+                return Object.assign({}, state, {displayedmodule: action.moduleid, displayed: state.index[action.moduleid].slice(0, action.size || 5)});
             }
 
-            return Object.assign({}, state, {items: msgList, index: msgIdx, page: action.page, total: totalMessages});
+            return state;
 
         case MSG_OPEN:
             return Object.assign({}, state, {selectedid: action.messageid});

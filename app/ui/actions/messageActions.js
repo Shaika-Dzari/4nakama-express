@@ -21,6 +21,7 @@ export const MSG_EDITOR_CAT_UNCHECK = 'MSG_EDITOR_CAT_UNCHECK';
 export const MSG_UPDATE_RECEIVE = 'MSG_UPDATE_RECEIVE';
 export const MSG_UPDATE_SAVEERROR = 'MSG_EDITOR_SAVEERROR';
 export const MSG_CONSUME_PRELOAD = 'MSG_CONSUME_PRELOAD';
+export const MSG_SELECT_MODULE  = 'MSG_SELECT_MODULE';
 
 const MSG_URL = '/api/messages';
 const remarkable = new Remarkable();
@@ -131,13 +132,40 @@ export function doMessageEditAndNavigate(message) {
 
 
 export function doFilterAndNavigate(moduleid) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(push('/dashboard/messages?moduleid=' + moduleid));
-        return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + moduleid, {credentials: 'include'}, doMessagesReceive, doMessageEditorSaveError);
+        dispatch(doSwitchModule(moduleid));
     }
 }
 
+export function doSwitchModule(moduleid, size = 5, url) {
+    return (dispatch, getState) => {
 
+        let msgstate = getState().messages;
+        let modidx = msgstate.index[moduleid];
+
+        // No index => fetch
+        if (!modidx || modidx.length == 0) {
+            return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + moduleid,
+                                  {credentials: 'include'},
+                                  objs => {
+                                      doMessagesReceive(objs);
+                                      if (url) {
+                                          dispatch(push(url));
+                                      }
+                                      dispatch(doSelectModule(moduleid, size));
+                                  },
+                                  doMessageEditorSaveError);
+        } else {
+            if (url) {
+                dispatch(push(url));
+            }
+            dispatch(doSelectModule(moduleid, size));
+        }
+    }
+}
+
+export const doSelectModule = makeActionCreator(MSG_SELECT_MODULE, 'moduleid', 'size');
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
 export const doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');

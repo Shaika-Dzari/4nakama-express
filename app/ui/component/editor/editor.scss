@@ -1,0 +1,36 @@
+.editor {
+    padding: 5px 0 2px 0;
+
+    &::after {
+        font-weight: bold;
+    }
+
+    &.editor-bold::after {
+        content: '\212C';
+    }
+
+    &.editor-italic::after {
+        content: '\2148';
+    }
+    &.editor-heading::after {
+        content: '#'
+    }
+    &.editor-code::after {
+        content: '\23A8'
+    }
+    &.editor-quote::after {
+        content: '\201D'
+    }
+    &.editor-unorderedlist::after {
+        content: '\205D'
+    }
+    &.editor-orderedlist::after {
+        content: '\2172'
+    }
+    &.editor-link::after {
+        content: '\2693'
+    }
+    &.editor-image::after {
+        content: '\25A3'
+    }
+}

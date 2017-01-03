@@ -19,7 +19,6 @@ create table module (
     code text not null,
     name text not null,
     moduleorder integer not null,
-    url text not null,
     enablemodule boolean not null default true,
     enablecomment boolean not null default true,
     enablecategory boolean not null default true,
@@ -28,10 +27,10 @@ create table module (
 );
 
 -- Basic Modules
-insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('BLOG', 'Blog', 0, '/blog', true, true);
-insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('STORY', 'Stories', 1, '/stories', true, true);
-insert into module(code, name, moduleorder, url, enablecomment, enablecategory) values('PROJECT', 'Projects', 2, '/projects', true, false);
-insert into module(code, name, moduleorder, url, enablemodule, enablecomment, enablecategory) values('ABOUT', 'About', 3, '/about', false, false, false);
+insert into module(code, name, moduleorder, enablecomment, enablecategory) values('BLOG', 'Blog', 0, true, true);
+insert into module(code, name, moduleorder, enablecomment, enablecategory) values('STORY', 'Stories', 1, true, true);
+insert into module(code, name, moduleorder, enablecomment, enablecategory) values('PROJECT', 'Projects', 2, true, false);
+insert into module(code, name, moduleorder, enablemodule, enablecomment, enablecategory) values('ABOUT', 'About', 3, false, false, false);
 
 create table modulemetatype (
     id serial primary key,
@@ -195,3 +194,10 @@ create trigger trg_file_delete_stats after delete on file execute Procedure calc
 
 create trigger trg_comment_insert_stats after insert on comment execute Procedure calculate_statistics_comment();
 create trigger trg_comment_delete_stats after delete on comment execute Procedure calculate_statistics_comment();
+
+/*
+grant all on schema nakama to u4nakama;
+grant all on all tables in schema nakama to u4nakama;
+grant all on all sequences in schema nakama to u4nakama;
+grant all on all functions in schema nakama to u4nakama;
+*/
