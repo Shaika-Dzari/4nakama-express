@@ -4,6 +4,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
 // Layouts
+import SimpleLayout from './layout/simplelayout.jsx';
 import PublicLayout from './layout/publiclayout.jsx';
 import ProtectedLayout from './layout/protectedlayout.jsx';
 
@@ -31,6 +32,49 @@ const AppRoute = () => {
     return (
         <Provider store={store}>
             <Router history={ history }>
+
+                <Route path="/" component={ SimpleLayout }>
+                    <IndexRoute component={ IndexPage } />
+
+                    <Route path="blog" component={ PublicLayout }>
+                        <IndexRoute component={ BlogPage } />
+                        <Route path="blog/:messageId" component={ MessagePage } />
+                    </Route>
+
+                    <Route path="login" component={ PublicLayout }>
+                        <IndexRoute component={ LoginPage } />
+                    </Route>
+
+                    <Route path="about" component={ PublicLayout }>
+                        <IndexRoute component={ AboutPage } />
+                    </Route>
+
+                    <Route path="story" component={ SimpleLayout }>
+                        <IndexRoute component={ AboutPage } />
+                    </Route>
+
+                    <Route path="/dashboard" component={ ProtectedLayout }>
+                        <IndexRoute component={ DashboardPage } />
+                        <Route path="" component={ DashboardPage }>
+                            <Route path="messages" component={ AdminMessage } />
+                            <Route path="messages/:messageId" component={ MessageEditor } />
+                            <Route path="files" component={ AdminFile } />
+                            <Route path="comments" component={ AdminComment } />
+                        </Route>
+                    </Route>
+                    <Route path="*" component={ NotFound } />
+                </Route>
+            </Router>
+        </Provider>
+    );
+}
+
+export default AppRoute;
+
+/*
+<Provider store={store}>
+            <Router history={ history }>
+
                 <Route path="/" component={ PublicLayout }>
                     <IndexRoute component={ IndexPage } />
                     <Route path="blog" component={ BlogPage } />
@@ -51,7 +95,5 @@ const AppRoute = () => {
                 </Route>
             </Router>
         </Provider>
-    );
-}
 
-export default AppRoute;
+ */

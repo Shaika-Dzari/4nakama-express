@@ -1,3 +1,7 @@
+import Remarkable from 'remarkable';
+
+const remarkable = new Remarkable();
+
 export function getUrlParamsString(pagingParam, additionalParams) {
     let body = [];
     let urlParams = '';
@@ -22,7 +26,7 @@ export function getUrlParamsString(pagingParam, additionalParams) {
     }
 
     if (needtoJoin) {
-        urlParams = '?' + body.join('&');
+        urlParams = body.join('&');
     }
 
     return urlParams;
@@ -42,4 +46,16 @@ export function escapeHTML(html) {
         .appendChild(document.createTextNode(html))
         .parentNode
         .innerHTML;
+}
+
+export function createHtmlBody(msgs) {
+    if (msgs) {
+        if (Array.isArray(msgs)) {
+            msgs.forEach(m => {
+                m.bodyhtml = remarkable.render(m.body)
+            });
+        } else {
+            msgs.bodyhtml = remarkable.render(msgs.body)
+        }
+    }
 }

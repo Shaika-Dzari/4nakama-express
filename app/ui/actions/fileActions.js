@@ -66,7 +66,7 @@ export function doFileFetch(pageParams) {
 
             let urlParams = getUrlParamsString(pageParams);
 
-            return fetch(FILE_URL + urlParams, {credentials: 'include'})
+            return fetch(FILE_URL + '?' + urlParams, {credentials: 'include'})
                     .then(fs => fs.json())
                     .then(files => {
                         dispatch(doStopLoading());

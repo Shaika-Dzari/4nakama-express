@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
 import { doChallenge } from '../actions/userActions.js';
+import PageHeader from '../component/pageheader/pageheader.jsx';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -43,8 +44,15 @@ class ProtectedLayout extends React.Component {
     render() {
 
         return (
-            <div>
-                {this.props.children}
+            <div className="page-layout-inner">
+                <div className="menu-section">
+                    <PageHeader />
+                </div>
+
+                <div className="content-section">
+                    { this.props.children }
+                </div>
+
             </div>
         );
     }
@@ -52,5 +60,3 @@ class ProtectedLayout extends React.Component {
 
 
 export default connect(mapStateToProps)(withRouter(ProtectedLayout));
-
-//export default withRouter(ProtectedLayout);

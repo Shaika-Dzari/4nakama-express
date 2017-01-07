@@ -24,7 +24,7 @@ export function doCommentFetch(messageId, page) {
     let urlParam = getUrlParamsString(page, messageId ? ['messageid=' + encodeURIComponent(messageId)] : null);
 
     return dispatch => {
-        return FetchUtils.get(dispatch, COMMENT_URL + urlParam, {credentials: 'include'}, doCommentReceive, doCommentSavedError);
+        return FetchUtils.get(dispatch, COMMENT_URL + '?' + urlParam, {credentials: 'include'}, doCommentReceive, doCommentSavedError);
     };
 }
 

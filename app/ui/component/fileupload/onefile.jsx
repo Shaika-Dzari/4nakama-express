@@ -8,7 +8,7 @@ const OneFile = ({reffileid, name, type, size, progress, completed, cancelUpload
     let completedStatus = completed ? 'Effectué!' : '-';
 
     return (
-        <div key={reffileid} className="onefile">
+        <div key={'onfile-' + reffileid} className="onefile">
             <div className="onefile-row">
                 <div>
                     <h5>{name}</h5>

@@ -12,9 +12,10 @@ router.get('/', function(req, res, next) {
     // Paging Params
     let pagingParam = new PagingParser(req, Message.DEFAULT_PAGE_SIZE);
     let moduleid = req.query.moduleid || null;
+    let published = req.query.p || true;
     let query;
 
-    if (!authUtils.isLoggedIn(req)) {
+    if (!authUtils.isLoggedIn(req) || published) {
         if (pagingParam.direction() == 'next') {
             query = Message.ALL_PUBLISHED_BY_NEXTPAGE;
         } else {
@@ -64,8 +65,9 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         authorid: user.id,
         authorname: user.username,
         published: !!msgreq.published,
-        prettyurl: htmlutils.sanitizeUrl(msgreq.prettyUrl),
-        categories: JSON.stringify(msgreq.categories)
+        prettyurl: htmlutils.sanitizeUrl(msgreq.prettyurl),
+        categories: JSON.stringify(msgreq.categories),
+        moduleid: parseInt(msgreq.moduleid, 10)
     };
 
     db.insert(Message.CREATE_ONE, m, (err, data) => {

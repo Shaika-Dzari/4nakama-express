@@ -55,7 +55,7 @@ class FileUpload extends React.Component {
                 let completed = managedFile.completed;
                 let refid = 'li-' + f.name;
 
-                let fileJsx = <OneFile key={refid}
+                let fileJsx = <OneFile key={'fu-onfile-' + refid}
                                 reffileid={refid}
                                 name={f.name}
                                 type={f.type}

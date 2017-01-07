@@ -40,6 +40,6 @@ export function doNavigationTo(moduleid, url) {
     return (dispatch, getState) => {
         let mod = getState().modules.items[moduleid];
         let url = url || MODULE_URLS[mod.code.toLowerCase()];
-        dispatch(doSwitchModule(moduleid, 5, url));
+        dispatch(doSwitchModule({moduleid: moduleid, url: url}));
     };
 }

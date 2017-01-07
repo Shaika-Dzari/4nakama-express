@@ -8,13 +8,13 @@ import Remarkable from 'remarkable';
 import PagingParam from '../../utils/PagingParam.js';
 import { scrollToTopPage } from '../../utils/HtmlUtils.js';
 
-import {doMessageFetchAndGo} from '../../actions/messageActions.js';
+import {doMessageFetchAndGo, doSwitchModule} from '../../actions/messageActions.js';
 import {doCategoryFetch} from '../../actions/categoryActions.js';
 
 import './blogpage.scss';
 
 const mapStateToProps = (state, ownProps) => {
-
+    let blogmoduleid = state.modules.codeindex['BLOG'];
     let fromdate = ownProps.location.query.fromdate;
     let direction = ownProps.location.query.dir;
     let p = null;
@@ -23,8 +23,9 @@ const mapStateToProps = (state, ownProps) => {
     }
 
     return {
+        blogmoduleid: blogmoduleid,
         messages: state.messages.items,
-        displayed: state.messages.displayed,
+        displayed: state.messages.index[blogmoduleid],
         page: p,
         categories: state.categories.items,
         categoriesindex: state.categories.index
@@ -39,7 +40,7 @@ class BlogPage extends React.Component {
     }
 
     onChangePage(pageParam) {
-        const { dispatch } = this.props
+        const { dispatch } = this.props;
         dispatch(doMessageFetchAndGo(pageParam));
         scrollToTopPage();
     }
@@ -48,6 +49,10 @@ class BlogPage extends React.Component {
         const { dispatch } = this.props
         // this.onChangePage(this.props.page);
         dispatch(doCategoryFetch());
+
+        if (!this.props.displayed || this.props.displayed.length == 0) {
+            dispatch(doSwitchModule({moduleid: this.props.blogmoduleid}));
+        }
     }
 
     render() {
@@ -60,11 +65,13 @@ class BlogPage extends React.Component {
             nextdate = this.props.messages[this.props.displayed[this.props.displayed.length - 1]].createdat;
         }
 
+        let msgs = this.props.messages && this.props.displayed ? <MessageList messages={this.props.messages} index={this.props.displayed} /> : null;
+
         return (
                 <div className="row">
                     <div className="col-10">
                         <div className="list-ctn">
-                            <MessageList messages={this.props.messages} index={this.props.displayed} />
+                            {msgs}
                         </div>
                         <div className="list-ctn">
                             <LinkPager size={5} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />

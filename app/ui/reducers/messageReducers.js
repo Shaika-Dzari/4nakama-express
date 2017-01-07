@@ -33,7 +33,6 @@ import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
 const initialstate = {
     items: {},
     index: {},
-    displayed: [],
     displayedmodule: null,
     preloaded: false
 }
@@ -58,38 +57,36 @@ function computePrettyUrl(title) {
 }
 
 
-function expand(state, messages) {
-    let newIndex = Object.assign({}, state.index);
-    let newItems = Object.assign({}, state.items);
+function expand(state, messages, moduleid) {
+    let newState = Object.assign({}, state);
 
-    for (let m of messages) {
-        // Add missing index
-        if (newIndex[m.moduleid].indexOf(m.id) == -1) {
-            newIndex[m.moduleid].push(m.id);
+    newState.index[moduleid] = [];
+
+
+    if (messages && messages.length > 0) {
+
+        for (let m of messages) {
+
+            // Add missing index
+            newState.index[m.moduleid].push(m.id);
+
+            // Add or override
+            newState.items[m.id] = m;
         }
-        // Add or override
-        newItems[m.id] = m;
     }
 
-    return {
-        items: newItems,
-        index: newIndex,
-        preloaded: false
-    };
+    newState.preloaded = false;
+    return newState;
 }
 
 export function messageReducers(state = initialstate, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
-            return expand(state, action.messages);
+            return expand(state, action.messages, action.moduleid);
 
         case MSG_SELECT_MODULE:
-            if (state.index[action.moduleid]) {
-                return Object.assign({}, state, {displayedmodule: action.moduleid, displayed: state.index[action.moduleid].slice(0, action.size || 5)});
-            }
-
-            return state;
+            return Object.assign({}, state, {displayedmodule: action.moduleid});
 
         case MSG_OPEN:
             return Object.assign({}, state, {selectedid: action.messageid});
@@ -104,17 +101,7 @@ export function messageReducers(state = initialstate, action) {
             return Object.assign({}, state, {error: action.error});
 
         case MSG_UPDATE_RECEIVE:
-            let index;
-
-            if (state.index.indexOf(action.message.id) != -1) {
-                index = state.index;
-            } else {
-                index = [...state.index];
-                index.push(action.message.id);
-            }
-            let msgUpdateList = Object.assign({}, state.items, {[action.message.id]: action.message});
-            return Object.assign({}, state, {items: msgUpdateList, index: index});
-
+            return expand(state, [action.message], action.message.moduleid);
 
         // Editor changes
         case MSG_EDITOR_TITLE_CHANGE:

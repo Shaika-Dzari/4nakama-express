@@ -7,7 +7,7 @@ const CategoryList = ({categories, index}) => {
     if (categories && index) {
         cats = index.map((v, idx) => {
             let c = categories[v];
-            return <li key={v}><a href="#">{c.name}</a></li>
+            return <li key={'catlist-cat-' + v}><a href="#">{c.name}</a></li>
         });
     }
 

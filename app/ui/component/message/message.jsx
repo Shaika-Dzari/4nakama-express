@@ -10,7 +10,7 @@ const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, 
 
     if (categories) {
         cats = categories.map((v, i) => {
-            return <span key={v.id} className="category">{v.name}</span> ;
+            return <span key={'msg-cat-' + v.id} className="category">{v.name}</span> ;
         });
     }
 
@@ -24,7 +24,6 @@ const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, 
         <article className="blog-message">
             <header>
                 <h1>{innerTitle}</h1>
-                <h5>{permurl}</h5>
                 <div className="row">
                     <div className="col-6">
                         <p>{authorname} - {createdat}</p>
@@ -37,6 +36,7 @@ const Message = ({id, title, body, bodyhtml, authorname, createdat, categories, 
 
             <div className="blog-message-body">
                 <div dangerouslySetInnerHTML={{__html: bodyhtml}}></div>
+                <h5>{permurl}</h5>
             </div>
 
         </article>

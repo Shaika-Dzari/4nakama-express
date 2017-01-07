@@ -82,7 +82,7 @@ input.validation-error, textarea.validation-error {
 
 @media only screen and (min-width: 920px) {
 
-    .page-layout {
+    .page-layout-inner {
         padding: 0 0 0 300px;
         margin: 0;
 
@@ -104,7 +104,7 @@ input.validation-error, textarea.validation-error {
 }
 
 @media only screen and (max-width: 919px) {
-    .page-layout {
+    .page-layout-inner {
         padding: 0;
         margin: 0;
 
@@ -125,6 +125,20 @@ input.validation-error, textarea.validation-error {
     text-decoration: none;
     color: $color-link-font;
     font-weight: 600;
+}
+
+pre {
+    margin: 10px;
+    padding: 10px;
+    border-left: 2px solid $color-border-3;
+    background-color: #fcfcfc;
+}
+
+p code {
+    margin: 10px;
+    padding: 10px;
+    font-size: 0.9em;
+    border-left: 2px solid $color-border-1;
 }
 
 /* media only screen and (max-width: 1024px)*/

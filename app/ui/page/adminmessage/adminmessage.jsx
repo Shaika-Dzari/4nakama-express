@@ -1,18 +1,13 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
-import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate, doFilterAndNavigate} from '../../actions/messageActions.js';
+import {doMessageFetch, doMessageFetchForEdit, doMessageEditAndNavigate, doFilterAndNavigate, doSwitchModule} from '../../actions/messageActions.js';
 import Table from '../../component/table/table.jsx';
 import PagingParam from '../../utils/PagingParam.js';
 import DatePager from '../../component/pager/datepager.jsx';
 import LinkPager from '../../component/pager/linkpager.jsx';
 
 import './adminmessage.scss';
-
-
-const MESSAGE_TABLE_DEF = {
-    id: 'id', name: 'title', rowdate: 'createdat', link: 'link'
-};
 
 const mapStateToProps = (state, ownProps) => {
 
@@ -24,7 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         messages: state.messages.items,
-        displayed: state.messages.displayed,
+        displayed: state.messages.index[state.messages.displayedmodule],
         page: state.messages.page,
         modules: state.modules,
         moduleid: moduleid
@@ -57,11 +52,12 @@ class AdminMessage extends React.Component {
         dispatch(doMessageFetchForEdit(messageId));
     }
 
-    onFilterClick(event) {
-        event.preventDefault();
-        let moduleid = event.target.dataset.n4ModuleId;
+    onFilterClick(e) {
+        let mc = e.currentTarget || e.target;
+        let moduleid = mc.dataset.n4ModuleId;
+        e.preventDefault();
         const { dispatch } = this.props;
-        dispatch(doFilterAndNavigate(moduleid));
+        dispatch(doSwitchModule({moduleid: moduleid, size: 20, url: '/dashboard/messages?moduleid=' + moduleid}));
     }
 
     render() {
@@ -81,7 +77,7 @@ class AdminMessage extends React.Component {
         let rows = displayed.map(i => {
             let m = msgs[i];
             return (
-                <a href={'/editor/' + m.id} key={m.id} className="message-link row" onClick={(e) => { e.preventDefault(); this.onMessageClick(m.id);}}>
+                <a href={'/editor/' + m.id} key={'ad-msg-' + m.id} className="message-link row" onClick={(e) => { e.preventDefault(); this.onMessageClick(m.id);}}>
                     <div className="col-1">{m.id}</div>
                     <div className="col-7"><span className="link">{m.title}</span></div>
                     <div className="col-4">{m.createdat} - {m.published ? 'Published' : 'Unpublished'}</div>
@@ -131,7 +127,7 @@ class AdminMessage extends React.Component {
                         </div>
                     </div>
                 </div>
-                <LinkPager size={5} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
+                <LinkPager size={20} prevdate={prevdate} nextdate={nextdate} callback={this.onChangePage} />
             </div>
         );
     }

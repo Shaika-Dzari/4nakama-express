@@ -16,9 +16,9 @@ class Feedback extends React.Component {
     render() {
 
         if (this.props.isloading) {
-            return <span>Loading...</span>;
+            return <img src="/ajax-loader.gif" alt="..." />;
         } else {
-            return <span>Waiting</span>;
+            return <span>waiting</span>;
         }
     }
 }

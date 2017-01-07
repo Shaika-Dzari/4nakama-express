@@ -21,8 +21,7 @@ class DashboardPage extends React.Component {
     onAdminMessage(e) {
         e.preventDefault();
         const {modules, dispatch} = this.props;
-        console.log(modules, dispatch);
-        dispatch(doSwitchModule(modules.codeindex['BLOG'], 20, '/dashboard/messages'));
+        dispatch(doSwitchModule({moduleid: modules.codeindex['BLOG'], size: 20, url: '/dashboard/messages', args: ['published=false']}));
     }
 
     render() {

@@ -5,22 +5,27 @@ function isObject(obj) {
   return obj === Object(obj);
 }
 
-export function get(dispatch, url, option, successCallback, errorCallback) {
+function isFunction(func) {
+    return typeof func === 'function';
+}
 
+function callOrDispatch(dispatch, callback, arg) {
+    if (isFunction(callback)) {
+        dispatch(callback(arg));
+    } else {
+        callback.action(arg);
+    }
+}
+
+export function get(dispatch, url, option, successCallback, errorCallback) {
+    dispatch(doStartLoading());
     return fetch(url, option)
             .then(response => {
                 dispatch(doStopLoading());
                 let ok = response.ok;
-                dispatch(doStopLoading());
 
                 response.json().then(j => {
-
-                    if (ok) {
-                        dispatch(successCallback(j));
-                    } else {
-                        dispatch(errorCallback(j));
-                    }
-
+                    callOrDispatch(dispatch, ok ? successCallback : errorCallback, j);
                 });
             }).catch(e => {
                 dispatch(doStopLoading());

@@ -1,9 +1,8 @@
 import 'whatwg-fetch';
 import { push } from 'react-router-redux';
 import {doStartLoading, doStopLoading} from './navigationActions.js';
-import { getUrlParamsString } from '../utils/HtmlUtils.js';
+import { getUrlParamsString, createHtmlBody } from '../utils/HtmlUtils.js';
 import * as FetchUtils from '../utils/FetchUtils.js';
-import Remarkable from 'remarkable';
 import makeActionCreator from './actionCreator.js';
 
 export const MSG_CACHE_HIT  = 'MSG_CACHE_HIT';
@@ -24,7 +23,6 @@ export const MSG_CONSUME_PRELOAD = 'MSG_CONSUME_PRELOAD';
 export const MSG_SELECT_MODULE  = 'MSG_SELECT_MODULE';
 
 const MSG_URL = '/api/messages';
-const remarkable = new Remarkable();
 
 const MODULE_URLS = {
     blog: '/blog',
@@ -33,35 +31,35 @@ const MODULE_URLS = {
     story: '/story'
 };
 
+
 export function doMessageFetchAndGo(pageParams, modulecode = 'BLOG') {
 
     return (dispatch, getState) => {
+        let modid = getState().modules.codeindex[modulecode];
         let urlParam = getUrlParamsString(pageParams);
         let clientUrl = MODULE_URLS[modulecode.toLowerCase()]
-        dispatch(push(clientUrl + urlParam));
+        dispatch(push(clientUrl + '?' + urlParam));
 
         if (!getState().messages.preloaded) {
-            dispatch(doMessageFetch(pageParams));
+            dispatch(doMessageFetch(pageParams, modid));
         } else {
             dispatch(doMessageConsumePreload());
         }
     }
 }
 
-export function doMessageFetch(pageParams) {
+export function doMessageFetch(pageParams, moduleid) {
 
     return (dispatch, getState) => {
         dispatch(doStartLoading());
         let urlParam = getUrlParamsString(pageParams);
 
-        return fetch(MSG_URL + urlParam, {credentials: 'include'})
+        return fetch(MSG_URL + '?' + urlParam, {credentials: 'include'})
                 .then(r => r.json())
                 .then(msgs => {
                     dispatch(doStopLoading());
-                    if (msgs) {
-                        msgs.forEach(m => m.bodyhtml = remarkable.render(m.body));
-                    }
-                    dispatch(doMessagesReceive(msgs, pageParams));
+                    createHtmlBody(msgs);
+                    dispatch(doMessagesReceive(msgs, moduleid, pageParams));
                 });
     }
 }
@@ -137,30 +135,34 @@ export function doFilterAndNavigate(moduleid) {
         dispatch(doSwitchModule(moduleid));
     }
 }
-
-export function doSwitchModule(moduleid, size = 5, url) {
+// params : {moduleid, size, url, args}
+export function doSwitchModule(params) {
     return (dispatch, getState) => {
 
         let msgstate = getState().messages;
-        let modidx = msgstate.index[moduleid];
+        let modidx = msgstate.index[params.moduleid];
+        let size = params.size || 5;
+        let additionalParams = params.args ? '&' + getUrlParamsString(null, params.args) : '';
 
         // No index => fetch
-        if (!modidx || modidx.length == 0) {
-            return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + moduleid,
+        console.log(modidx, size, additionalParams);
+        if (!modidx || modidx.length == 0 || modidx.length < size) {
+            return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + params.moduleid + '&size=' + size + additionalParams,
                                   {credentials: 'include'},
-                                  objs => {
-                                      doMessagesReceive(objs);
-                                      if (url) {
-                                          dispatch(push(url));
-                                      }
-                                      dispatch(doSelectModule(moduleid, size));
-                                  },
+                                  {action: objs => {
+                                      createHtmlBody(objs);
+                                      dispatch(doMessagesReceive(objs, params.moduleid));
+
+                                      if (params.url) dispatch(push(params.url));
+
+                                      dispatch(doSelectModule(params.moduleid, size));
+                                  }},
                                   doMessageEditorSaveError);
         } else {
-            if (url) {
-                dispatch(push(url));
+            if (params.url) {
+                dispatch(push(params.url));
             }
-            dispatch(doSelectModule(moduleid, size));
+            dispatch(doSelectModule(params.moduleid, size));
         }
     }
 }
@@ -168,7 +170,7 @@ export function doSwitchModule(moduleid, size = 5, url) {
 export const doSelectModule = makeActionCreator(MSG_SELECT_MODULE, 'moduleid', 'size');
 export const doMessageEdit = makeActionCreator(MSG_EDIT, 'message');
 export const doMessageOpen = makeActionCreator(MSG_OPEN, 'messageId');
-export const doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'page');
+export const doMessagesReceive = makeActionCreator(MSG_LIST_RECEIVE, 'messages', 'moduleid');
 export const doMessageEditorTextChange = makeActionCreator(MSG_EDITOR_TEXT_CHANGE, 'messageId', 'body');
 export const doMessageEditorTitleChange = makeActionCreator(MSG_EDITOR_TITLE_CHANGE, 'messageId', 'title');
 export const doMessageEditorTitleBlur = makeActionCreator(MSG_EDITOR_TITLE_BLUR, 'messageId', 'title');

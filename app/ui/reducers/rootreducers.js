@@ -7,7 +7,8 @@ import { navigationReducers } from './navigationReducers.js';
 import { userReducers } from './userReducers.js';
 import { fileReducers, fileUploadReducers } from './fileReducers.js';
 import { commentReducers } from './commentReducers.js';
-import { statisticReducers } from './statisticReducers.js'
+import { statisticReducers } from './statisticReducers.js';
+import { languageReducers } from './languageReducers.js';
 
 const RootReducers = combineReducers({
     navigation: navigationReducers,
@@ -19,6 +20,7 @@ const RootReducers = combineReducers({
     files: fileReducers,
     uploadfiles: fileUploadReducers,
     statistics: statisticReducers,
+    language: languageReducers,
     modules: (state = {items: {}, index: [], codeindex: {}}) => state
 });
 

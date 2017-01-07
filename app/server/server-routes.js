@@ -46,6 +46,11 @@ router.use('/', (req, res, next) => {
             if (objs[1]) {
                 let normmsg = normalize(Message.computePrettyUrl(objs[1]));
                 store.messages = {};
+
+                for (let mid in normmsg.items) {
+                    normmsg.items[mid].body = normmsg.items[mid].body.replace(/(?:\r\n|\r|\n)/g, '\\n');
+                }
+
                 store.messages.items = normmsg.items;
                 store.messages.index = {};
                 store.messages.index[modulecodes['BLOG']] = normmsg.index;
