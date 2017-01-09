@@ -1,3 +1,4 @@
+import expand from '../utils/StateUtils.js';
 import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
         MSG_EDITOR_TITLE_CHANGE, MSG_EDITOR_TITLE_BLUR, MSG_EDITOR_PRETTYURL_CHANGE, MSG_EDITOR_TEXT_CHANGE, MSG_EDITOR_PUBL_CHECK, MSG_EDITOR_CAT_CHECK,
         MSG_UPDATE_RECEIVE, MSG_EDITOR_CAT_UNCHECK , MSG_UPDATE_SAVEERROR,
@@ -57,34 +58,11 @@ function computePrettyUrl(title) {
     return p.toLowerCase();
 }
 
-
-function expand(state, messages, moduleid) {
-    let newState = Object.assign({}, state);
-
-    newState.moduleindex[moduleid] = [];
-
-
-    if (messages && messages.length > 0) {
-
-        for (let m of messages) {
-
-            // Add missing index
-            newState.moduleindex[m.moduleid].push(m.id);
-
-            // Add or override
-            newState.items[m.id] = m;
-        }
-    }
-
-    newState.preloaded = false;
-    return newState;
-}
-
 export function messageReducers(state = initialstate, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
-            return expand(state, action.messages, action.moduleid);
+            return expand(state, action.messages);
 
         case MSG_SELECT_MODULE:
             return Object.assign({}, state, {displayedmodule: action.moduleid});

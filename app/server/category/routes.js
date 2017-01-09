@@ -33,7 +33,7 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
             next(err);
         }
 
-        res.status(201).json({id: data.id, name: name});
+        res.status(201).json({id: data.id, name: name, moduleid: moduleid});
     });
 
 });

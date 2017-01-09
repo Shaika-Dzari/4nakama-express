@@ -66,6 +66,10 @@
           display: inline; }
         .site-header .page-header-menu nav.site-menu a img {
           display: none; } }
+.empty-index {
+  text-align: center; }
+  .empty-index img {
+    margin-top: 200px; }
 .blog-message {
   margin: 20px 30px 30px 40px;
   border-bottom: 1px solid #dedede; }

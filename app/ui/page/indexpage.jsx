@@ -2,9 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { doNavigationTo } from '../actions/navigationActions.js';
 
-const mapStateToProps = (state) => {
+import './indexpage.scss';
+
+const mapStateToProps = (state, ownProps) => {
+    let to = ownProps.location.query.to;
+
     return {
-        modules: state.modules
+        modules: state.modules,
+        to: to
     };
 };
 
@@ -16,13 +21,14 @@ class IndexPage extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
         // Go to blog
-        dispatch(doNavigationTo(this.props.modules.codeindex['BLOG']));
+        let to = this.props.to || 'blog';
+        dispatch(doNavigationTo(this.props.modules.codeindex[to.toUpperCase()]));
     }
 
     render() {
         return (
-            <div>
-            Loading...
+            <div className="empty-index">
+                <img src="/ajax-loader.gif" alt="..." />;
             </div>
         );
     }

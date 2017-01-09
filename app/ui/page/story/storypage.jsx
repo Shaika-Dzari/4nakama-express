@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import CategoryList from '../../component/categorylist/categorylist.jsx';
 import {doSwitchModule} from '../../actions/messageActions.js';
 import tr from '../../i18n/i18n.js';
 
@@ -12,6 +13,8 @@ const maptStateToProps = (state) => {
         storymoduleid: storymoduleid,
         items: state.messages.items,
         displayed: state.messages.moduleindex[storymoduleid] || [],
+        categories: state.categories.items,
+        categoriesindex: state.categories.moduleindex[storymoduleid],
         locale: state.language.locale
     }
 }
@@ -49,6 +52,8 @@ class StoryPage extends React.Component {
                     <div className="col-2">
                         <div className="story-page-menu">
                             <h1><Link to="/" className="link"><span>&#9664; {tr(this.props.locale, 'page_story_menu_back')}</span></Link></h1>
+                            <br />
+                            <CategoryList categories={this.props.categories} index={this.props.categoriesindex} />
                         </div>
                     </div>
                     <div className="col-8">
