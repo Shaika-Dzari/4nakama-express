@@ -32,7 +32,8 @@ import {MSG_CACHE_HIT, MSG_LIST_FETCH, MSG_OPEN, MSG_EDIT, MSG_LIST_RECEIVE,
 // Initial State
 const initialstate = {
     items: {},
-    index: {},
+    index: [],
+    moduleindex: {},
     displayedmodule: null,
     preloaded: false
 }
@@ -60,7 +61,7 @@ function computePrettyUrl(title) {
 function expand(state, messages, moduleid) {
     let newState = Object.assign({}, state);
 
-    newState.index[moduleid] = [];
+    newState.moduleindex[moduleid] = [];
 
 
     if (messages && messages.length > 0) {
@@ -68,7 +69,7 @@ function expand(state, messages, moduleid) {
         for (let m of messages) {
 
             // Add missing index
-            newState.index[m.moduleid].push(m.id);
+            newState.moduleindex[m.moduleid].push(m.id);
 
             // Add or override
             newState.items[m.id] = m;

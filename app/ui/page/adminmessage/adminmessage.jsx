@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         messages: state.messages.items,
-        displayed: state.messages.index[state.messages.displayedmodule],
+        displayed: state.messages.moduleindex[moduleid] || [],
         page: state.messages.page,
         modules: state.modules,
         moduleid: moduleid

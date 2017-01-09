@@ -33,7 +33,7 @@ export function get(dispatch, url, option, successCallback, errorCallback) {
             });
 }
 
-function saveOrUpdate(dispatch, operation, url, obj, successCallback, errorCallback) {
+export function saveOrUpdate(dispatch, operation, url, obj, successCallback, errorCallback) {
 
     let isJsonObject = isObject(obj);
     let val = isJsonObject ? JSON.stringify(obj) : obj;
@@ -52,14 +52,9 @@ function saveOrUpdate(dispatch, operation, url, obj, successCallback, errorCallb
                 let ok = response.ok;
 
                 response.json().then(j => {
-
-                    if (ok) {
-                        dispatch(successCallback(j));
-                    } else {
-                        dispatch(errorCallback(j));
-                    }
-
+                    callOrDispatch(dispatch, ok ? successCallback : errorCallback, j);
                 });
+
             }).catch(e => {
                 dispatch(doStopLoading());
                 dispatch(doRaiseGlobalError(e));

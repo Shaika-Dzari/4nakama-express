@@ -14,14 +14,14 @@ export const doCategoryUpdated = makeActionCreator(CATEGORY_UPDATED, 'category')
 export const doCategoryError = makeActionCreator(CATEGORY_ERROR, 'error');
 export const doCategoryConsumePreload = makeActionCreator(CATEGORY_CONSUME_PRELOAD);
 
-export function doCategoryFetch() {
+export function doCategoryFetch(moduleid) {
 
     return (dispatch, getState) => {
         let cs = getState().categories.index;
 
         if (!cs || cs.length == 0) {
 
-            return FetchUtils.get(dispatch, CATEGORY_URL, {}, doCategoryReceive, doCategoryError);
+            return FetchUtils.get(dispatch, CATEGORY_URL + '?moduleid=' + moduleid, {}, doCategoryReceive, doCategoryError);
         }
     };
 }

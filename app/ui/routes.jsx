@@ -17,6 +17,7 @@ import LoginPage from './page/login/loginpage.jsx';
 import MessageEditor from './page/messageeditor/messageeditor.jsx';
 import MessagePage from './page/message/messagepage.jsx';
 import AboutPage from './page/about/aboutpage.jsx';
+import StoryPage from './page/story/storypage.jsx';
 
 import AdminMessage from './page/adminmessage/adminmessage.jsx';
 import AdminFile from './page/adminfile/adminfile.jsx';
@@ -50,7 +51,7 @@ const AppRoute = () => {
                     </Route>
 
                     <Route path="story" component={ SimpleLayout }>
-                        <IndexRoute component={ AboutPage } />
+                        <IndexRoute component={ StoryPage } />
                     </Route>
 
                     <Route path="/dashboard" component={ ProtectedLayout }>

@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
     return {
         aboutmoduleid: aboutmoduleid,
         items: state.messages.items,
-        displayed: state.messages.index[aboutmoduleid],
+        displayed: state.messages.moduleindex[aboutmoduleid],
         locale: state.language.locale
     }
 }

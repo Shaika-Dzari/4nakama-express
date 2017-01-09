@@ -44,21 +44,17 @@ router.use('/', (req, res, next) => {
             store.modules.codeindex = modulecodes;
 
             if (objs[1]) {
-                let normmsg = normalize(Message.computePrettyUrl(objs[1]));
-                store.messages = {};
+                store.messages = normalize(Message.computePrettyUrl(objs[1]), true);
 
-                for (let mid in normmsg.items) {
-                    normmsg.items[mid].body = normmsg.items[mid].body.replace(/(?:\r\n|\r|\n)/g, '\\n');
+                for (let mid in store.messages.items) {
+                    store.messages.items[mid].body = store.messages.items[mid].body.replace(/(?:\r\n|\r|\n)/g, '\\n');
                 }
 
-                store.messages.items = normmsg.items;
-                store.messages.index = {};
-                store.messages.index[modulecodes['BLOG']] = normmsg.index;
                 store.messages.preloaded = true;
             }
 
             if (objs[2]) {
-                store.categories = normalize(objs[2]);
+                store.categories = normalize(objs[2], true);
                 store.categories.preloaded = true;
             }
 

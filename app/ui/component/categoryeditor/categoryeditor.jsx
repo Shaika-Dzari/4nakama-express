@@ -5,10 +5,13 @@ import {doCategorySave, doCategoryFetch} from '../../actions/categoryActions.js'
 
 const CATEGORY_URL = '/api/categories';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+
+    let modidx = ownProps.moduleid || state.modules.codeindex['BLOG'];
+
     return {
         categories: state.categories.items,
-        index: state.categories.index,
+        index: state.categories.moduleindex[modidx] || [],
         error: state.categories.error
     };
 };
@@ -29,7 +32,7 @@ class CategoryEditor extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props
-        dispatch(doCategoryFetch());
+        dispatch(doCategoryFetch(this.props.moduleid));
     }
 
 
@@ -41,7 +44,7 @@ class CategoryEditor extends React.Component {
         this.setState({showAddInput: false});
         this.setState({newcategory: ''});
 
-        let c = { id: 'new', name: this.state.newcategory };
+        let c = { id: 'new', name: this.state.newcategory, moduleid: this.props.moduleid };
         const { dispatch } = this.props;
         dispatch(doCategorySave(c));
     }
@@ -120,8 +123,9 @@ class CategoryEditor extends React.Component {
 CategoryEditor.propTypes = {
     categories: React.PropTypes.object.isRequired,
     selectedItems: React.PropTypes.array,
+    moduleid: React.PropTypes.number.isRequired,
     onComponentSelect: React.PropTypes.func.isRequired,
-    onComponentUnSelect: React.PropTypes.func.isRequired,
+    onComponentUnSelect: React.PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps)(CategoryEditor);

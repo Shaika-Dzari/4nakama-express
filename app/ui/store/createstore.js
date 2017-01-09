@@ -16,7 +16,7 @@ if (preloadedState && preloadedState.messages && preloadedState.messages.items) 
 }
 
 // Initial Language state
-preloadedState.language = {locale: 'en_CA'};
+preloadedState.language = {locale: 'fr_CA'};
 
 const store = createStore(
   RootReducers,

@@ -8,6 +8,8 @@ const EnglishCanada = {
     menu_logout: 'Logout',
     menu_lang_frca: 'Français',
     menu_lang_enca: 'English',
-    page_about_title: 'About'
+    page_about_title: 'About',
+    page_story_title: 'Story',
+    page_story_menu_back: 'Back'
 };
 export default EnglishCanada;

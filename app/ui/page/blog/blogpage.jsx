@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import CategoryList from '../../component/categorylist/categorylist.jsx';
 import MessageList from '../../component/messagelist/messagelist.jsx';
@@ -25,10 +24,10 @@ const mapStateToProps = (state, ownProps) => {
     return {
         blogmoduleid: blogmoduleid,
         messages: state.messages.items,
-        displayed: state.messages.index[blogmoduleid],
+        displayed: state.messages.moduleindex[blogmoduleid],
         page: p,
         categories: state.categories.items,
-        categoriesindex: state.categories.index
+        categoriesindex: state.categories.moduleindex[blogmoduleid]
     }
 }
 

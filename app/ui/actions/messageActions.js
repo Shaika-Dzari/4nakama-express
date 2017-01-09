@@ -81,35 +81,14 @@ export function doMessageEditorSave(messageId) {
 
     return (dispatch, getState) => {
 
-        //let id = getState().messages.selectedMessage.id;
         let url = MSG_URL + (messageId === 'new' ? '' : '/' + messageId);
         let protocol = messageId === 'new' ? 'POST' : 'PUT';
         let message = getState().messages.items[messageId];
 
-
-        let params = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: protocol,
-            body: JSON.stringify(message),
-            credentials: 'include'
-        };
-
-        dispatch(doStartLoading());
-
-        return fetch(url, params)
-            .then(r => r.json())
-            .then(m => {
-                dispatch(doStopLoading());
-
-                if (m) {
-                    m.bodyhtml = remarkable.render(m.body);
-                }
-
-                dispatch(doMessageUpdateReceive(m))
-            }).catch(e => dispatch(doMessageEditorSaveError(e)));
+        return FetchUtils.saveOrUpdate(dispatch, protocol, url, message, {action: m => {
+            createHtmlBody(m);
+            dispatch(doMessageUpdateReceive(m));
+        }}, doMessageEditorSaveError);
 
     };
 }
@@ -140,12 +119,11 @@ export function doSwitchModule(params) {
     return (dispatch, getState) => {
 
         let msgstate = getState().messages;
-        let modidx = msgstate.index[params.moduleid];
+        let modidx = msgstate.moduleindex[params.moduleid];
         let size = params.size || 5;
         let additionalParams = params.args ? '&' + getUrlParamsString(null, params.args) : '';
 
         // No index => fetch
-        console.log(modidx, size, additionalParams);
         if (!modidx || modidx.length == 0 || modidx.length < size) {
             return FetchUtils.get(dispatch, MSG_URL + '?moduleid=' + params.moduleid + '&size=' + size + additionalParams,
                                   {credentials: 'include'},

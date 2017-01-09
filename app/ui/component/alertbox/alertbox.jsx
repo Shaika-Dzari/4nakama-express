@@ -2,14 +2,16 @@ import React from 'react';
 import './alertbox.scss';
 
 const AlertBox = ({message}) => {
-    let show = {};
+
     if (!message) {
-        show.display = 'none';
-    } else {
-        show.display = 'block';
+        return null;
     }
 
-    return <div style={show} className="alert"><p>{message}</p></div>;
+    return (
+        <div className="alert">
+            <p>{message}</p>
+        </div>
+    );
 };
 
 export default AlertBox;

@@ -32,6 +32,7 @@ const mapStateToProps = (state, ownProps) => {
         });
     }
 
+
     return {
         messageId: id,
         module: state.modules.items[msg.moduleid],
@@ -107,6 +108,15 @@ class MessageEditor extends React.Component {
 
     render() {
 
+        let error = null;
+
+        if (this.props.error) {
+            if (this.props.error instanceof Error) {
+                error = this.props.error.name + ': ' + this.props.error.message;
+            } else {
+                error = '' + this.props.error;
+            }
+        }
 
         return (
             <div className="message-editor-ctn box bluebox">
@@ -125,7 +135,7 @@ class MessageEditor extends React.Component {
                     </div>
                 </div>
                 <div className="body">
-                    <AlertBox message={this.props.error} />
+                    <AlertBox message={error} />
                     <div className="row">
                         <div className="col-9">
                             <div className="box">
@@ -147,7 +157,8 @@ class MessageEditor extends React.Component {
                                     {this.props.module.enablecategory ?
                                         <CategoryEditor onComponentSelect={this.onCategorySelect}
                                                         onComponentUnSelect={this.onCategoryUnSelect}
-                                                        selectedItems={this.props.categories} />
+                                                        selectedItems={this.props.categories}
+                                                        moduleid={this.props.module.id} />
                                         :
                                         null
                                     }

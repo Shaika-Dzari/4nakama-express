@@ -8,7 +8,10 @@ var db = require('../database/db.js');
 // GET categories
 router.get('/', function(req, res, next) {
 
-    db.any(Category.ALL, null, (err, categories) => {
+    let moduleid = req.query.moduleid;
+    let query = moduleid ? Category.ALL_BY_MODULEID : Category.ALL;
+
+    db.any(query, {moduleid: moduleid}, (err, categories) => {
         if (err) next(err);
 
         res.json(categories);
@@ -18,12 +21,13 @@ router.get('/', function(req, res, next) {
 
 router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
 
-    var name = req.body.name;
+    let name = req.body.name;
+    let moduleid = req.body.moduleid;
 
-    if (!name)
-        next(new Error('Missing name'));
+    if (!name || !moduleid)
+        next(new Error('Missing name or module id'));
 
-    db.insert(Category.CREATE_ONE, {name: name}, (err, data) => {
+    db.insert(Category.CREATE_ONE, {name: name, moduleid: moduleid}, (err, data) => {
         if (err) {
             console.log('error', err);
             next(err);

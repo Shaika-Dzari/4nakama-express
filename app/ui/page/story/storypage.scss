@@ -1,0 +1,39 @@
+@import '../../variables.scss';
+
+.story-page {
+    padding: 0 40px;
+
+    .story-page-menu {
+        h1 {
+            margin: 5px 0;
+            font-size: 1.2em;
+        }
+    }
+
+    .story-page-text {
+
+        .story-page-header {
+            padding: 20px 40px;
+            h1 {
+                margin: 3px 0;
+            }
+        }
+
+        .story-page-items {
+            background-color: $color-back-lighter;
+
+            .story-page-msg {
+                margin-top: 20px;
+                padding: 20px;
+            }
+        }
+    }
+}
+
+
+@media only screen and (min-width: 1200px) {
+    .story-page-text {
+        //width: 1000px;
+
+    }
+}
