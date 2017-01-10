@@ -62,6 +62,7 @@ create index idx_modmeta_moduleid on modulemeta(moduleid);
 create table category (
     id serial primary key,
     name text not null,
+    description text,
     moduleid integer not null,
     createdat timestamp with time zone not null default now(),
     unique (name, moduleid),

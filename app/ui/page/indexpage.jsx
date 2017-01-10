@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { doNavigationTo } from '../actions/navigationActions.js';
+import { doFetchModules } from '../actions/moduleActions.js';
 
 import './indexpage.scss';
 
@@ -16,6 +17,16 @@ const mapStateToProps = (state, ownProps) => {
 class IndexPage extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount() {
+        const {module} = this.props;
+        const {dispatch} = this.props;
+
+        // Modules need to be loaded before doing anything.
+        if (!module || !module.items) {
+            dispatch(doFetchModules());
+        }
     }
 
     componentDidMount() {

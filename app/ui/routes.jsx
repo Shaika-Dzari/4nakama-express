@@ -18,6 +18,7 @@ import MessageEditor from './page/messageeditor/messageeditor.jsx';
 import MessagePage from './page/message/messagepage.jsx';
 import AboutPage from './page/about/aboutpage.jsx';
 import StoryPage from './page/story/storypage.jsx';
+import ErrorPage from './page/error/errorpage.jsx';
 
 import AdminMessage from './page/adminmessage/adminmessage.jsx';
 import AdminFile from './page/adminfile/adminfile.jsx';
@@ -63,6 +64,7 @@ const AppRoute = () => {
                             <Route path="comments" component={ AdminComment } />
                         </Route>
                     </Route>
+                    <Route path="/error" component={ ErrorPage } />
                     <Route path="*" component={ NotFound } />
                 </Route>
             </Router>
