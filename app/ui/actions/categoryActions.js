@@ -9,7 +9,7 @@ export const CATEGORY_UPDATED = 'CATEGORY_UPDATED';
 export const CATEGORY_ERROR = 'CATEGORY_ERROR';
 export const CATEGORY_CONSUME_PRELOAD = 'CATEGORY_CONSUME_PRELOAD';
 
-export const doCategoryReceive = makeActionCreator(CATEGORY_RECEIVE, 'categories');
+export const doCategoryReceive = makeActionCreator(CATEGORY_RECEIVE, 'categories', 'moduleid');
 export const doCategoryUpdated = makeActionCreator(CATEGORY_UPDATED, 'category');
 export const doCategoryError = makeActionCreator(CATEGORY_ERROR, 'error');
 export const doCategoryConsumePreload = makeActionCreator(CATEGORY_CONSUME_PRELOAD);
@@ -20,8 +20,9 @@ export function doCategoryFetch(moduleid) {
         let cs = getState().categories.index;
 
         if (!cs || cs.length == 0) {
-
-            return FetchUtils.get(dispatch, CATEGORY_URL + '?moduleid=' + moduleid, {}, doCategoryReceive, doCategoryError);
+            return FetchUtils.get(dispatch, CATEGORY_URL + '?moduleid=' + moduleid, {}, {action: cs => {
+                dispatch(doCategoryReceive(cs, moduleid));
+            }}, doCategoryError);
         }
     };
 }

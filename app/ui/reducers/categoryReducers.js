@@ -7,10 +7,10 @@ export function categoryReducers(state = {items: {}, index: [], moduleindex: {}}
     switch (action.type) {
 
         case CATEGORY_RECEIVE:
-            return expand(state, action.categories);
+            return expand(state, action.categories, action.moduleid);
 
         case CATEGORY_UPDATED:
-            return expand(state, [action.category]);
+            return expand(state, [action.category], action.moduleid);
 
         case CATEGORY_ERROR:
             return Object.assign({}, state, {error: action.error});

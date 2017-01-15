@@ -4,11 +4,11 @@ let Message = require('./message');
 let authUtils = require('../authutils');
 let htmlutils = require('../htmlutils');
 let PagingParser = require('../utils/PagingParser');
+let WhereBuilder = require('../utils/WhereBuilder');
 let db = require('../database/db.js');
 
 
-router.get('/', function(req, res, next) {
-
+const getMessage = (req, res, next) => {
     // Paging Params
     let pagingParam = new PagingParser(req, Message.DEFAULT_PAGE_SIZE);
     let moduleid = req.query.moduleid || null;
@@ -31,8 +31,41 @@ router.get('/', function(req, res, next) {
 
         res.json(Message.computePrettyUrl(msgs));
     });
+}
 
-});
+const getMessage2 = (req, res, next) => {
+
+    // Paging Params
+    let pagingParam = new PagingParser(req, Message.DEFAULT_PAGE_SIZE);
+    let moduleid = req.query.moduleid;
+    let published = req.query.p;
+    let categoryid = req.query.categoryid;
+    let query = pagingParam.direction() == 'next' ? Message.DYNAMIC_BY_NEXTPAGE : Message.DYNAMIC_BY_PREVPAGE;
+    let builder = new WhereBuilder();
+
+    // categories @> '[{"id": 4}]'
+
+    builder.
+        group().
+            add('message', 'moduleid', moduleid).
+            or('module', 'code', 'BLOG').
+        end().
+        and('message', 'published', authUtils.isLoggedIn(req) ? published || true: false)
+        ;
+
+    // Categories are jsonb
+    if (categoryid) {
+        builder.and('message', 'categories', categoryid ? JSON.stringify([{id: Number.parseInt(categoryid)}]) : null, '@>');
+    }
+
+    db.any(builder.build(query), pagingParam.merge(builder.params()), (err, msgs) => {
+        if (err) next(err);
+
+        res.json(Message.computePrettyUrl(msgs));
+    });
+}
+
+router.get('/', getMessage2);
 
 router.get('/:messageid', function(req, res, next) {
     let id = req.params.messageid;

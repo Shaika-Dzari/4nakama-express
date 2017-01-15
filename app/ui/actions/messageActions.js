@@ -32,29 +32,29 @@ const MODULE_URLS = {
 };
 
 
-export function doMessageFetchAndGo(pageParams, modulecode = 'BLOG') {
+export function doMessageFetchAndGo(pageParams, modulecode = 'BLOG', addtionalParams) {
 
     return (dispatch, getState) => {
         let modid = getState().modules.codeindex[modulecode];
-        let urlParam = getUrlParamsString(pageParams);
+        let urlParam = getUrlParamsString(pageParams, addtionalParams);
         let clientUrl = MODULE_URLS[modulecode.toLowerCase()]
         dispatch(push(clientUrl + '?' + urlParam));
 
         if (!getState().messages.preloaded) {
-            dispatch(doMessageFetch(pageParams, modid));
+            dispatch(doMessageFetch(pageParams, modid, addtionalParams));
         } else {
             dispatch(doMessageConsumePreload());
         }
     }
 }
 
-export function doMessageFetch(pageParams, moduleid) {
+export function doMessageFetch(pageParams, moduleid, addtionalParams) {
 
     return (dispatch, getState) => {
         dispatch(doStartLoading());
-        let urlParam = getUrlParamsString(pageParams);
+        let urlParam = getUrlParamsString(pageParams, addtionalParams);
 
-        return fetch(MSG_URL + '?' + urlParam, {credentials: 'include'})
+        return fetch(MSG_URL + '?' + urlParam + '&moduleid=' + moduleid, {credentials: 'include'})
                 .then(r => r.json())
                 .then(msgs => {
                     dispatch(doStopLoading());

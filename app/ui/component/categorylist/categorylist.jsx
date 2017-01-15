@@ -10,9 +10,19 @@ const CategoryList = ({categories, index, listClass, callback}) => {
             let c = categories[v];
 
             if (callback) {
-                return <li key={'catlist-cat-' + v}><a href="#" onClick={callback}>{c.name}</a></li>
+
+                return (
+                        <li key={'catlist-cat-' + v}>
+                            <a href="#" className="link" onClick={callback} data-n4-id={c.id}>{c.name}</a>
+                            { c.description ? <p>{c.description}</p> : null }
+                        </li>);
             } else {
-                return <li key={'catlist-cat-' + v}><span>{c.name}</span></li>
+
+                return (
+                    <li key={'catlist-cat-' + v}>
+                        <span>{c.name}</span>
+                        { c.description ? <p>{c.description}</p> : null }
+                    </li>);
             }
         });
     }

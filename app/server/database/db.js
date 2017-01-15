@@ -2,7 +2,7 @@ var config = require('../config/config.js');
 var pgp = require('pg-promise')({
   connect: function (client, dc, isFresh) {
         if (isFresh) {
-            console.log('setting search_path to ' + config.postgresql.schema);
+            //console.log('setting search_path to ' + config.postgresql.schema);
             client.query('SET search_path = ' + config.postgresql.schema);
         }
     }
@@ -16,7 +16,7 @@ function one(query, params, done) {
 }
 
 function any(query, params, done) {
-    console.log(pgp.as.format(query, params));
+    //console.log(pgp.as.format(query, params));
 
     db.any(query, params)
       .then(data => done(null, data))

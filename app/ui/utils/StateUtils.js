@@ -1,8 +1,9 @@
-const expand = (partialstate, modulizedObjs) => {
+const expand = (partialstate, modulizedObjs, currentModuleId) => {
     let newState = Object.assign({}, partialstate);
 
     newState.index = newState.index || [];
     newState.moduleindex = newState.moduleindex || {};
+    newState.moduleindex[currentModuleId] = []; // reset
 
 
     if (modulizedObjs && modulizedObjs.length > 0) {

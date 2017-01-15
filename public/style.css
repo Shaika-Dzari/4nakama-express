@@ -21,26 +21,26 @@
       margin: 8px 5px 20px 20px; } }
   .site-header .page-header-menu {
     margin-top: 5px;
-    padding: 0 0 0 5px; }
-    .site-header .page-header-menu nav.site-menu a {
-      text-align: center;
-      display: inline-block;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 3px 0;
-      padding: 10px;
+    padding: 0 0 0 5px;
+    text-align: center; }
+    .site-header .page-header-menu nav.site-menu {
       border-top: 1px solid #176ba1;
-      border-bottom: 1px solid #176ba1;
-      color: #fafafa; }
-      .site-header .page-header-menu nav.site-menu a span {
-        display: inline; }
-      .site-header .page-header-menu nav.site-menu a img {
-        display: inline; }
-    .site-header .page-header-menu nav.site-menu a:hover {
-      background-color: #1f95e0; }
+      border-bottom: 1px solid #176ba1; }
+      .site-header .page-header-menu nav.site-menu a {
+        text-align: center;
+        display: inline-block;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 8px 10px;
+        color: #fafafa; }
+        .site-header .page-header-menu nav.site-menu a span {
+          display: inline; }
+        .site-header .page-header-menu nav.site-menu a img {
+          display: inline; }
+      .site-header .page-header-menu nav.site-menu a:hover {
+        background-color: #1f95e0; }
   .site-header .page-header-lang {
-    margin: 20px 0;
-    padding: 0 20px;
+    margin: 5px 0;
     text-align: center; }
     .site-header .page-header-lang a {
       display: inline-block;
@@ -58,14 +58,31 @@
     .site-header .page-header-menu {
       margin-top: 20px;
       padding: 20px 0; }
-      .site-header .page-header-menu nav.site-menu a {
-        display: block;
-        margin: 16px 10px 0 10px;
-        padding: 10px; }
-        .site-header .page-header-menu nav.site-menu a span {
-          display: inline; }
-        .site-header .page-header-menu nav.site-menu a img {
-          display: none; } }
+      .site-header .page-header-menu nav.site-menu {
+        border: 0; }
+        .site-header .page-header-menu nav.site-menu a {
+          border-top: 1px solid #176ba1;
+          border-bottom: 1px solid #176ba1;
+          display: block;
+          margin: 16px 10px 0 10px;
+          padding: 10px; }
+          .site-header .page-header-menu nav.site-menu a span {
+            display: inline; }
+          .site-header .page-header-menu nav.site-menu a img {
+            display: none; }
+    .site-header .page-header-lang {
+      margin: 20px 0;
+      text-align: center; }
+      .site-header .page-header-lang a {
+        display: inline-block;
+        padding: 3px 5px;
+        margin: 5px;
+        font-size: 0.9em;
+        color: #fff;
+        width: 100px;
+        border: 1px solid #176ba1; }
+      .site-header .page-header-lang a:hover {
+        background-color: #1f95e0; } }
 .empty-index {
   text-align: center; }
   .empty-index img {
@@ -235,9 +252,19 @@ div.login {
     text-align: justify; }
 .story-page {
   padding: 0 40px; }
-  .story-page .story-page-menu h1 {
-    margin: 5px 0;
-    font-size: 1.2em; }
+  .story-page .story-page-menu {
+    padding: 40px 10px; }
+    .story-page .story-page-menu h1 {
+      margin: 5px 0;
+      font-size: 1.2em; }
+    .story-page .story-page-menu ul.story-cat {
+      list-style: none;
+      padding-left: 5px; }
+      .story-page .story-page-menu ul.story-cat li {
+        margin-bottom: 10px; }
+        .story-page .story-page-menu ul.story-cat li p {
+          margin: 3px 0;
+          font-size: 0.8em; }
   .story-page .story-page-text .story-page-header {
     padding: 20px 40px; }
     .story-page .story-page-text .story-page-header h1 {
@@ -461,7 +488,7 @@ input.validation-error, textarea.validation-error {
     .page-layout-inner .menu-section {
       background-color: #1872ab;
       height: 100vh;
-      width: 300px;
+      width: 280px;
       position: fixed;
       z-index: 100;
       top: 0;
