@@ -23,6 +23,7 @@ import ErrorPage from './page/error/errorpage.jsx';
 import AdminMessage from './page/adminmessage/adminmessage.jsx';
 import AdminFile from './page/adminfile/adminfile.jsx';
 import AdminComment from './page/admincomment/admincomment.jsx';
+import AdminCategory from './page/admincategory/admincategory.jsx';
 
 // Store
 import store from './store/createstore.js';
@@ -62,6 +63,7 @@ const AppRoute = () => {
                             <Route path="messages/:messageId" component={ MessageEditor } />
                             <Route path="files" component={ AdminFile } />
                             <Route path="comments" component={ AdminComment } />
+                            <Route path="categories" component={ AdminCategory } />
                         </Route>
                     </Route>
                     <Route path="/error" component={ ErrorPage } />

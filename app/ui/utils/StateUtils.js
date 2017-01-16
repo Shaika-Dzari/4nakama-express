@@ -1,9 +1,13 @@
-const expand = (partialstate, modulizedObjs, currentModuleId) => {
+const expand = (partialstate, modulizedObjs, currentModuleId, reset) => {
     let newState = Object.assign({}, partialstate);
 
     newState.index = newState.index || [];
     newState.moduleindex = newState.moduleindex || {};
-    newState.moduleindex[currentModuleId] = []; // reset
+    if (reset) {
+        newState.moduleindex[currentModuleId] = []; // reset
+    } else {
+        newState.moduleindex[currentModuleId] = newState.moduleindex[currentModuleId] || [];
+    }
 
 
     if (modulizedObjs && modulizedObjs.length > 0) {
@@ -27,6 +31,8 @@ const expand = (partialstate, modulizedObjs, currentModuleId) => {
     }
 
     newState.preloaded = false;
+    console.log('Was expanding =>', modulizedObjs, currentModuleId, reset);
+    console.log('newState => ', newState);
     return newState;
 }
 

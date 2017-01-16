@@ -425,6 +425,8 @@ div.login {
 .confirm .btn-x {
   font-weight: bold;
   width: 30px; }
+.admin-category-page {
+  padding: 10px; }
 html, body {
   min-height: 100%;
   margin: 0;

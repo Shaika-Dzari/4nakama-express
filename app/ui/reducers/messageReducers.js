@@ -36,7 +36,7 @@ export function messageReducers(state = initialstate, action) {
     switch (action.type) {
 
         case MSG_LIST_RECEIVE:
-            return expand(state, action.messages, action.moduleid);
+            return expand(state, action.messages, action.moduleid, true);
 
         case MSG_SELECT_MODULE:
             return Object.assign({}, state, {displayedmodule: action.moduleid});

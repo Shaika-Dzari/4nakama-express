@@ -8,12 +8,14 @@ const CATEGORY_URL = '/api/categories';
 const mapStateToProps = (state, ownProps) => {
 
     let modidx = ownProps.moduleid || state.modules.codeindex['BLOG'];
-
-    return {
+    let obj = {
         categories: state.categories.items,
         index: state.categories.moduleindex[modidx] || [],
         error: state.categories.error
     };
+
+    console.log('mapStateToProps => ', obj);
+    return obj;
 };
 
 class CategoryEditor extends React.Component {
@@ -41,12 +43,11 @@ class CategoryEditor extends React.Component {
     }
 
     onSaveCategory() {
-        this.setState({showAddInput: false});
-        this.setState({newcategory: ''});
-
-        let c = { id: 'new', name: this.state.newcategory, moduleid: this.props.moduleid };
+        let c = Object.assign({}, { id: 'new', name: this.state.newcategory, moduleid: this.props.moduleid});
         const { dispatch } = this.props;
         dispatch(doCategorySave(c));
+
+        this.setState({showAddInput: false, newcategory: ''});
     }
 
     onCategoryAddInputChange(event) {
@@ -76,7 +77,7 @@ class CategoryEditor extends React.Component {
     }
 
     render() {
-
+        console.log('render()', this.props.index);
         let cs = this.props.index.map(cid => {
             let key = 'c-' + cid;
             let cat = this.props.categories[cid];
@@ -95,15 +96,15 @@ class CategoryEditor extends React.Component {
             <div className="box bluebox">
                 <div className="heading">
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-8">
                             <h4 className={this.state.showAddInput ? 'hidden' : ''}>Catégories</h4>
-                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'} onChange={this.onCategoryAddInputChange} value={this.state.newcategory} />
+                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'} onChange={this.onCategoryAddInputChange} value={this.state.newcategory} style={{width: '99%'}} />
                         </div>
-                        <div className="col-6 right">
-                            <button className="btn" className={this.state.showAddInput ? 'hidden' : ''} onClick={this.onAddCategory}>
+                        <div className="col-4 right">
+                            <button className={this.state.showAddInput ? 'hidden' : 'btn'} onClick={this.onAddCategory}>
                             +
                             </button>
-                            <button className="btn" className={this.state.showAddInput ? '' : 'hidden'} onClick={this.onSaveCategory}>
+                            <button className={this.state.showAddInput ? 'btn' : 'hidden'} onClick={this.onSaveCategory}>
                             Créer
                             </button>
                         </div>

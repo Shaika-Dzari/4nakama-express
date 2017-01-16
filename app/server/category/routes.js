@@ -29,12 +29,14 @@ router.post('/', authUtils.enforceLoggedIn, function(req, res, next) {
         next(new Error('Missing name or module id'));
 
     db.insert(Category.CREATE_ONE, {name: name, description: desc, moduleid: moduleid}, (err, data) => {
-        if (err) {
-            console.log('error', err);
-            next(err);
-        }
+        if (err) next(err);
 
-        res.status(201).json({id: data.id, name: name, description: desc, moduleid: moduleid});
+        res.status(201).json({
+            id: data.id,
+            name: name,
+            description: desc,
+            moduleid: moduleid
+        });
     });
 
 });

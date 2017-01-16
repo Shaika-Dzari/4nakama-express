@@ -62,7 +62,7 @@ const ALL_PUBLISHED_BY_CATID_AND_PPAGE = `with previous_page as (
 
 const ONE_BY_ID = "select * from message where id = $(id) ";
 const CREATE_ONE = `insert into message(title, body, published, authorname, authorid, prettyurl, categories, moduleid)
-                   values($(title), $(body), $(published), $(authorname), $(authorid), $(prettyurl), $(categories), $(moduleid)
+                   values($(title), $(body), $(published), $(authorname), $(authorid), $(prettyurl), $(categories), $(moduleid))
                    returning id, createdat `;
 
 const UPDATE_ONE = `update message

@@ -3,11 +3,14 @@ import {Link} from 'react-router';
 import { connect } from 'react-redux';
 import {doSwitchModule} from '../../actions/messageActions.js';
 import DashboardContent from './dashboardcontent.jsx';
+import tr from '../../i18n/i18n.js';
+
 import './dashboardpage.scss';
 
 const mapStateToProps = (state) => {
     return {
-        modules: state.modules
+        modules: state.modules,
+        locale: state.language.locale
     };
 };
 
@@ -26,6 +29,7 @@ class DashboardPage extends React.Component {
 
     render() {
         let subview = null;
+        let locale = this.props.locale;
 
         if (this.props.children) {
             subview = this.props.children;
@@ -37,14 +41,17 @@ class DashboardPage extends React.Component {
             <div className="dashboard">
                 <div className="dashboard-menu">
                     <div className="row">
-                        <div className="col-4 menu-item">
-                            <a href="#" onClick={this.onAdminMessage}>Messages</a>
+                        <div className="col-3 menu-item">
+                            <a href="#" onClick={this.onAdminMessage}>{tr(locale, 'dashboard_menu_messages')}</a>
                         </div>
-                        <div className="col-4 menu-item">
-                            <Link to="/dashboard/files">Fichiers</Link>
+                        <div className="col-3 menu-item">
+                            <Link to="/dashboard/files">{tr(locale, 'dashboard_menu_files')}</Link>
                         </div>
-                        <div className="col-4 menu-item">
-                            <Link to="/dashboard/comments">Commentaires</Link>
+                        <div className="col-3 menu-item">
+                            <Link to="/dashboard/comments">{tr(locale, 'dashboard_menu_comments')}</Link>
+                        </div>
+                        <div className="col-3 menu-item">
+                            <Link to="/dashboard/categories">{tr(locale, 'dashboard_menu_categories')}</Link>
                         </div>
                     </div>
                 </div>
