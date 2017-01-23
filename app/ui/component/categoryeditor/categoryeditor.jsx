@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AlertBox from '../alertbox/alertbox.jsx';
-import {doCategorySave, doCategoryFetch} from '../../actions/categoryActions.js';
+import {doCategorySave, doCategoryFetch, doCategoryInputChange} from '../../actions/categoryActions.js';
 
 const CATEGORY_URL = '/api/categories';
 
@@ -11,7 +11,8 @@ const mapStateToProps = (state, ownProps) => {
     let obj = {
         categories: state.categories.items,
         index: state.categories.moduleindex[modidx] || [],
-        error: state.categories.error
+        error: state.categories.error,
+        newcategoryname: state.categories.newcategoryname
     };
 
     console.log('mapStateToProps => ', obj);
@@ -27,8 +28,7 @@ class CategoryEditor extends React.Component {
         this.onSaveCategory = this.onSaveCategory.bind(this);
         this.onCheckCategory = this.onCheckCategory.bind(this);
         this.state = {
-            showAddInput: false,
-            newcategory: ''
+            showAddInput: false
         };
     }
 
@@ -43,15 +43,17 @@ class CategoryEditor extends React.Component {
     }
 
     onSaveCategory() {
-        let c = Object.assign({}, { id: 'new', name: this.state.newcategory, moduleid: this.props.moduleid});
+        let c = Object.assign({}, {id: 'new', name: this.props.newcategoryname, moduleid: this.props.moduleid});
         const { dispatch } = this.props;
         dispatch(doCategorySave(c));
 
-        this.setState({showAddInput: false, newcategory: ''});
+       // this.setState({showAddInput: false});
     }
 
     onCategoryAddInputChange(event) {
-        this.setState({newcategory: event.target.value});
+        const {dispatch} = this.props;
+        let name = event.target.value;
+        dispatch(doCategoryInputChange(name));
     }
 
     onCheckCategory(event) {
@@ -98,7 +100,8 @@ class CategoryEditor extends React.Component {
                     <div className="row">
                         <div className="col-8">
                             <h4 className={this.state.showAddInput ? 'hidden' : ''}>Catégories</h4>
-                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'} onChange={this.onCategoryAddInputChange} value={this.state.newcategory} style={{width: '99%'}} />
+                            <input type="text" className={this.state.showAddInput ? '' : 'hidden'}
+                                   onChange={this.onCategoryAddInputChange} value={this.props.newcategoryname} style={{width: '99%'}} />
                         </div>
                         <div className="col-4 right">
                             <button className={this.state.showAddInput ? 'hidden' : 'btn'} onClick={this.onAddCategory}>

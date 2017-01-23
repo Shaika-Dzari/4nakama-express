@@ -1,9 +1,14 @@
 import expand from '../utils/StateUtils.js';
 
-import {CATEGORY_RECEIVE, CATEGORY_UPDATED, CATEGORY_ERROR} from '../actions/categoryActions.js';
+import {CATEGORY_RECEIVE, CATEGORY_UPDATED, CATEGORY_ERROR, CATEGORY_INPUT_CHANGE} from '../actions/categoryActions.js';
 
+const initialState = {
+    items: {},
+    index: [],
+    moduleindex: {}
+};
 
-export function categoryReducers(state = {items: {}, index: [], moduleindex: {}}, action) {
+export function categoryReducers(state = initialState, action) {
     switch (action.type) {
 
         case CATEGORY_RECEIVE:
@@ -14,6 +19,9 @@ export function categoryReducers(state = {items: {}, index: [], moduleindex: {}}
 
         case CATEGORY_ERROR:
             return Object.assign({}, state, {error: action.error});
+
+        case CATEGORY_INPUT_CHANGE:
+            return Object.assign({}, state, {newcategoryname: action.categoryname});
 
         default:
             return state;
